@@ -6,7 +6,7 @@
 
 **Architecture:** Astro（静的出力・サーバー/DBなし）＋ TypeScript。手法データはAstro Content Collections（YAMLデータ＋Zodスキーマ）で管理し、スキーマで§5の手法エンティティを強制する。詳細ページはデータを受け取る純粋なAstroコンポーネントで描画し、Vitest（Container API）でテストする。動的UI（検索・チャート・関係マップ）は後続Planでreact islandsとして追加する。
 
-**Tech Stack:** Astro 5 / TypeScript / Tailwind CSS v4 / Zod / Vitest / `yaml`（コンテンツ検証テスト用）。React・Observable Plot・Cytoscape.js・Fuse.js は後続Planで導入。
+**Tech Stack:** Astro 5 / TypeScript / Zod / Vitest / `yaml`（コンテンツ検証テスト用）。スタイルは承認済みモック（`mockup/styles.css`）由来のCSSデザインシステムを移植して用いる（Tailwindは使わない）。React・Observable Plot・Cytoscape.js・Fuse.js は後続Planで導入。
 
 ## Global Constraints
 
@@ -65,7 +65,7 @@ Run:
 ```bash
 npm create astro@latest . -- --template minimal --no-install --no-git --typescript strict --skip-houston
 npm install
-npm install -D tailwindcss @tailwindcss/vite vitest zod yaml
+npm install -D vitest zod yaml
 ```
 Expected: `package.json` と `src/` が生成され、依存が入る。`.` に既存の `README.md` がある場合はテンプレ生成を許可（上書きされるのは Astro 既定ファイルのみ。`README.md` は残す）。
 
@@ -84,26 +84,19 @@ Expected: `package.json` と `src/` が生成され、依存が入る。`.` に�
 }
 ```
 
-- [ ] **Step 3: `astro.config.mjs` を設定（Tailwind Viteプラグイン）**
+- [ ] **Step 3: `astro.config.mjs` を設定**
 
 ```js
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()],
-  },
-});
+export default defineConfig({});
 ```
 
-- [ ] **Step 4: Tailwindエントリと共通レイアウトの土台を作る**
+- [ ] **Step 4: 承認済みデザインシステムを移植し、土台ページを作る**
 
-```css
-/* src/styles/global.css */
-@import "tailwindcss";
-```
+- `mockup/styles.css` を `src/styles/global.css` にコピーする（承認済みデザインシステム）。Google Fonts の `@import` はそのまま残し、`url('contour.svg')` を `url('/contour.svg')` に書き換える。
+- `mockup/contour.svg` を `public/contour.svg` にコピーする（静的アセット）。
 
 ```astro
 ---
@@ -114,12 +107,12 @@ import '../styles/global.css';
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI時代のデータ分析手法カタログ</title>
+    <title>分析手法アトラス</title>
   </head>
-  <body class="bg-white text-gray-900">
-    <main class="mx-auto max-w-3xl p-8">
-      <h1 class="text-2xl font-bold">AI時代のデータ分析手法カタログ</h1>
-      <p class="mt-2 text-gray-600">準備中。手法ページはPlan 2でナビゲーションを整備します。</p>
+  <body>
+    <main class="wrap" style="padding-top:48px;padding-bottom:48px">
+      <h1>分析手法アトラス</h1>
+      <p style="color:var(--ink-soft)">準備中。手法ページはPlan 2でナビゲーションを整備します。</p>
     </main>
   </body>
 </html>
@@ -604,6 +597,8 @@ git commit -m "feat: add methods content collection with mean and median entries
 **Interfaces:**
 - Consumes: `Method` 型（Task 2）、`methods` コレクション（Task 3）、`sampleMethod` フィクスチャ（Task 2）
 - Produces: `MethodDetail`（`{ method: Method }` を受け取る純粋コンポーネント）、`/methods/<id>` 静的ページ。
+
+> **デザイン基準:** このタスクのコンポーネントは承認済みモック `mockup/method.html` の構成・クラス体系（`.sect` / `.analogy` / `.box` / `.dtable` / `.aibox` / `.coords` など、`src/styles/global.css` に移植済み）に従う。以下のコード例の `class` は構成の目安であり、実装時は移植後デザインシステムのクラス名に合わせる（Tailwindクラスは使わない）。テストはクラスではなく**見出しテキストと内容の存在**で検証しているため、デザインシステム適用後もそのまま通る。サンプル分布チャートの描画はPlan 5。
 
 - [ ] **Step 1: 失敗するContainerテストを書く**
 

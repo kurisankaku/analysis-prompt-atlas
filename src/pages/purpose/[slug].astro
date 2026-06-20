@@ -1,0 +1,30 @@
+---
+// src/pages/purpose/[slug].astro
+// 分析目的のハブページ。PURPOSES 全15件をビルド（0件でも生成）。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubView from '../../components/HubView.astro';
+import { PURPOSES, methodsByPurpose } from '../../lib/taxonomy';
+import { allMethods } from '../../lib/methods';
+
+export async function getStaticPaths() {
+  const all = await allMethods();
+  return PURPOSES.map((p, i) => {
+    const items = all.filter((m) => methodsByPurpose([m.data], p.label).length > 0);
+    return {
+      params: { slug: p.slug },
+      props: { entry: p, code: `R${String(i + 1).padStart(2, '0')}`, items },
+    };
+  });
+}
+
+const { entry, code, items } = Astro.props;
+---
+<BaseLayout title={`${entry.label}｜分析手法アトラス`} active="目的から">
+  <HubView
+    code={code}
+    axisLabel="分析目的"
+    title={entry.label}
+    description={entry.description}
+    items={items}
+  />
+</BaseLayout>

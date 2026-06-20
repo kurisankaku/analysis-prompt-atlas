@@ -1,0 +1,69 @@
+---
+// src/components/HubView.astro
+// 分類ハブの共通表示。mockup hub.html の .breadcrumb + .hub-head + .entry-grid を
+// @theme トークン駆動の Tailwind で再現する。目的／データ種類／分類の3軸で共有。
+// items が空のときは空状態テキストを描画する（リンク切れを作らない方針）。
+import type { Method } from '../content/schema';
+import MethodCard from './MethodCard.astro';
+
+interface Props {
+  code: string;
+  axisLabel: string;
+  title: string;
+  description: string;
+  items: { id: string; data: Method }[];
+}
+
+const { code, axisLabel, title, description, items } = Astro.props;
+---
+{/* ---------- パンくず（mockup .breadcrumb） ---------- */}
+<nav
+  class="flex flex-wrap items-center gap-2 pt-5 font-mono text-[0.8rem] text-ink-faint"
+  aria-label="現在地"
+>
+  <a href="/" class="text-ink-soft no-underline hover:text-ink">ホーム</a>
+  <span class="text-line-strong">/</span>
+  <span class="text-signal">● {code} {title}</span>
+</nav>
+
+{/* ---------- ハブヘッド（mockup .hub-head） ---------- */}
+<div class="mb-[26px] border-b border-line pt-[18px] pb-[26px]">
+  <span class="font-mono text-[0.78rem] tracking-[0.05em] text-signal">{axisLabel} {code}</span>
+  <h1 class="mt-2 font-display text-[clamp(1.8rem,4vw,2.6rem)] font-black">{title}</h1>
+  <p class="mt-3 max-w-[60ch] text-ink-soft">{description}</p>
+
+  {/* ---------- ツール（静的・比較は Plan 4 で機能） ---------- */}
+  <div class="mt-5 flex flex-wrap items-center gap-2.5">
+    {/* TODO(Plan 4): 比較ビューは未実装。暫定で # に留める。 */}
+    <a
+      href="#"
+      class="inline-flex items-center gap-2 rounded border border-signal bg-signal px-3.5 py-2 text-[0.84rem] font-semibold text-paper no-underline transition-colors hover:bg-signal-deep"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+      この領域の手法を比較
+    </a>
+  </div>
+</div>
+
+{/* ---------- 手法グリッド（mockup .entry-grid）／空状態 ---------- */}
+{
+  items.length > 0 ? (
+    <div class="grid grid-cols-1 gap-3.5 pb-[60px] md:grid-cols-2">
+      {items.map((it) => (
+        <MethodCard method={it.data} id={it.id} />
+      ))}
+    </div>
+  ) : (
+    <p class="pb-[60px] text-ink-soft">該当する手法はまだありません。</p>
+  )
+}

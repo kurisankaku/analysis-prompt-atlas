@@ -1,0 +1,30 @@
+---
+// src/pages/category/[slug].astro
+// 数学・統計分類のハブページ。MATH_CATS 全15件をビルド（0件でも生成）。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubView from '../../components/HubView.astro';
+import { MATH_CATS, methodsByMath } from '../../lib/taxonomy';
+import { allMethods } from '../../lib/methods';
+
+export async function getStaticPaths() {
+  const all = await allMethods();
+  return MATH_CATS.map((c, i) => {
+    const items = all.filter((m) => methodsByMath([m.data], c.label).length > 0);
+    return {
+      params: { slug: c.slug },
+      props: { entry: c, code: `C${String(i + 1).padStart(2, '0')}`, items },
+    };
+  });
+}
+
+const { entry, code, items } = Astro.props;
+---
+<BaseLayout title={`${entry.label}｜分析手法アトラス`} active="分類">
+  <HubView
+    code={code}
+    axisLabel="分類"
+    title={entry.label}
+    description={entry.description}
+    items={items}
+  />
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+// src/pages/data/[slug].astro
+// データ種類のハブページ。DATA_TYPES 全11件をビルド（0件でも生成）。
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubView from '../../components/HubView.astro';
+import { DATA_TYPES, methodsByData } from '../../lib/taxonomy';
+import { allMethods } from '../../lib/methods';
+
+export async function getStaticPaths() {
+  const all = await allMethods();
+  return DATA_TYPES.map((d, i) => {
+    const items = all.filter((m) => methodsByData([m.data], d.label).length > 0);
+    return {
+      params: { slug: d.slug },
+      props: { entry: d, code: `D${String(i + 1).padStart(2, '0')}`, items },
+    };
+  });
+}
+
+const { entry, code, items } = Astro.props;
+---
+<BaseLayout title={`${entry.label}｜分析手法アトラス`} active="データ種類">
+  <HubView
+    code={code}
+    axisLabel="データ種類"
+    title={entry.label}
+    description={entry.description}
+    items={items}
+  />
+</BaseLayout>

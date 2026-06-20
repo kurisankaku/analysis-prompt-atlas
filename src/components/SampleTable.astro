@@ -1,0 +1,43 @@
+---
+// src/components/SampleTable.astro
+import type { Method } from '../content/schema';
+
+interface Props {
+  table: Method['sampleTable'];
+}
+
+const { table } = Astro.props;
+---
+<table class="mt-4 w-full border-collapse text-sm">
+  {
+    table.caption && (
+      <caption class="mb-2 text-left font-mono text-xs text-ink-faint">
+        {table.caption}
+      </caption>
+    )
+  }
+  <thead>
+    <tr>
+      {
+        table.columns.map((c) => (
+          <th class="border border-line bg-paper2 px-3 py-2 text-left text-[0.82rem] font-bold text-ink">
+            {c}
+          </th>
+        ))
+      }
+    </tr>
+  </thead>
+  <tbody>
+    {
+      table.rows.map((row) => (
+        <tr>
+          {row.map((cell) => (
+            <td class="border border-line px-3 py-2 font-mono text-ink-soft">
+              {cell}
+            </td>
+          ))}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

@@ -1,17 +1,74 @@
 ---
 // src/pages/index.astro
-import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Method } from '../content/schema';
+
+const collection = await getCollection('methods');
+const methods: { id: string; data: Method }[] = collection.map((m) => ({
+  id: m.id,
+  data: m.data as Method,
+}));
+
+// 難易度バッジの配色（mockup の .diff-* を踏襲）。
+const difficultyClass: Record<Method['difficulty'], string> = {
+  基礎: 'bg-[#E3F0E9] text-[#235D43]',
+  初級: 'bg-[#E6EEF4] text-[#2C5876]',
+  中級: 'bg-[#F4ECDA] text-[#8A6516]',
+  上級: 'bg-[#F4E2E9] text-[#8E2B53]',
+  高度: 'bg-[#ECE4F2] text-[#5B3A86]',
+};
 ---
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>分析手法アトラス</title>
-  </head>
-  <body class="bg-paper text-ink font-body">
-    <main class="mx-auto max-w-3xl px-6 py-12">
-      <h1 class="font-display text-3xl font-black">分析手法アトラス</h1>
-      <p class="mt-2 text-ink-soft">準備中。手法ページはPlan 2でナビゲーションを整備します。</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title="分析手法アトラス">
+  <section class="pt-2 pb-6">
+    <h1 class="font-display text-4xl font-black leading-tight md:text-5xl">
+      AI時代の<span class="text-signal">データ分析手法</span>カタログ
+    </h1>
+    <p class="mt-5 max-w-[46ch] text-ink-soft">
+      数学・統計の知識ゼロでも、手法が「何が分かり・どんなデータが要り・いつ使うか」を理解できる地図帳です。（ナビゲーションはPlan
+      2で整備します）
+    </p>
+  </section>
+
+  <div class="mb-4 flex items-baseline gap-3.5">
+    <h2 class="font-display text-lg font-bold">手法一覧</h2>
+    <span class="font-mono text-xs text-ink-faint">{methods.length} methods</span>
+  </div>
+
+  <ul class="grid gap-3.5 pb-10 md:grid-cols-2">
+    {
+      methods.map((m) => (
+        <li>
+          <a
+            href={`/methods/${m.id}`}
+            class="flex h-full flex-col gap-2.5 rounded border border-line bg-card p-5 no-underline transition-colors hover:border-ink"
+          >
+            <div class="flex items-center justify-between gap-2.5">
+              <span class="font-display text-lg font-bold text-ink">
+                {m.data.name}
+              </span>
+              <span class="font-mono text-xs text-ink-faint">
+                {m.data.reading}
+              </span>
+            </div>
+            <p class="text-[0.9rem] leading-relaxed text-ink-soft">
+              {m.data.oneLiner}
+            </p>
+            <div class="mt-0.5 flex flex-wrap items-center gap-2">
+              <span
+                class={`rounded-full px-2.5 py-0.5 text-[0.72rem] font-bold ${difficultyClass[m.data.difficulty]}`}
+              >
+                {m.data.difficulty}
+              </span>
+              {m.data.tags.slice(0, 2).map((t) => (
+                <span class="rounded-full border border-line bg-paper2 px-2.5 py-0.5 text-[0.72rem] text-ink-soft">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

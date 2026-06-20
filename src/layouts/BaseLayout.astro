@@ -1,0 +1,64 @@
+---
+// src/layouts/BaseLayout.astro
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-paper font-body text-ink antialiased">
+    <header
+      class="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur"
+    >
+      <div class="mx-auto flex h-16 max-w-5xl items-center gap-7 px-6">
+        <a href="/" class="flex items-center gap-3 no-underline">
+          <span
+            class="grid size-8 flex-none place-items-center rounded-full border-[1.6px] border-ink text-ink"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              class="size-[18px]"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+              <path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none" />
+            </svg>
+          </span>
+          <span class="leading-none">
+            <span class="block font-display text-base font-black tracking-wide"
+              >分析手法アトラス</span
+            >
+            <span
+              class="mt-[3px] block font-latin text-[0.62rem] uppercase tracking-[0.26em] text-ink-faint"
+              >Analysis Atlas</span
+            >
+          </span>
+        </a>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-6 py-6 md:py-8">
+      <slot />
+    </main>
+
+    <footer class="mt-2 border-t border-line bg-paper2">
+      <div class="mx-auto max-w-5xl px-6 py-8">
+        <p class="max-w-[40ch] text-sm text-ink-soft">
+          手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

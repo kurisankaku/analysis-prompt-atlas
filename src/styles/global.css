@@ -1,0 +1,24 @@
+/* src/styles/global.css */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #E7ECE6;
+  --color-paper2: #DFE5DE;
+  --color-card: #F7F9F5;
+  --color-ink: #16302E;
+  --color-ink-soft: #50615C;
+  --color-ink-faint: #7C8A85;
+  --color-line: #CBD5CB;
+  --color-line-strong: #A9B6AC;
+  --color-signal: #D6336C;
+  --color-signal-deep: #B12557;
+  --color-gold: #C8901F;
+  --color-water: #3E6D8E;
+  --font-display: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+  --font-latin: "Space Grotesk", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+body { background-color: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); }

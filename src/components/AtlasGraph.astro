@@ -27,7 +27,7 @@ const pos = new Map<string, { x: number; y: number }>(
   nodes.map((n, i) => [n.id, points[i]]),
 );
 
-// 関係種別ごとの線色（mockup 準拠）。--color-good は @theme 未定義のため water にフォールバック。
+// 関係種別ごとの線色（mockup 準拠）。比較対象=water／併用=good で別色にする。
 // 前処理は破線でさらに区別する。
 type EdgeStyle = { color: string; dashed: boolean };
 function edgeStyle(type: string): EdgeStyle {
@@ -35,7 +35,7 @@ function edgeStyle(type: string): EdgeStyle {
     case '比較対象':
       return { color: 'var(--color-water)', dashed: false };
     case '併用':
-      return { color: 'var(--color-water)', dashed: false };
+      return { color: 'var(--color-good)', dashed: false };
     case '発展':
       return { color: 'var(--color-signal)', dashed: false };
     case '前処理':

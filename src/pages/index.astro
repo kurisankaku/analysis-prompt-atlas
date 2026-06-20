@@ -57,9 +57,9 @@ const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順�
         まで、ひと目で。理解できれば、あなたの言葉でAIに分析を頼めるようになります。
       </p>
 
-      {/* ---------- 入口タブ＋検索（静的・Plan 3 で機能） ---------- */}
+      {/* ---------- 入口タブ＋検索（静的の入口アフォーダンス。検索・絞り込みは /search が担う） ---------- */}
       <div class="mt-[30px] flex flex-wrap items-center gap-2.5">
-        {/* TODO(Plan 3): タブ切替はまだ機能なし（静的マークアップ） */}
+        {/* 入口タブは意図的に静的（クライアントJSなし）。実際の絞り込みは /search ページが担う。 */}
         <div
           class="flex gap-1 rounded-full border border-line bg-paper2 p-1"
           role="tablist"
@@ -78,7 +78,7 @@ const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順�
             難易度から
           </button>
         </div>
-        {/* TODO(Plan 3): 検索インプットはまだ機能なし（静的マークアップ） */}
+        {/* 検索インプットは意図的に静的（クライアントJSなし）。実際の検索は /search ページが担う。 */}
         <label class="ml-auto flex min-w-[240px] items-center gap-2 rounded-full border border-line-strong bg-card px-4 py-2">
           <svg
             width="16"
@@ -158,16 +158,14 @@ const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順�
           dotColor="var(--color-gold)"
         />
       </div>
-      {/* 難易度フィルタ（/search の検索・絞り込みへ）。 */}
-      <div id="diff">
-        <SubEntryCard
-          title="難易度から"
-          href="/search"
-          description="まず読むべき手法を絞り込む。"
-          chips={diffChips}
-          dotColor="var(--color-signal)"
-        />
-      </div>
+      {/* 難易度フィルタ（/search の検索・絞り込みへ）。#diff アンカーは未参照のため不要。 */}
+      <SubEntryCard
+        title="難易度から"
+        href="/search"
+        description="まず読むべき手法を絞り込む。"
+        chips={diffChips}
+        dotColor="var(--color-signal)"
+      />
     </div>
   </section>
 </BaseLayout>

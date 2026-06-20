@@ -236,6 +236,8 @@ describe('AtlasGraph', () => {
     expect(html).toContain('平均');
     expect(html).toContain('中央値');
     expect(html).toContain('/methods/mean'); // ノードは詳細へリンク
+    // 色はすべて @theme トークン/CSS変数由来。生の hex カラー（#RGB/#RRGGBB）は含めない
+    expect(html).not.toMatch(/#[0-9A-Fa-f]{3,6}\b/);
   });
   it('ノード0件でも壊れない', async () => {
     const c = await AstroContainer.create();

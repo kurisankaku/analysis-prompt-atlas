@@ -6,7 +6,7 @@
 
 **Architecture:** Astro（静的出力・サーバー/DBなし）＋ TypeScript。手法データはAstro Content Collections（YAMLデータ＋Zodスキーマ）で管理し、スキーマで§5の手法エンティティを強制する。詳細ページはデータを受け取る純粋なAstroコンポーネントで描画し、Vitest（Container API）でテストする。動的UI（検索・チャート・関係マップ）は後続Planでreact islandsとして追加する。
 
-**Tech Stack:** Astro 5 / TypeScript / Zod / Vitest / `yaml`（コンテンツ検証テスト用）。スタイルは承認済みモック（`mockup/styles.css`）由来のCSSデザインシステムを移植して用いる（Tailwindは使わない）。React・Observable Plot・Cytoscape.js・Fuse.js は後続Planで導入。
+**Tech Stack:** Astro 5 / TypeScript / **Tailwind CSS v4** / Zod / Vitest / `yaml`（コンテンツ検証テスト用）。デザインは承認済みモック（`mockup/`）の見た目を正とし、モックのデザイントークン（配色・フォント）を Tailwind の `@theme` に移植して **Tailwind ユーティリティで再現** する。React・Observable Plot・Cytoscape.js・Fuse.js は後続Planで導入。
 
 ## Global Constraints
 
@@ -23,6 +23,7 @@
 - **数学・統計カテゴリ（15・verbatim）**: `基礎統計` / `確率・分布` / `統計的検定` / `回帰分析` / `分類` / `クラスタリング` / `次元削減` / `ベクトル・距離・類似度` / `行列` / `微分・積分・最適化` / `時系列解析` / `異常検知` / `ネットワーク分析` / `テキスト分析` / `ソート・ランキング`
 - コンテンツは**段階拡張**。Plan 1ではスキーマ確立と代表2件の執筆までを行い、残りの手法は後続のコンテンツ制作で追加する。v1骨格の完成を手法100件に依存させない。
 - 手法ファイルの`id`は**ASCIIスラッグ**（例: `mean`, `median`）。日本語名は`name`フィールドに保持。`related[].id`はスラッグで参照する。
+- スタイルは **Tailwind CSS v4** で実装する。モック（`mockup/`）の見た目を正とし、配色・フォントはモック由来のトークンを `src/styles/global.css` の `@theme` に定義して用いる（生のhex直書きやTailwind既定のgray/indigo等で代替しない）。デザイントークン: paper `#E7ECE6` / card `#F7F9F5` / ink `#16302E` / ink-soft `#50615C` / line `#CBD5CB` / line-strong `#A9B6AC` / signal `#D6336C` / gold `#C8901F` / water `#3E6D8E`。フォント: 見出し=Zen Kaku Gothic New、本文=Noto Sans JP、ラテン=Space Grotesk、データ=Space Mono。
 
 ---
 
@@ -65,7 +66,7 @@ Run:
 ```bash
 npm create astro@latest . -- --template minimal --no-install --no-git --typescript strict --skip-houston
 npm install
-npm install -D vitest zod yaml
+npm install -D tailwindcss @tailwindcss/vite vitest zod yaml
 ```
 Expected: `package.json` と `src/` が生成され、依存が入る。`.` に既存の `README.md` がある場合はテンプレ生成を許可（上書きされるのは Astro 既定ファイルのみ。`README.md` は残す）。
 
@@ -84,19 +85,52 @@ Expected: `package.json` と `src/` が生成され、依存が入る。`.` に�
 }
 ```
 
-- [ ] **Step 3: `astro.config.mjs` を設定**
+- [ ] **Step 3: `astro.config.mjs` を設定（Tailwind Viteプラグイン）**
 
 ```js
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 
-export default defineConfig({});
+export default defineConfig({
+  vite: { plugins: [tailwindcss()] },
+});
 ```
 
-- [ ] **Step 4: 承認済みデザインシステムを移植し、土台ページを作る**
+- [ ] **Step 4: Tailwindエントリ（モックのデザイントークンを `@theme` に移植）と土台ページを作る**
 
-- `mockup/styles.css` を `src/styles/global.css` にコピーする（承認済みデザインシステム）。Google Fonts の `@import` はそのまま残し、`url('contour.svg')` を `url('/contour.svg')` に書き換える。
-- `mockup/contour.svg` を `public/contour.svg` にコピーする（静的アセット）。
+`src/styles/global.css` を作成。Google Fonts → Tailwind の順に読み込み、モックの配色・フォントを `@theme` に移植する：
+
+```css
+/* src/styles/global.css */
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #E7ECE6;
+  --color-paper2: #DFE5DE;
+  --color-card: #F7F9F5;
+  --color-ink: #16302E;
+  --color-ink-soft: #50615C;
+  --color-ink-faint: #7C8A85;
+  --color-line: #CBD5CB;
+  --color-line-strong: #A9B6AC;
+  --color-signal: #D6336C;
+  --color-signal-deep: #B12557;
+  --color-gold: #C8901F;
+  --color-water: #3E6D8E;
+  --font-display: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  --font-body: "Noto Sans JP", sans-serif;
+  --font-latin: "Space Grotesk", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+body { background-color: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); }
+```
+
+これで `bg-paper` / `text-ink` / `text-ink-soft` / `border-line` / `text-signal` / `font-display` / `font-mono` などのユーティリティが使えるようになる。
+
+- `mockup/contour.svg` を `public/contour.svg` にコピーする（後続Planの等高線背景で使用）。
 
 ```astro
 ---
@@ -109,10 +143,10 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>分析手法アトラス</title>
   </head>
-  <body>
-    <main class="wrap" style="padding-top:48px;padding-bottom:48px">
-      <h1>分析手法アトラス</h1>
-      <p style="color:var(--ink-soft)">準備中。手法ページはPlan 2でナビゲーションを整備します。</p>
+  <body class="bg-paper text-ink font-body">
+    <main class="mx-auto max-w-3xl px-6 py-12">
+      <h1 class="font-display text-3xl font-black">分析手法アトラス</h1>
+      <p class="mt-2 text-ink-soft">準備中。手法ページはPlan 2でナビゲーションを整備します。</p>
     </main>
   </body>
 </html>
@@ -598,7 +632,7 @@ git commit -m "feat: add methods content collection with mean and median entries
 - Consumes: `Method` 型（Task 2）、`methods` コレクション（Task 3）、`sampleMethod` フィクスチャ（Task 2）
 - Produces: `MethodDetail`（`{ method: Method }` を受け取る純粋コンポーネント）、`/methods/<id>` 静的ページ。
 
-> **デザイン基準:** このタスクのコンポーネントは承認済みモック `mockup/method.html` の構成・クラス体系（`.sect` / `.analogy` / `.box` / `.dtable` / `.aibox` / `.coords` など、`src/styles/global.css` に移植済み）に従う。以下のコード例の `class` は構成の目安であり、実装時は移植後デザインシステムのクラス名に合わせる（Tailwindクラスは使わない）。テストはクラスではなく**見出しテキストと内容の存在**で検証しているため、デザインシステム適用後もそのまま通る。サンプル分布チャートの描画はPlan 5。
+> **デザイン基準:** このタスクのコンポーネントは承認済みモック `mockup/method.html`（と `mockup/styles.css`）の**見た目を正**とし、**Tailwind ユーティリティで再現**する。配色・フォントは `@theme` に移植したトークン（`text-ink` / `bg-card` / `border-line` / `text-signal` / `font-display` / `font-mono` など）を用い、Tailwind既定の gray/indigo 等では代替しない。以下のコード例の `class` は構成の目安であり、実装時はモックの見た目に合わせて調整する。テストはクラスではなく**見出しテキストと内容の存在**で検証するため、スタイル実装に依らず通る。サンプル分布チャートの描画はPlan 5。
 
 - [ ] **Step 1: 失敗するContainerテストを書く**
 

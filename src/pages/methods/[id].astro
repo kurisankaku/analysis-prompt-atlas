@@ -1,0 +1,27 @@
+---
+// src/pages/methods/[id].astro
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MethodDetail from '../../components/MethodDetail.astro';
+
+export async function getStaticPaths() {
+  const methods = await getCollection('methods');
+  return methods.map((m) => ({
+    params: { id: m.id },
+    props: { method: m.data },
+  }));
+}
+
+const { method } = Astro.props;
+---
+<BaseLayout title={`${method.name}｜分析手法アトラス`}>
+  <nav
+    class="mb-1 flex flex-wrap items-center gap-2 font-mono text-xs text-ink-faint"
+    aria-label="現在地"
+  >
+    <a href="/" class="text-ink-soft no-underline hover:text-ink">ホーム</a>
+    <span class="text-line-strong">/</span>
+    <span class="text-signal">● {method.name}</span>
+  </nav>
+  <MethodDetail method={method} />
+</BaseLayout>

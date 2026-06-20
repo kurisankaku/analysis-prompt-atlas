@@ -1,0 +1,295 @@
+---
+// src/components/MethodDetail.astro
+import type { Method } from '../content/schema';
+import SampleTable from './SampleTable.astro';
+
+interface Props {
+  method: Method;
+}
+
+const { method } = Astro.props;
+
+// 難易度バッジの配色（mockup の .diff-* を踏襲）。
+const difficultyClass: Record<Method['difficulty'], string> = {
+  基礎: 'bg-[#E3F0E9] text-[#235D43]',
+  初級: 'bg-[#E6EEF4] text-[#2C5876]',
+  中級: 'bg-[#F4ECDA] text-[#8A6516]',
+  上級: 'bg-[#F4E2E9] text-[#8E2B53]',
+  高度: 'bg-[#ECE4F2] text-[#5B3A86]',
+};
+
+// 関係タイプのバッジ配色（mockup の .rt-* を踏襲、テーマトークンで表現）。
+const relationClass: Record<Method['related'][number]['type'], string> = {
+  類似: 'bg-paper2 text-ink-soft',
+  比較対象: 'bg-[#E6EEF4] text-water',
+  前提: 'bg-paper2 text-ink-soft',
+  発展: 'bg-[#F4E2E9] text-signal-deep',
+  併用: 'bg-[#E3F0E9] text-[#2F7A5B]',
+  前処理: 'bg-[#F4ECDA] text-gold',
+  後処理: 'bg-[#F4ECDA] text-gold',
+  代替: 'bg-[#E6EEF4] text-water',
+  補完: 'bg-[#E3F0E9] text-[#2F7A5B]',
+};
+---
+<div class="grid items-start gap-11 pb-16 md:grid-cols-[1fr_296px]">
+  {/* 本文 */}
+  <article class="min-w-0">
+    {/* ---------- ヘッダ ---------- */}
+    <header class="border-b border-line pb-6">
+      <div class="flex items-center gap-2.5">
+        <span
+          class="whitespace-nowrap rounded-sm border border-line bg-paper2 px-1.5 py-px font-mono text-xs tracking-wide text-ink-soft"
+        >
+          {method.mathCategories[0]}
+        </span>
+        <span
+          class={`rounded-full px-2.5 py-0.5 text-xs font-bold ${difficultyClass[method.difficulty]}`}
+        >
+          {method.difficulty}
+        </span>
+      </div>
+
+      <h1 class="mt-3 mb-1.5 font-display text-4xl font-black">{method.name}</h1>
+      <div class="font-mono text-[0.82rem] text-ink-faint">
+        {method.reading} ・ {method.english}
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-x-[18px] gap-y-3 text-sm">
+        <span class="flex flex-col gap-0.5">
+          <span
+            class="font-mono text-[0.66rem] uppercase tracking-[0.1em] text-ink-faint"
+            >Purpose</span
+          >
+          <span class="font-semibold text-ink"
+            >{method.purposeCategories.join(' / ')}</span
+          >
+        </span>
+        <span class="flex flex-col gap-0.5">
+          <span
+            class="font-mono text-[0.66rem] uppercase tracking-[0.1em] text-ink-faint"
+            >Data</span
+          >
+          <span class="font-semibold text-ink"
+            >{method.dataCategories.join(' / ')}</span
+          >
+        </span>
+        <span class="flex flex-col gap-0.5">
+          <span
+            class="font-mono text-[0.66rem] uppercase tracking-[0.1em] text-ink-faint"
+            >Category</span
+          >
+          <span class="font-semibold text-ink"
+            >{method.mathCategories.join(' / ')}</span
+          >
+        </span>
+      </div>
+
+      <div class="mt-3.5 flex flex-wrap items-center gap-2">
+        {
+          method.tags.map((t) => (
+            <span class="rounded-full border border-line bg-paper2 px-2.5 py-0.5 text-[0.74rem] text-ink-soft">
+              {t}
+            </span>
+          ))
+        }
+      </div>
+    </header>
+
+    {/* ---------- これは何？ ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>これは何？
+      </h2>
+      <p class="mt-3 font-display text-lg font-bold leading-snug">
+        {method.oneLiner}
+      </p>
+      <div
+        class="mt-3.5 rounded-r border-l-[3px] border-gold bg-paper2 px-4 py-3 text-[0.94rem] text-ink-soft"
+      >
+        <b class="text-ink">たとえ：</b>{method.analogy}
+      </div>
+    </section>
+
+    {/* ---------- 何が分かる？ ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>何が分かる？
+      </h2>
+      <p class="mt-3.5 text-ink">{method.whatYouLearn}</p>
+    </section>
+
+    {/* ---------- どんなデータを用意する？ ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>どんなデータを用意する？
+      </h2>
+      <p class="mt-3.5 text-ink">{method.inputData}</p>
+      <SampleTable table={method.sampleTable} />
+    </section>
+
+    {/* ---------- 使う／使わない ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>どんな時に使う／使わない方がいい時
+      </h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        <div class="rounded border border-line bg-card px-[17px] py-[15px]">
+          <h3
+            class="flex items-center gap-2 text-[0.82rem] font-bold tracking-wide text-[#2F7A5B]"
+          >
+            ✓ 使うべき場面
+          </h3>
+          <ul class="mt-2 list-disc pl-[18px] text-[0.9rem] text-ink-soft">
+            {method.whenToUse.map((x) => <li class="my-1">{x}</li>)}
+          </ul>
+        </div>
+        <div class="rounded border border-line bg-card px-[17px] py-[15px]">
+          <h3
+            class="flex items-center gap-2 text-[0.82rem] font-bold tracking-wide text-[#B45309]"
+          >
+            ✕ 使わない方がいい場面
+          </h3>
+          <ul class="mt-2 list-disc pl-[18px] text-[0.9rem] text-ink-soft">
+            {method.whenNotToUse.map((x) => <li class="my-1">{x}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- 結果の読み方 ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>結果の読み方
+      </h2>
+      <p class="mt-3.5 text-ink">{method.howToRead}</p>
+    </section>
+
+    {/* ---------- 使う前 → 後 ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>使う前 → 後
+      </h2>
+      <div class="mt-4 grid gap-4 md:grid-cols-2">
+        <div class="rounded border border-line bg-card px-[17px] py-[15px]">
+          <h3 class="text-[0.82rem] font-bold tracking-wide text-ink-faint">
+            使う前
+          </h3>
+          <p class="mt-2 text-[0.92rem] text-ink-soft">
+            {method.beforeAfter.before}
+          </p>
+        </div>
+        <div
+          class="rounded border border-[#F0CFDC] bg-[#FBEDF2] px-[17px] py-[15px]"
+        >
+          <h3 class="text-[0.82rem] font-bold tracking-wide text-signal">
+            使った後
+          </h3>
+          <p class="mt-2 text-[0.92rem] text-ink-soft">
+            {method.beforeAfter.after}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------- 注意点 ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>注意点
+      </h2>
+      <div class="mt-3.5 flex flex-col gap-2">
+        {
+          method.cautions.map((c) => (
+            <div class="flex items-start gap-3 rounded-r border border-line border-l-[3px] border-l-[#B45309] bg-card px-3.5 py-3 text-[0.92rem] text-ink-soft">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                class="mt-[3px] flex-none text-[#B45309]"
+              >
+                <path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" />
+              </svg>
+              <span>{c}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* ---------- AIへの頼み方 ---------- */}
+    <section class="border-b border-line py-7">
+      <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+        <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"
+        ></span>AIへの頼み方の一文例
+      </h2>
+      <div class="mt-3.5 rounded bg-ink px-5 py-[18px] text-paper">
+        <div
+          class="font-latin text-[0.68rem] uppercase tracking-[0.2em] text-[#9DB3AD]"
+        >
+          Prompt example
+        </div>
+        <p class="mt-2.5 text-[0.96rem] text-[#EAF0EC]">
+          {method.aiPromptExample}
+        </p>
+      </div>
+    </section>
+
+    {/* ---------- 参考：数式 ---------- */}
+    {
+      method.formula && (
+        <details class="mt-4 text-sm text-ink-soft">
+          <summary class="cursor-pointer font-mono text-xs text-water">
+            参考：数式（補助）
+          </summary>
+          <div class="mt-2.5 rounded border border-line bg-paper2 px-3.5 py-3 font-mono">
+            {method.formula}
+          </div>
+        </details>
+      )
+    }
+  </article>
+
+  {/* ---------- サイド：関連手法パネル ---------- */}
+  <aside class="flex flex-col gap-[18px] md:sticky md:top-[84px]">
+    <div class="overflow-hidden rounded border border-line bg-card">
+      <div
+        class="flex items-center justify-between border-b border-line px-4 py-3.5"
+      >
+        <h2 class="text-[0.82rem] font-bold tracking-wide">関連手法（次に見る）</h2>
+        <span class="font-mono text-[0.68rem] text-ink-faint"
+          >{method.related.length} links</span
+        >
+      </div>
+      {
+        method.related.map((rel) => (
+          <a
+            href={`/methods/${rel.id}`}
+            class="block border-b border-line px-4 py-3 no-underline last:border-b-0 hover:bg-white"
+          >
+            <span
+              class={`mb-1.5 inline-block rounded-sm px-[7px] py-px font-mono text-[0.64rem] tracking-wide ${relationClass[rel.type]}`}
+            >
+              {rel.type}
+            </span>
+            {/* TODO(Plan 2): show method display name via getCollection lookup instead of id */}
+            <div class="text-[0.98rem] font-bold text-ink">{rel.id}</div>
+            {rel.note && (
+              <p class="mt-1 text-[0.8rem] leading-snug text-ink-soft">
+                {rel.note}
+              </p>
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </aside>
+</div>

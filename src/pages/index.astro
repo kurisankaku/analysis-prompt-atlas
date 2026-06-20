@@ -4,11 +4,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import type { Method } from '../content/schema';
 
-const collection = await getCollection('methods');
-const methods: { id: string; data: Method }[] = collection.map((m) => ({
-  id: m.id,
-  data: m.data as Method,
-}));
+const methods = await getCollection('methods');
 
 // 難易度バッジの配色（mockup の .diff-* を踏襲）。
 const difficultyClass: Record<Method['difficulty'], string> = {

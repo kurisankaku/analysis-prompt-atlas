@@ -280,6 +280,7 @@ const relationClass: Record<Method['related'][number]['type'], string> = {
             >
               {rel.type}
             </span>
+            {/* TODO(Plan 2): show method display name via getCollection lookup instead of id */}
             <div class="text-[0.98rem] font-bold text-ink">{rel.id}</div>
             {rel.note && (
               <p class="mt-1 text-[0.8rem] leading-snug text-ink-soft">

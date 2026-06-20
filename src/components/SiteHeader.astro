@@ -1,0 +1,95 @@
+---
+// src/components/SiteHeader.astro
+// 共通ヘッダー。mockup の .site-header を @theme トークン駆動の Tailwind で再現。
+interface Props {
+  active?: string;
+}
+
+const { active } = Astro.props;
+
+// mockup のナビ: 目的から→/、データ種類→/#data、分類→/#cat、難易度→/#diff、関係マップ→/atlas
+const navItems: { label: string; href: string }[] = [
+  { label: '目的から', href: '/' },
+  { label: 'データ種類', href: '/#data' },
+  { label: '分類', href: '/#cat' },
+  { label: '難易度', href: '/#diff' },
+  // TODO(Plan 6): /atlas（関係マップ）ページは未実装。
+  { label: '関係マップ', href: '/atlas' },
+];
+
+// nav リンクの基底クラス。active 一致時のみ signal の下線を付ける。
+const navBase =
+  'border-b-2 py-1.5 text-[0.9rem] font-medium no-underline transition-colors';
+---
+<header
+  class="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur"
+>
+  <div class="mx-auto flex h-16 max-w-[1120px] items-center gap-7 px-6">
+    <a href="/" class="flex items-center gap-[11px] no-underline">
+      <span
+        class="grid size-[30px] flex-none place-items-center rounded-full border-[1.6px] border-ink text-ink"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          class="size-[18px]"
+        >
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+          <path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none" />
+        </svg>
+      </span>
+      <span class="leading-none">
+        <span
+          class="block font-display text-[1.02rem] font-black tracking-[0.02em] text-ink"
+          >分析手法アトラス</span
+        >
+        <span
+          class="mt-[3px] block font-latin text-[0.62rem] uppercase tracking-[0.26em] text-ink-faint"
+          >Analysis Atlas</span
+        >
+      </span>
+    </a>
+
+    <nav
+      class="ml-auto flex flex-wrap items-center gap-x-[22px] gap-y-2"
+      aria-label="主要ナビゲーション"
+    >
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class={`${navBase} ${
+              active === item.label
+                ? 'border-signal text-ink'
+                : 'border-transparent text-ink-soft hover:text-ink'
+            }`}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <!-- TODO(Plan 3): 検索ボタンはまだ機能なし（静的） -->
+      <button
+        type="button"
+        class="inline-flex items-center gap-[7px] rounded-full border border-line-strong bg-card px-3.5 py-1.5 text-[0.82rem] text-ink-soft transition-colors hover:border-ink hover:text-ink"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="M21 21l-4-4" />
+        </svg>
+        検索
+      </button>
+    </nav>
+  </div>
+</header>

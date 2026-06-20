@@ -1,0 +1,111 @@
+---
+// src/components/SiteFooter.astro
+// 共通フッター。mockup の .site-footer を @theme トークン駆動の Tailwind で再現。
+---
+<footer class="mt-2.5 border-t border-line bg-paper2">
+  <div
+    class="mx-auto flex max-w-[1120px] flex-wrap justify-between gap-[30px] px-6 py-[34px]"
+  >
+    <div class="max-w-[40ch] text-[0.84rem] text-ink-soft">
+      <a href="/" class="mb-3 flex items-center gap-[11px] no-underline">
+        <span
+          class="grid size-[30px] flex-none place-items-center rounded-full border-[1.6px] border-ink text-ink"
+          aria-hidden="true"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            class="size-[18px]"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 3v3M12 18v3M3 12h3M18 12h3" />
+            <path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span
+          class="font-display text-[1.02rem] font-black tracking-[0.02em] text-ink"
+          >分析手法アトラス</span
+        >
+      </a>
+      手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。学習教材ではなく、分析の選択肢を広げるためのカタログです。
+    </div>
+
+    <div class="flex flex-wrap gap-12">
+      <div>
+        <h5
+          class="mb-2.5 font-latin text-[0.68rem] uppercase tracking-[0.18em] text-ink-faint"
+        >
+          探す
+        </h5>
+        <a
+          href="/"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >目的から</a
+        >
+        <!-- TODO(Plan 4): データ種類別ハブ。未実装のため /#data へ。 -->
+        <a
+          href="/#data"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >データ種類から</a
+        >
+        <!-- TODO(Plan 4): 分類別ハブ。未実装のため /#cat へ。 -->
+        <a
+          href="/#cat"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >分類から</a
+        >
+        <!-- TODO(Plan 6): /atlas（関係マップ）は未実装。 -->
+        <a
+          href="/atlas"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >関係マップ</a
+        >
+      </div>
+      <div>
+        <h5
+          class="mb-2.5 font-latin text-[0.68rem] uppercase tracking-[0.18em] text-ink-faint"
+        >
+          見比べる
+        </h5>
+        <!-- TODO(Plan 5): 手法比較ページは未実装。 -->
+        <a
+          href="#"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >手法を比較</a
+        >
+        <!-- TODO(Plan 3/4): 手法ページ例の代表リンクは未実装。 -->
+        <a
+          href="#"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >手法ページ例</a
+        >
+      </div>
+      <div>
+        <h5
+          class="mb-2.5 font-latin text-[0.68rem] uppercase tracking-[0.18em] text-ink-faint"
+        >
+          知っておく
+        </h5>
+        <!-- TODO(後続Plan): 共通の注意点ページは未実装。 -->
+        <a
+          href="#"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >共通の注意点</a
+        >
+        <!-- TODO(後続Plan): About ページは未実装。 -->
+        <a
+          href="#"
+          class="block py-[3px] text-[0.86rem] text-ink-soft no-underline hover:text-ink"
+          >このサイトについて</a
+        >
+      </div>
+    </div>
+  </div>
+  <div
+    class="border-t border-line px-3.5 py-3.5 text-center text-[0.76rem] text-ink-faint"
+  >
+    モックアップ（UI/UX検討用）。掲載の手法数・内容はサンプルです。
+  </div>
+</footer>

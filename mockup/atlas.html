@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>関係マップ（アトラス）｜分析手法アトラス</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg></span>
+      <span><span class="name">分析手法アトラス</span><br/><span class="latin">Analysis Atlas</span></span>
+    </a>
+    <nav class="nav" aria-label="主要ナビゲーション">
+      <a href="index.html">目的から</a>
+      <a href="index.html#data">データ種類</a>
+      <a href="index.html#cat">分類</a>
+      <a href="index.html#diff">難易度</a>
+      <a href="atlas.html" class="active">関係マップ</a>
+      <button class="search-btn" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>検索</button>
+    </nav>
+    <button class="menu-toggle" data-menu aria-label="メニュー"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="現在地">
+    <a href="index.html">ホーム</a><span class="sep">/</span><span class="here">● 関係マップ</span>
+  </nav>
+
+  <div class="atlas-head">
+    <div>
+      <h1>手法の関係マップ</h1>
+      <p>手法どうしの「つながり」を地図にしたもの。色は分類、線は関係の種類を表します。1つの手法から、似た手法・発展手法・前後で使う手法へとたどれます。</p>
+    </div>
+    <a class="btn btn-ghost" href="method.html">相関係数の周辺へ →</a>
+  </div>
+
+  <div class="legend">
+    <span class="lg"><span class="sw" style="background:#16302E"></span>基礎統計</span>
+    <span class="lg"><span class="sw" style="background:#D6336C"></span>回帰</span>
+    <span class="lg"><span class="sw" style="background:#C8901F"></span>可視化</span>
+    <span class="lg"><span class="sw" style="background:#3E6D8E"></span>検定</span>
+    <span class="lg"><span class="sw" style="background:#6B4F9E"></span>次元削減</span>
+    <span class="lg"><span class="sw" style="background:#50615C"></span>前処理</span>
+    <span style="width:1px;height:16px;background:var(--line-strong)"></span>
+    <span class="ed"><span style="border-top-color:#3E6D8E"></span>比較対象</span>
+    <span class="ed"><span style="border-top-color:#2F7A5B"></span>併用</span>
+    <span class="ed"><span style="border-top-color:#D6336C"></span>発展</span>
+    <span class="ed"><span style="border-top-color:#C8901F;border-top-style:dashed"></span>前処理</span>
+  </div>
+
+  <div class="atlas-stage">
+    <svg viewBox="0 0 1100 580" role="img" aria-label="分析手法の関係マップ。相関係数を中心に、関連する手法がつながっている。">
+      <!-- edges -->
+      <g fill="none" stroke-width="1.6">
+        <line x1="380" y1="300" x2="250" y2="180" stroke="#3E6D8E"/>
+        <line x1="380" y1="300" x2="600" y2="250" stroke="#D6336C"/>
+        <line x1="380" y1="300" x2="320" y2="450" stroke="#2F7A5B"/>
+        <line x1="380" y1="300" x2="520" y2="180" stroke="#C8901F" stroke-dasharray="5 4"/>
+        <line x1="200" y1="360" x2="150" y2="480" stroke="#3E6D8E"/>
+        <line x1="200" y1="360" x2="540" y2="400" stroke="#2F7A5B"/>
+        <line x1="540" y1="400" x2="650" y2="470" stroke="#2F7A5B"/>
+        <line x1="470" y1="520" x2="650" y2="470" stroke="#2F7A5B"/>
+        <line x1="320" y1="450" x2="470" y2="520" stroke="#2F7A5B"/>
+        <line x1="600" y1="250" x2="760" y2="330" stroke="#3E6D8E"/>
+        <line x1="600" y1="250" x2="520" y2="180" stroke="#C8901F" stroke-dasharray="5 4"/>
+        <line x1="860" y1="180" x2="950" y2="290" stroke="#3E6D8E"/>
+        <line x1="760" y1="460" x2="540" y2="400" stroke="#C8901F" stroke-dasharray="5 4"/>
+      </g>
+      <!-- nodes -->
+      <g text-anchor="middle" font-family="Noto Sans JP" font-weight="700" font-size="13"
+         paint-order="stroke" stroke="#F7F9F5" stroke-width="3.5" stroke-linejoin="round">
+        <g><circle cx="250" cy="180" r="9" fill="#16302E" stroke="none"/><text x="250" y="166" fill="#16302E">共分散</text></g>
+        <g><circle cx="600" cy="250" r="11" fill="#D6336C" stroke="none"/><text x="600" y="234" fill="#16302E">回帰分析</text></g>
+        <g><circle cx="760" cy="330" r="9" fill="#D6336C" stroke="none"/><text x="760" y="316" fill="#16302E">ロジスティック回帰</text></g>
+        <g><circle cx="520" cy="180" r="9" fill="#50615C" stroke="none"/><text x="520" y="166" fill="#16302E">外れ値処理</text></g>
+        <g><circle cx="320" cy="450" r="10" fill="#C8901F" stroke="none"/><text x="320" y="474" fill="#16302E">散布図</text></g>
+        <g><circle cx="470" cy="520" r="9" fill="#C8901F" stroke="none"/><text x="470" y="544" fill="#16302E">ヒストグラム</text></g>
+        <g><circle cx="650" cy="470" r="9" fill="#C8901F" stroke="none"/><text x="650" y="494" fill="#16302E">箱ひげ図</text></g>
+        <g><circle cx="540" cy="400" r="10" fill="#16302E" stroke="none"/><text x="540" y="384" fill="#16302E">標準偏差</text></g>
+        <g><circle cx="200" cy="360" r="10" fill="#16302E" stroke="none"/><text x="200" y="344" fill="#16302E">平均</text></g>
+        <g><circle cx="150" cy="480" r="9" fill="#16302E" stroke="none"/><text x="150" y="504" fill="#16302E">中央値</text></g>
+        <g><circle cx="860" cy="180" r="9" fill="#3E6D8E" stroke="none"/><text x="860" y="166" fill="#16302E">カイ二乗検定</text></g>
+        <g><circle cx="950" cy="290" r="9" fill="#3E6D8E" stroke="none"/><text x="950" y="276" fill="#16302E">t検定</text></g>
+        <g><circle cx="760" cy="460" r="9" fill="#6B4F9E" stroke="none"/><text x="760" y="484" fill="#16302E">PCA</text></g>
+        <!-- 現在地 -->
+        <g>
+          <circle cx="380" cy="300" r="15" fill="#16302E" stroke="#D6336C" stroke-width="4"/>
+          <text x="380" y="280" fill="#16302E" font-size="15" font-weight="900">相関係数</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="note">手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。関係マップは手法どうしのつながりを俯瞰する入口です。</div>
+    <div class="cols">
+      <div><h5>探す</h5><a href="index.html">目的から</a><a href="hub.html">領域から</a><a href="compare.html">手法を比較</a></div>
+      <div><h5>知っておく</h5><a href="#">共通の注意点</a><a href="#">このサイトについて</a></div>
+    </div>
+  </div>
+  <div class="disclaimer">モックアップ（UI/UX検討用）。関係マップはv1で Cytoscape.js による可視化を予定。</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

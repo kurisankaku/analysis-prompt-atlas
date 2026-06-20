@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>関係性を知りたい｜分析手法アトラス</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg></span>
+      <span><span class="name">分析手法アトラス</span><br/><span class="latin">Analysis Atlas</span></span>
+    </a>
+    <nav class="nav" aria-label="主要ナビゲーション">
+      <a href="index.html" class="active">目的から</a>
+      <a href="index.html#data">データ種類</a>
+      <a href="index.html#cat">分類</a>
+      <a href="index.html#diff">難易度</a>
+      <a href="atlas.html">関係マップ</a>
+      <button class="search-btn" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>検索</button>
+    </nav>
+    <button class="menu-toggle" data-menu aria-label="メニュー"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="現在地">
+    <a href="index.html">ホーム</a><span class="sep">/</span>
+    <span class="here">● R03 関係性を知りたい</span>
+  </nav>
+
+  <div class="hub-head">
+    <span class="rcode">REGION R03</span>
+    <h1>関係性を知りたい</h1>
+    <p>変数どうしの「結びつき」を調べる目的の領域。どの項目とどの項目が一緒に動くか、影響し合っているかを探るときの手法が集まっています。</p>
+    <div class="hub-tools">
+      <a class="btn btn-primary" href="compare.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        この領域の手法を比較
+      </a>
+      <a class="btn btn-ghost" href="atlas.html">関係マップで見る</a>
+      <div class="filterline">
+        <span>絞り込み</span>
+        <button class="pill on" data-toggle>基礎</button>
+        <button class="pill" data-toggle>初級</button>
+        <button class="pill" data-toggle>中級</button>
+        <button class="pill" data-toggle>数値データ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-grid">
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>相関係数</h3><span class="reading">B-07 ・ Correlation</span></div><span class="diff diff-初級">初級</span></div>
+      <p class="one">2つの数値が一緒に増減するかを −1〜+1 の1つの数字で表す。関係の強さと向きがひと目で分かる。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">解釈しやすい</span><span class="chip">可視化向き</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>散布図</h3><span class="reading">V-03 ・ Scatter plot</span></div><span class="diff diff-基礎">基礎</span></div>
+      <p class="one">2項目を点で打って関係の「形」を見る。直線か、曲線か、外れ値があるかが目で分かる。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">可視化向き</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>回帰分析</h3><span class="reading">G-01 ・ Regression</span></div><span class="diff diff-中級">中級</span></div>
+      <p class="one">関係を「式」にして、ある項目が結果にどれだけ効くかを数値化し、予測にも使う。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">予測</span><span class="chip">説明可能性</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>クロス集計</h3><span class="reading">B-12 ・ Cross tabulation</span></div><span class="diff diff-基礎">基礎</span></div>
+      <p class="one">カテゴリ×カテゴリの件数を表にして、組合せの偏りや関係を見る。アンケート分析の定番。</p>
+      <div class="meta"><span class="chip">カテゴリデータ</span><span class="chip">解釈しやすい</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>カイ二乗検定</h3><span class="reading">T-02 ・ Chi-squared</span></div><span class="diff diff-中級">中級</span></div>
+      <p class="one">カテゴリどうしの関係が「偶然の範囲か」を統計的に判定する。クロス集計とセット。</p>
+      <div class="meta"><span class="chip">カテゴリデータ</span><span class="chip">検定</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>偏相関</h3><span class="reading">S-05 ・ Partial correlation</span></div><span class="diff diff-上級">上級</span></div>
+      <p class="one">第3の要因の影響を取り除いた「正味の関係」を見る。見かけの相関に騙されないために。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">因果推論</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>共分散</h3><span class="reading">B-06 ・ Covariance</span></div><span class="diff diff-初級">初級</span></div>
+      <p class="one">2つの数値の連動度を表す“生”の値。単位に依存するため、標準化したものが相関係数。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">前処理向き</span></div>
+    </a>
+    <a class="entry" href="method.html">
+      <div class="erow"><div><h3>相互情報量</h3><span class="reading">I-04 ・ Mutual information</span></div><span class="diff diff-上級">上級</span></div>
+      <p class="one">直線に限らず「片方を知るともう片方がどれだけ分かるか」で関係を測る。非線形もとらえる。</p>
+      <div class="meta"><span class="chip">数値データ</span><span class="chip">カテゴリデータ</span></div>
+    </a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="note">手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。</div>
+    <div class="cols">
+      <div><h5>探す</h5><a href="index.html">目的から</a><a href="atlas.html">関係マップ</a><a href="compare.html">手法を比較</a></div>
+      <div><h5>知っておく</h5><a href="#">共通の注意点</a><a href="#">このサイトについて</a></div>
+    </div>
+  </div>
+  <div class="disclaimer">モックアップ（UI/UX検討用）。掲載の手法数・内容はサンプルです。</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

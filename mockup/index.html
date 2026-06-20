@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>分析手法アトラス｜「何を知りたい?」から分析手法を見つける</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg>
+      </span>
+      <span>
+        <span class="name">分析手法アトラス</span><br/>
+        <span class="latin">Analysis Atlas</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="主要ナビゲーション">
+      <a href="index.html" class="active">目的から</a>
+      <a href="index.html#data">データ種類</a>
+      <a href="index.html#cat">分類</a>
+      <a href="index.html#diff">難易度</a>
+      <a href="atlas.html">関係マップ</a>
+      <button class="search-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        検索
+      </button>
+    </nav>
+    <button class="menu-toggle" data-menu aria-label="メニュー">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+</header>
+
+<section class="contour">
+<div class="wrap hero">
+  <div class="kicker">
+    <span class="rule"></span>
+    <span class="eyebrow">データ分析 手法アトラス ・ 100+ methods</span>
+  </div>
+  <h1><span class="q">「何を知りたい?」</span>から、<br/>使える分析手法を見つける。</h1>
+  <p class="lede">数学や統計の知識がなくても大丈夫。各手法が <b>“何が分かり・どんなデータが要り・いつ使うか”</b> まで、ひと目で。理解できれば、あなたの言葉でAIに分析を頼めるようになります。</p>
+
+  <div class="entrybar">
+    <div class="tabs" role="tablist" aria-label="入口の切り替え">
+      <button class="on" type="button">目的から</button>
+      <button type="button">データ種類から</button>
+      <button type="button">分類から</button>
+      <button type="button">難易度から</button>
+    </div>
+    <label class="find">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input type="search" data-find placeholder="手法名・キーワードで探す（例：相関）" aria-label="手法を検索" />
+    </label>
+  </div>
+</div>
+</section>
+
+<div class="wrap regions">
+  <div class="section-head">
+    <h2>目的の領域から探す</h2>
+    <span class="count">15 REGIONS</span>
+    <a class="more" href="hub.html">関係性を知りたい →</a>
+  </div>
+  <div class="region-grid">
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R03</span><span class="n">8手法</span></div><h3>関係性を知りたい</h3><p>変数どうしの結びつきを調べる。相関・回帰・クロス集計ほか。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R01</span><span class="n">11手法</span></div><h3>傾向を知りたい</h3><p>全体の特徴や中心の水準をつかむ。平均・中央値・トレンド。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R02</span><span class="n">9手法</span></div><h3>ばらつきを知りたい</h3><p>散らばり・偏りを見る。標準偏差・四分位範囲・箱ひげ図。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R04</span><span class="n">10手法</span></div><h3>影響要因を知りたい</h3><p>結果に効いている要因を探す。重回帰・決定木・特徴量重要度。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R05</span><span class="n">10手法</span></div><h3>予測したい</h3><p>未来や未知の値を見積もる。回帰・時系列予測・勾配ブースティング。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R06</span><span class="n">14手法</span></div><h3>分類したい</h3><p>既知のカテゴリに振り分ける。ロジスティック回帰・SVM・決定木。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R07</span><span class="n">9手法</span></div><h3>グループ分けしたい</h3><p>ラベルなしで自然なまとまりに。k-means・階層クラスタリング。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R08</span><span class="n">10手法</span></div><h3>似ているものを探したい</h3><p>類似度・距離で近いものを。コサイン類似度・ベクトル検索。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R09</span><span class="n">10手法</span></div><h3>異常を見つけたい</h3><p>通常と違うデータを検出。z-score・Isolation Forest・管理図。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R10</span><span class="n">10手法</span></div><h3>変化を見つけたい</h3><p>時間や順序に沿った変化を。差分・移動平均・変化点検出。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R11</span><span class="n">10手法</span></div><h3>ランキングしたい</h3><p>順位づけ・スコアリング。加重平均・偏差値・PageRank・TOPSIS。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R12</span><span class="n">9手法</span></div><h3>最適化したい</h3><p>最も良い組合せ・条件を探す。線形計画法・勾配降下法・ベイズ最適化。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R13</span><span class="n">10手法</span></div><h3>要約したい</h3><p>少数の指標で代表させる。代表値・主成分分析・トピックモデル。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R14</span><span class="n">9手法</span></div><h3>次元を減らしたい</h3><p>多くの変数を少数の軸へ。PCA・t-SNE・UMAP・特徴選択。</p><span class="go">→</span></a>
+    <a class="region" href="hub.html"><div class="top"><span class="rcode">R15</span><span class="n">8手法</span></div><h3>構造を見つけたい</h3><p>つながりや構造を可視化。ネットワーク分析・コミュニティ検出。</p><span class="go">→</span></a>
+  </div>
+</div>
+
+<div class="wrap" id="data">
+  <div class="section-head">
+    <h2>別の入口から探す</h2>
+    <span class="count">DATA / CATEGORY / LEVEL</span>
+  </div>
+  <div class="subentries">
+    <a class="subcard" href="hub.html">
+      <span class="ttl"><span class="dot" style="background:var(--water)"></span>データ種類から</span>
+      <p>手元のデータの形から、適した手法へ。</p>
+      <div class="chips"><span class="chip">時系列</span><span class="chip">テキスト</span><span class="chip">売上・購買</span><span class="chip">アンケート</span><span class="chip">ログ</span><span class="chip">+6</span></div>
+    </a>
+    <a class="subcard" href="hub.html" id="cat">
+      <span class="ttl"><span class="dot" style="background:var(--gold)"></span>数学・統計の分類から</span>
+      <p>手法を体系から俯瞰する。</p>
+      <div class="chips"><span class="chip">基礎統計</span><span class="chip">回帰</span><span class="chip">検定</span><span class="chip">クラスタリング</span><span class="chip">時系列解析</span><span class="chip">+10</span></div>
+    </a>
+    <a class="subcard" href="hub.html" id="diff">
+      <span class="ttl"><span class="dot" style="background:var(--signal)"></span>難易度から</span>
+      <p>まず読むべき手法を絞り込む。</p>
+      <div class="chips"><span class="chip">基礎</span><span class="chip">初級</span><span class="chip">中級</span><span class="chip">上級</span><span class="chip">高度</span></div>
+    </a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="note">
+      <a class="brand" href="index.html" style="margin-bottom:12px">
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg></span>
+        <span><span class="name">分析手法アトラス</span></span>
+      </a>
+      手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。学習教材ではなく、分析の選択肢を広げるためのカタログです。
+    </div>
+    <div class="cols">
+      <div><h5>探す</h5><a href="index.html">目的から</a><a href="hub.html">データ種類から</a><a href="hub.html">分類から</a><a href="atlas.html">関係マップ</a></div>
+      <div><h5>見比べる</h5><a href="compare.html">手法を比較</a><a href="method.html">手法ページ例</a></div>
+      <div><h5>知っておく</h5><a href="#">共通の注意点</a><a href="#">このサイトについて</a></div>
+    </div>
+  </div>
+  <div class="disclaimer">モックアップ（UI/UX検討用）。掲載の手法数・内容はサンプルです。</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

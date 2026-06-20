@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>相関係数｜分析手法アトラス</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg></span>
+      <span><span class="name">分析手法アトラス</span><br/><span class="latin">Analysis Atlas</span></span>
+    </a>
+    <nav class="nav" aria-label="主要ナビゲーション">
+      <a href="index.html">目的から</a>
+      <a href="index.html#data">データ種類</a>
+      <a href="index.html#cat">分類</a>
+      <a href="index.html#diff">難易度</a>
+      <a href="atlas.html">関係マップ</a>
+      <button class="search-btn" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>検索</button>
+    </nav>
+    <button class="menu-toggle" data-menu aria-label="メニュー"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="現在地">
+    <a href="index.html">ホーム</a><span class="sep">/</span>
+    <a href="hub.html">R03 関係性を知りたい</a><span class="sep">/</span>
+    <span class="here">● 相関係数</span>
+  </nav>
+</div>
+
+<div class="wrap">
+<div class="method">
+  <!-- 本文 -->
+  <main class="method-main">
+    <div class="m-header">
+      <div class="codeline">
+        <span class="code">基礎統計 · B-07</span>
+        <span class="diff diff-初級">初級</span>
+      </div>
+      <h1>相関係数</h1>
+      <div class="names">そうかんけいすう ・ Correlation Coefficient (Pearson's r)</div>
+      <div class="coords">
+        <span class="c"><span class="k">Purpose</span><span class="v">関係性を知りたい / 影響要因</span></span>
+        <span class="c"><span class="k">Data</span><span class="v">数値データ</span></span>
+        <span class="c"><span class="k">Category</span><span class="v">基礎統計</span></span>
+      </div>
+      <div class="tagrow">
+        <span class="chip">基礎統計</span><span class="chip">解釈しやすい</span><span class="chip">可視化向き</span><span class="chip">前処理向き</span>
+      </div>
+    </div>
+
+    <section class="sect">
+      <h2>これは何？</h2>
+      <p class="lead">2つの数値が「一緒に増減するか」を −1〜+1 の1つの数字で表す指標。</p>
+      <div class="analogy"><b>たとえ：</b>気温が上がるとアイスが売れる——のように「片方が増えると、もう片方も増える/減る」関係の強さを、+1（きれいに連動）〜 0（無関係）〜 −1（逆に連動）の目盛りで言い表したもの。</div>
+    </section>
+
+    <section class="sect">
+      <h2>何が分かる？</h2>
+      <p>2つの項目の連動の「向き（正・負）」と「強さ」が、ひと目で分かる。例えば「広告費」と「売上」の相関が +0.8 なら、広告費が増えるほど売上も増える傾向が強い、と言える。たくさんの項目の組み合わせを総当たりで見れば、どこに強い関係が潜んでいるかの当たりをつけられる。</p>
+    </section>
+
+    <section class="sect">
+      <h2>どんなデータを用意する？</h2>
+      <p>同じ対象について測った <b>2列以上の数値</b>。1行が1件（1日・1人・1店舗など）に対応していること。</p>
+      <table class="dtable">
+        <caption>例：日別の広告費と売上（万円）</caption>
+        <thead><tr><th>日付</th><th>広告費</th><th>売上</th></tr></thead>
+        <tbody>
+          <tr><td>6/1</td><td>10</td><td>120</td></tr>
+          <tr><td>6/2</td><td>14</td><td>138</td></tr>
+          <tr><td>6/3</td><td>9</td><td>115</td></tr>
+          <tr><td>6/4</td><td>20</td><td>171</td></tr>
+          <tr><td>6/5</td><td>17</td><td>160</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="sect">
+      <h2>サンプルで見る</h2>
+      <div class="figure">
+        <div class="cap">広告費×売上の散布図（相関係数 r ≈ 0.85：強い正の相関）</div>
+        <svg viewBox="0 0 300 220" role="img" aria-label="広告費と売上の散布図。右肩上がりに点が並ぶ。">
+          <line x1="40" y1="190" x2="285" y2="190" stroke="#A9B6AC" stroke-width="1"/>
+          <line x1="40" y1="20" x2="40" y2="190" stroke="#A9B6AC" stroke-width="1"/>
+          <text x="285" y="206" text-anchor="end" font-family="Space Mono" font-size="9" fill="#7C8A85">広告費 →</text>
+          <text x="34" y="24" text-anchor="end" font-family="Space Mono" font-size="9" fill="#7C8A85" transform="rotate(-90 34 24)" >売上 →</text>
+          <line x1="44" y1="178" x2="262" y2="64" stroke="#C8901F" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.8"/>
+          <g fill="#D6336C" opacity="0.85">
+            <circle cx="48" cy="170" r="3.4"/><circle cx="60" cy="162" r="3.4"/><circle cx="72" cy="168" r="3.4"/><circle cx="80" cy="150" r="3.4"/><circle cx="92" cy="158" r="3.4"/><circle cx="104" cy="142" r="3.4"/><circle cx="116" cy="148" r="3.4"/><circle cx="120" cy="134" r="3.4"/><circle cx="132" cy="140" r="3.4"/><circle cx="144" cy="126" r="3.4"/><circle cx="150" cy="132" r="3.4"/><circle cx="162" cy="118" r="3.4"/><circle cx="170" cy="124" r="3.4"/><circle cx="182" cy="110" r="3.4"/><circle cx="190" cy="116" r="3.4"/><circle cx="198" cy="100" r="3.4"/><circle cx="208" cy="104" r="3.4"/><circle cx="216" cy="92" r="3.4"/><circle cx="224" cy="98" r="3.4"/><circle cx="232" cy="84" r="3.4"/><circle cx="244" cy="90" r="3.4"/><circle cx="252" cy="78" r="3.4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="figure">
+        <div class="cap">同じ「r」でも見え方は大違い。点の散らばりが強さを表す。</div>
+        <div class="figpair">
+          <div class="mini">
+            <svg viewBox="0 0 170 140" role="img" aria-label="強い相関の散布図">
+              <line x1="22" y1="118" x2="160" y2="118" stroke="#A9B6AC"/><line x1="22" y1="14" x2="22" y2="118" stroke="#A9B6AC"/>
+              <g fill="#D6336C" opacity="0.85"><circle cx="30" cy="108" r="3"/><circle cx="44" cy="100" r="3"/><circle cx="56" cy="96" r="3"/><circle cx="70" cy="86" r="3"/><circle cx="84" cy="80" r="3"/><circle cx="96" cy="70" r="3"/><circle cx="110" cy="62" r="3"/><circle cx="124" cy="52" r="3"/><circle cx="138" cy="42" r="3"/><circle cx="150" cy="34" r="3"/></g>
+            </svg>
+            <div class="lbl hi">r ≈ 0.9　強い</div>
+          </div>
+          <div class="mini">
+            <svg viewBox="0 0 170 140" role="img" aria-label="ほぼ無相関の散布図">
+              <line x1="22" y1="118" x2="160" y2="118" stroke="#A9B6AC"/><line x1="22" y1="14" x2="22" y2="118" stroke="#A9B6AC"/>
+              <g fill="#3E6D8E" opacity="0.8"><circle cx="36" cy="60" r="3"/><circle cx="50" cy="92" r="3"/><circle cx="58" cy="40" r="3"/><circle cx="72" cy="78" r="3"/><circle cx="86" cy="54" r="3"/><circle cx="98" cy="100" r="3"/><circle cx="110" cy="46" r="3"/><circle cx="120" cy="84" r="3"/><circle cx="134" cy="62" r="3"/><circle cx="146" cy="96" r="3"/></g>
+            </svg>
+            <div class="lbl lo">r ≈ 0.1　ほぼ無関係</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>どんな時に使う／使わない方がいい時</h2>
+      <div class="twocol">
+        <div class="box use">
+          <h4>✓ 使うべき場面</h4>
+          <ul>
+            <li>2つの数値の連動を手早く確認したいとき</li>
+            <li>多数の項目から関係の強い組合せの当たりをつけたいとき</li>
+            <li>回帰分析などの前段の探索として</li>
+          </ul>
+        </div>
+        <div class="box avoid">
+          <h4>✕ 使わない方がいい場面</h4>
+          <ul>
+            <li>曲線的な関係（U字など）を見たいとき</li>
+            <li>カテゴリ（性別・地域など）どうしの関係</li>
+            <li>外れ値が数件混じっているとき</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>結果の読み方</h2>
+      <p>目安：|r| が <b>0.7以上=強い</b>／<b>0.4〜0.7=中程度</b>／<b>0.2未満=ほぼ無関係</b>。符号がプラスなら同じ方向、マイナスなら逆方向に動く。ただし「r=0.8だから広告が売上の原因」とは言えない（相関 ≠ 因果）。あくまで“一緒に動いている”という事実だけを表す。</p>
+    </section>
+
+    <section class="sect">
+      <h2>使う前 → 後</h2>
+      <div class="twocol">
+        <div class="box before"><h4>使う前</h4><p>広告費も売上も数字の列があるだけで、関係があるのか分からない。</p></div>
+        <div class="box after"><h4>使った後</h4><p>「広告費と売上は強く連動（r≈0.85）」と一言で言え、次に回帰で“どれだけ効くか”を調べる方針が立つ。</p></div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>注意点</h2>
+      <div class="cautions">
+        <div class="caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span><b>相関は因果ではない。</b>第3の要因（季節など）が両方を動かしているだけのこともある。</span></div>
+        <div class="caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span><b>直線の関係しか測れない。</b>曲線的な関係は r が低く出て見落とす。散布図を必ず併用。</span></div>
+        <div class="caution"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span><b>外れ値に弱い。</b>極端な数件で r が大きく変わることがある。</span></div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h2>AIへの頼み方の一文例</h2>
+      <div class="aibox">
+        <div class="lbl">Prompt example</div>
+        <p>「このデータで広告費と売上の相関係数を出し、関係の強さと向きを説明してください。散布図も描き、外れ値や曲線的な関係がないかも確認してください。相関だけでは因果は言えない点にも触れてください。」</p>
+      </div>
+    </section>
+
+    <details class="formula">
+      <summary>参考：数式（補助）</summary>
+      <div class="f">r = Σ(xᵢ − x̄)(yᵢ − ȳ) / √( Σ(xᵢ − x̄)² · Σ(yᵢ − ȳ)² )</div>
+    </details>
+  </main>
+
+  <!-- サイド -->
+  <aside class="aside">
+    <div class="panel">
+      <div class="ph"><h4>関連手法（次に見る）</h4><span class="ph-code">5 links</span></div>
+      <a class="rel" href="method.html"><span class="rt rt-比較対象">比較対象</span><div class="rn">共分散</div><p class="rd">単位に依存する“生”の連動度。標準化したものが相関係数。</p></a>
+      <a class="rel" href="method.html"><span class="rt rt-発展">発展</span><div class="rn">回帰分析</div><p class="rd">関係を「式」にして、どれだけ効くか・予測まで踏み込む。</p></a>
+      <a class="rel" href="method.html"><span class="rt rt-併用">併用</span><div class="rn">散布図</div><p class="rd">数値だけでなく形で確認。相関係数とセットで使う。</p></a>
+      <a class="rel" href="method.html"><span class="rt rt-比較対象">比較対象</span><div class="rn">偏相関</div><p class="rd">第3の要因の影響を取り除いた“正味”の関係を見る。</p></a>
+      <a class="rel" href="method.html"><span class="rt rt-前処理">前処理</span><div class="rn">外れ値処理</div><p class="rd">外れ値に弱いので、事前の確認・処理が効く。</p></a>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h4>この手法の周辺</h4><span class="ph-code">atlas</span></div>
+      <div class="miniatlas">
+        <svg viewBox="0 0 264 180" role="img" aria-label="相関係数を中心とした関係マップの抜粋">
+          <line x1="132" y1="92" x2="60" y2="44" stroke="#A9B6AC" stroke-width="1.2"/>
+          <line x1="132" y1="92" x2="210" y2="40" stroke="#A9B6AC" stroke-width="1.2"/>
+          <line x1="132" y1="92" x2="44" y2="130" stroke="#A9B6AC" stroke-width="1.2"/>
+          <line x1="132" y1="92" x2="206" y2="138" stroke="#A9B6AC" stroke-width="1.2"/>
+          <line x1="132" y1="92" x2="132" y2="158" stroke="#A9B6AC" stroke-width="1.2"/>
+          <g font-family="Noto Sans JP" font-size="10" font-weight="700" fill="#16302E" text-anchor="middle">
+            <g><circle cx="60" cy="44" r="7" fill="#3E6D8E"/><text x="60" y="32">共分散</text></g>
+            <g><circle cx="210" cy="40" r="7" fill="#D6336C"/><text x="210" y="28">回帰分析</text></g>
+            <g><circle cx="44" cy="130" r="7" fill="#C8901F"/><text x="44" y="150">散布図</text></g>
+            <g><circle cx="206" cy="138" r="7" fill="#3E6D8E"/><text x="206" y="158">偏相関</text></g>
+            <g><circle cx="132" cy="158" r="7" fill="#50615C"/><text x="132" y="176">外れ値処理</text></g>
+            <g><circle cx="132" cy="92" r="11" fill="#16302E" stroke="#D6336C" stroke-width="3"/><text x="132" y="78" fill="#16302E">相関係数</text></g>
+          </g>
+        </svg>
+        <div class="hint">中心が現在地。<a href="atlas.html" style="color:var(--water)">全体の関係マップを見る →</a></div>
+      </div>
+    </div>
+
+    <a class="btn btn-ghost" href="compare.html" style="justify-content:center">関係性の手法を比較する</a>
+  </aside>
+</div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="note">手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。</div>
+    <div class="cols">
+      <div><h5>探す</h5><a href="index.html">目的から</a><a href="atlas.html">関係マップ</a><a href="compare.html">手法を比較</a></div>
+      <div><h5>知っておく</h5><a href="#">共通の注意点</a><a href="#">このサイトについて</a></div>
+    </div>
+  </div>
+  <div class="disclaimer">モックアップ（UI/UX検討用）。内容はサンプルです。</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>手法を比較｜分析手法アトラス</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><path d="M9 15l2-6 4 0-2 6z" fill="currentColor" stroke="none"/></svg></span>
+      <span><span class="name">分析手法アトラス</span><br/><span class="latin">Analysis Atlas</span></span>
+    </a>
+    <nav class="nav" aria-label="主要ナビゲーション">
+      <a href="index.html">目的から</a>
+      <a href="index.html#data">データ種類</a>
+      <a href="index.html#cat">分類</a>
+      <a href="index.html#diff">難易度</a>
+      <a href="atlas.html">関係マップ</a>
+      <button class="search-btn" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>検索</button>
+    </nav>
+    <button class="menu-toggle" data-menu aria-label="メニュー"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="現在地">
+    <a href="index.html">ホーム</a><span class="sep">/</span>
+    <a href="hub.html">R03 関係性を知りたい</a><span class="sep">/</span>
+    <span class="here">● 比較</span>
+  </nav>
+
+  <div class="cmp-head">
+    <div class="eyebrow">Comparison sheet ・ 関係性を知りたい</div>
+    <h1>同じ目的の手法を見比べる</h1>
+  </div>
+</div>
+
+<div class="wrap cmp-wrap">
+  <table class="cmp">
+    <thead>
+      <tr>
+        <th class="rowkey">項目</th>
+        <th class="spotlight"><div class="mname">相関係数<span class="mc">B-07</span></div></th>
+        <th><div class="mname">散布図<span class="mc">V-03</span></div></th>
+        <th><div class="mname">回帰分析<span class="mc">G-01</span></div></th>
+        <th><div class="mname">偏相関<span class="mc">S-05</span></div></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="rowkey">一言でいうと</td>
+        <td class="spotlight">2つの数値の連動を −1〜+1 の数字で要約。</td>
+        <td>2項目を点で打ち、関係の「形」を目で見る。</td>
+        <td>関係を式にして、効き具合と予測を出す。</td>
+        <td>他の要因を除いた“正味”の関係を見る。</td>
+      </tr>
+      <tr>
+        <td class="rowkey">向くデータ</td>
+        <td class="spotlight">数値 × 数値（2列）</td>
+        <td>数値 × 数値（2列）</td>
+        <td>数値の目的変数＋複数の説明変数</td>
+        <td>数値の複数列（3列以上）</td>
+      </tr>
+      <tr>
+        <td class="rowkey">得られる結果</td>
+        <td class="spotlight">関係の強さと向き（1つの値）</td>
+        <td>関係の形・外れ値の有無（図）</td>
+        <td>各要因の係数・予測値・寄与</td>
+        <td>交絡を除いた関係の強さ</td>
+      </tr>
+      <tr>
+        <td class="rowkey">難易度</td>
+        <td class="spotlight"><span class="diff diff-初級">初級</span></td>
+        <td><span class="diff diff-基礎">基礎</span></td>
+        <td><span class="diff diff-中級">中級</span></td>
+        <td><span class="diff diff-上級">上級</span></td>
+      </tr>
+      <tr>
+        <td class="rowkey">解釈しやすさ</td>
+        <td class="spotlight"><span class="score"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></span></td>
+        <td><span class="score"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></span></td>
+        <td><span class="score"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></span></td>
+        <td><span class="score"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></span></td>
+      </tr>
+      <tr>
+        <td class="rowkey">主な注意点</td>
+        <td class="spotlight">相関≠因果。直線関係のみ。外れ値に弱い。</td>
+        <td>主観的になりがち。件数が多いと潰れる。</td>
+        <td>多重共線性・外れ値・過学習に注意。</td>
+        <td>除く要因の選び方で結果が変わる。</td>
+      </tr>
+      <tr>
+        <td class="rowkey">関係</td>
+        <td class="spotlight"><span class="chip">基準</span></td>
+        <td><span class="chip">併用</span></td>
+        <td><span class="chip">発展</span></td>
+        <td><span class="chip">比較対象</span></td>
+      </tr>
+      <tr>
+        <td class="rowkey"></td>
+        <td class="spotlight"><a class="btn btn-ghost" href="method.html" style="font-size:.8rem;padding:6px 14px">詳細を見る</a></td>
+        <td><a class="btn btn-ghost" href="method.html" style="font-size:.8rem;padding:6px 14px">詳細</a></td>
+        <td><a class="btn btn-ghost" href="method.html" style="font-size:.8rem;padding:6px 14px">詳細</a></td>
+        <td><a class="btn btn-ghost" href="method.html" style="font-size:.8rem;padding:6px 14px">詳細</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="note">手法を理解し、AIに自分の言葉で分析を頼めるようにするための地図帳。</div>
+    <div class="cols">
+      <div><h5>探す</h5><a href="index.html">目的から</a><a href="atlas.html">関係マップ</a><a href="hub.html">領域に戻る</a></div>
+      <div><h5>知っておく</h5><a href="#">共通の注意点</a><a href="#">このサイトについて</a></div>
+    </div>
+  </div>
+  <div class="disclaimer">モックアップ（UI/UX検討用）。内容はサンプルです。</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

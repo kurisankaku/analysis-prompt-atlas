@@ -154,11 +154,11 @@ const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順�
           dotColor="var(--color-gold)"
         />
       </div>
-      {/* TODO(Plan 3): 難易度フィルタ */}
+      {/* 難易度フィルタ（/search の検索・絞り込みへ）。 */}
       <div id="diff">
         <SubEntryCard
           title="難易度から"
-          href="#diff"
+          href="/search"
           description="まず読むべき手法を絞り込む。"
           chips={diffChips}
           dotColor="var(--color-signal)"

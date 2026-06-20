@@ -7,12 +7,12 @@ interface Props {
 
 const { active } = Astro.props;
 
-// mockup のナビ: 目的から→/、データ種類→/#data、分類→/#cat、難易度→/#diff、関係マップ→/atlas
+// mockup のナビ: 目的から→/、データ種類→/#data、分類→/#cat、難易度→/search、関係マップ→/atlas
 const navItems: { label: string; href: string }[] = [
   { label: '目的から', href: '/' },
   { label: 'データ種類', href: '/#data' },
   { label: '分類', href: '/#cat' },
-  { label: '難易度', href: '/#diff' },
+  { label: '難易度', href: '/search' },
   // TODO(Plan 6): /atlas（関係マップ）ページは未実装。
   { label: '関係マップ', href: '/atlas' },
 ];
@@ -72,10 +72,10 @@ const navBase =
           </a>
         ))
       }
-      <!-- TODO(Plan 3): 検索ボタンはまだ機能なし（静的） -->
-      <button
-        type="button"
-        class="inline-flex items-center gap-[7px] rounded-full border border-line-strong bg-card px-3.5 py-1.5 text-[0.82rem] text-ink-soft transition-colors hover:border-ink hover:text-ink"
+      <!-- 検索ページ（/search）への入口。 -->
+      <a
+        href="/search"
+        class="inline-flex items-center gap-[7px] rounded-full border border-line-strong bg-card px-3.5 py-1.5 text-[0.82rem] text-ink-soft no-underline transition-colors hover:border-ink hover:text-ink"
       >
         <svg
           width="14"
@@ -89,7 +89,7 @@ const navBase =
           <path d="M21 21l-4-4" />
         </svg>
         検索
-      </button>
+      </a>
     </nav>
   </div>
 </header>

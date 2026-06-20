@@ -1,0 +1,18 @@
+---
+// src/pages/search.astro
+// 検索・難易度フィルタのページ。唯一の React island（SearchApp）を client:load で配置。
+// 検索インデックスはビルド時に buildSearchIndex で生成し、props で島へ渡す。
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchApp from '../components/SearchApp';
+import { allMethods } from '../lib/methods';
+import { buildSearchIndex } from '../lib/search';
+
+const docs = buildSearchIndex(await allMethods());
+---
+<BaseLayout title="検索・絞り込み | 分析手法アトラス" active="難易度">
+  <h1 class="font-display text-2xl font-bold mt-4">手法を検索・絞り込み</h1>
+  <p class="mt-2 mb-6 text-ink-soft">
+    手法名・キーワードで探す、または難易度で絞り込みます。
+  </p>
+  <SearchApp client:load docs={docs} />
+</BaseLayout>

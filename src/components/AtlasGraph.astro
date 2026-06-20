@@ -1,0 +1,183 @@
+---
+// src/components/AtlasGraph.astro
+// 手法どうしの関連を静的SVGの円環グラフで描画する。
+// クライアントJS・グラフライブラリ不使用（サイト唯一の island は /search のみ）。
+// mockup/atlas.html の .atlas-stage（ノード=円＋ラベル、エッジ=関係種別で色分けした線）と
+// .legend（分類色＋関係種別の線色）を @theme トークン/CSS変数で再現する。
+import type { GraphNode, GraphEdge } from '../lib/graph';
+import { circleLayout, categoryColor } from '../lib/graph';
+
+interface Props {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+}
+
+const { nodes, edges } = Astro.props;
+
+// 描画領域。viewBox 指定でレスポンシブに伸縮する。
+const W = 1100;
+const H = 580;
+const CX = W / 2;
+const CY = H / 2;
+const R = 210;
+
+// 円環レイアウトで決定的に座標を得て、id→座標の Map を作る。
+const points = circleLayout(nodes.length, { cx: CX, cy: CY, r: R });
+const pos = new Map<string, { x: number; y: number }>(
+  nodes.map((n, i) => [n.id, points[i]]),
+);
+
+// 関係種別ごとの線色（mockup 準拠）。--color-good は @theme 未定義のため water にフォールバック。
+// 前処理は破線でさらに区別する。
+type EdgeStyle = { color: string; dashed: boolean };
+function edgeStyle(type: string): EdgeStyle {
+  switch (type) {
+    case '比較対象':
+      return { color: 'var(--color-water)', dashed: false };
+    case '併用':
+      return { color: 'var(--color-water)', dashed: false };
+    case '発展':
+      return { color: 'var(--color-signal)', dashed: false };
+    case '前処理':
+      return { color: 'var(--color-gold)', dashed: true };
+    default:
+      return { color: 'var(--color-line-strong)', dashed: false };
+  }
+}
+
+// 凡例の関係種別（mockup の順序）。
+const RELATION_LEGEND: { type: string; label: string }[] = [
+  { type: '比較対象', label: '比較対象' },
+  { type: '併用', label: '併用' },
+  { type: '発展', label: '発展' },
+  { type: '前処理', label: '前処理' },
+];
+
+// 凡例の分類色：実際に登場する分類だけを、初出順で列挙する。
+const seenCats = new Set<string>();
+const categoryLegend: { label: string; color: string }[] = [];
+for (const n of nodes) {
+  if (seenCats.has(n.category)) continue;
+  seenCats.add(n.category);
+  categoryLegend.push({ label: n.category, color: categoryColor(n.category) });
+}
+
+// 線で結ぶための始点・終点を解決したエッジ（両端の座標が取れるものだけ）。
+const drawEdges = edges
+  .map((e) => {
+    const from = pos.get(e.from);
+    const to = pos.get(e.to);
+    if (!from || !to) return null;
+    return { from, to, ...edgeStyle(e.type) };
+  })
+  .filter((e): e is { from: { x: number; y: number }; to: { x: number; y: number } } & EdgeStyle => e !== null);
+---
+<div class="overflow-hidden rounded border border-line bg-card">
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label="分析手法の関係マップ。手法どうしのつながりを円環状に配置している。"
+    class="block h-auto w-full"
+  >
+    {/* エッジを先に描く（ノードを上に重ねるため） */}
+    <g fill="none" stroke-width="1.6">
+      {
+        drawEdges.map((e) => (
+          <line
+            x1={e.from.x}
+            y1={e.from.y}
+            x2={e.to.x}
+            y2={e.to.y}
+            stroke={e.color}
+            stroke-dasharray={e.dashed ? '5 4' : undefined}
+          />
+        ))
+      }
+    </g>
+
+    {/* ノードを後に描く（エッジの上に重なる）。ラベルは paint-order で可読性確保 */}
+    <g
+      text-anchor="middle"
+      font-family="var(--font-body)"
+      font-weight="700"
+      font-size="13"
+      paint-order="stroke"
+      stroke="var(--color-paper)"
+      stroke-width="3.5"
+      stroke-linejoin="round"
+    >
+      {
+        nodes.map((n) => {
+          const p = pos.get(n.id)!;
+          return (
+            <a href={`/methods/${n.id}`}>
+              <circle cx={p.x} cy={p.y} r="10" fill={n.color} stroke="none" />
+              <text x={p.x} y={p.y - 16} fill="var(--color-ink)">
+                {n.name}
+              </text>
+            </a>
+          );
+        })
+      }
+    </g>
+
+    {/* ノード0件のときは空状態を示す（valid な svg は保つ） */}
+    {
+      nodes.length === 0 && (
+        <text
+          x={CX}
+          y={CY}
+          text-anchor="middle"
+          font-family="var(--font-body)"
+          font-size="15"
+          fill="var(--color-ink-faint)"
+        >
+          表示できる手法がまだありません
+        </text>
+      )
+    }
+  </svg>
+
+  {/* 凡例：分類色（登場分のみ）＋関係種別の線色 */}
+  <div
+    class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line px-4 py-3 text-xs text-ink-soft"
+  >
+    {
+      categoryLegend.map((c) => (
+        <span class="inline-flex items-center gap-1.5">
+          <span
+            class="inline-block size-3 rounded-full"
+            style={`background:${c.color}`}
+          />
+          {c.label}
+        </span>
+      ))
+    }
+    {
+      categoryLegend.length > 0 && (
+        <span class="h-4 w-px bg-line-strong" aria-hidden="true" />
+      )
+    }
+    {
+      RELATION_LEGEND.map((r) => {
+        const s = edgeStyle(r.type);
+        return (
+          <span class="inline-flex items-center gap-1.5">
+            <svg width="26" height="2" aria-hidden="true">
+              <line
+                x1="0"
+                y1="1"
+                x2="26"
+                y2="1"
+                stroke={s.color}
+                stroke-width="2"
+                stroke-dasharray={s.dashed ? '5 4' : undefined}
+              />
+            </svg>
+            {r.label}
+          </span>
+        );
+      })
+    }
+  </div>
+</div>

@@ -7,6 +7,7 @@ import RegionCard from '../src/components/RegionCard.astro';
 import HubView from '../src/components/HubView.astro';
 import ComparisonTable from '../src/components/ComparisonTable.astro';
 import MethodChart from '../src/components/MethodChart.astro';
+import AtlasGraph from '../src/components/AtlasGraph.astro';
 import { sampleMethod } from './fixtures/sample-method';
 
 describe('SiteHeader', () => {
@@ -181,5 +182,28 @@ describe('MethodChart', () => {
     expect(html).toContain('var(--color-signal)');
     // 生の hex カラー（#RGB/#RRGGBB）は含めない
     expect(html).not.toMatch(/#[0-9A-Fa-f]{3,6}\b/);
+  });
+});
+
+describe('AtlasGraph', () => {
+  it('ノードを円・エッジを線で描き、手法名を表示する', async () => {
+    const c = await AstroContainer.create();
+    const nodes = [
+      { id: 'mean', name: '平均', category: '基礎統計', color: 'var(--color-signal)' },
+      { id: 'median', name: '中央値', category: '基礎統計', color: 'var(--color-signal)' },
+    ];
+    const edges = [{ from: 'mean', to: 'median', type: '比較対象' }];
+    const html = await c.renderToString(AtlasGraph, { props: { nodes, edges } });
+    expect(html).toContain('<svg');
+    expect(html).toContain('<line'); // エッジ
+    expect(html).toContain('<circle'); // ノード
+    expect(html).toContain('平均');
+    expect(html).toContain('中央値');
+    expect(html).toContain('/methods/mean'); // ノードは詳細へリンク
+  });
+  it('ノード0件でも壊れない', async () => {
+    const c = await AstroContainer.create();
+    const html = await c.renderToString(AtlasGraph, { props: { nodes: [], edges: [] } });
+    expect(html).toContain('<svg');
   });
 });

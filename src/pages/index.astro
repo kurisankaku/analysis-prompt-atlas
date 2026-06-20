@@ -1,69 +1,169 @@
 ---
 // src/pages/index.astro
-import { getCollection } from 'astro:content';
+// トップページ（目的から探す）。mockup index.html のヒーロー・目的15領域グリッド・副入口を
+// @theme トークン駆動の Tailwind で再現する。RegionCard の count は methodsByPurpose で算出。
 import BaseLayout from '../layouts/BaseLayout.astro';
-import type { Method } from '../content/schema';
+import RegionCard from '../components/RegionCard.astro';
+import SubEntryCard from '../components/SubEntryCard.astro';
+import { PURPOSES, DATA_TYPES, MATH_CATS, methodsByPurpose } from '../lib/taxonomy';
+import { allMethods } from '../lib/methods';
 
-const methods = await getCollection('methods');
+const all = await allMethods();
+const allData = all.map((m) => m.data);
 
-// 難易度バッジの配色（mockup の .diff-* を踏襲）。
-const difficultyClass: Record<Method['difficulty'], string> = {
-  基礎: 'bg-[#E3F0E9] text-[#235D43]',
-  初級: 'bg-[#E6EEF4] text-[#2C5876]',
-  中級: 'bg-[#F4ECDA] text-[#8A6516]',
-  上級: 'bg-[#F4E2E9] text-[#8E2B53]',
-  高度: 'bg-[#ECE4F2] text-[#5B3A86]',
-};
+// 副入口チップ: DATA_TYPES / MATH_CATS の先頭ラベルを数枚＋残数表示で再現（mockup の +N と同じ趣旨）。
+const DATA_CHIP_SHOWN = 5;
+const dataChips = [
+  ...DATA_TYPES.slice(0, DATA_CHIP_SHOWN).map((d) => d.label),
+  ...(DATA_TYPES.length > DATA_CHIP_SHOWN ? [`+${DATA_TYPES.length - DATA_CHIP_SHOWN}`] : []),
+];
+const MATH_CHIP_SHOWN = 5;
+const mathChips = [
+  ...MATH_CATS.slice(0, MATH_CHIP_SHOWN).map((c) => c.label),
+  ...(MATH_CATS.length > MATH_CHIP_SHOWN ? [`+${MATH_CATS.length - MATH_CHIP_SHOWN}`] : []),
+];
+const diffChips = ['基礎', '初級', '中級', '上級', '高度'];
+
+// 副入口の最初の RegionCard（関係性を知りたい）を section-head の more リンクに使う（mockup 踏襲）。
+const firstPurpose = PURPOSES[2]; // 関係性を知りたい（R03）
 ---
-<BaseLayout title="分析手法アトラス" active="目的から">
-  <section class="pt-2 pb-6">
-    <h1 class="font-display text-4xl font-black leading-tight md:text-5xl">
-      AI時代の<span class="text-signal">データ分析手法</span>カタログ
-    </h1>
-    <p class="mt-5 max-w-[46ch] text-ink-soft">
-      数学・統計の知識ゼロでも、手法が「何が分かり・どんなデータが要り・いつ使うか」を理解できる地図帳です。
-    </p>
+<BaseLayout title="分析手法アトラス｜「何を知りたい?」から分析手法を見つける" active="目的から">
+  {/* ===================== ヒーロー（コンター背景） ===================== */}
+  <section
+    class="relative -mx-6 overflow-hidden px-6 before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-[url('/contour.svg')] before:bg-[length:1400px_auto] before:bg-[position:center_top] before:bg-no-repeat"
+  >
+    <div class="relative z-[1] pt-12 pb-9 md:pt-16">
+      {/* ---------- キッカー ---------- */}
+      <div class="mb-[22px] flex items-center gap-2.5">
+        <span class="h-px w-[46px] flex-none bg-line-strong" aria-hidden="true"></span>
+        <span class="font-latin text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-ink-faint">
+          データ分析 手法アトラス ・ 100+ methods
+        </span>
+      </div>
+
+      {/* ---------- 見出し ---------- */}
+      <h1 class="font-display text-[clamp(2.1rem,5.2vw,3.4rem)] font-black leading-[1.12] tracking-[0.01em]">
+        <span class="text-signal">「何を知りたい?」</span>から、<br />使える分析手法を見つける。
+      </h1>
+
+      {/* ---------- リード文 ---------- */}
+      <p class="mt-5 max-w-[46ch] text-[1.02rem] leading-[1.7] text-ink-soft">
+        数学や統計の知識がなくても大丈夫。各手法が
+        <b class="font-bold text-ink">“何が分かり・どんなデータが要り・いつ使うか”</b>
+        まで、ひと目で。理解できれば、あなたの言葉でAIに分析を頼めるようになります。
+      </p>
+
+      {/* ---------- 入口タブ＋検索（静的・Plan 3 で機能） ---------- */}
+      <div class="mt-[30px] flex flex-wrap items-center gap-2.5">
+        {/* TODO(Plan 3): タブ切替はまだ機能なし（静的マークアップ） */}
+        <div
+          class="flex gap-1 rounded-full border border-line bg-paper2 p-1"
+          role="tablist"
+          aria-label="入口の切り替え"
+        >
+          <button type="button" class="rounded-full bg-ink px-4 py-[7px] text-[0.86rem] font-semibold text-paper">
+            目的から
+          </button>
+          <button type="button" class="rounded-full px-4 py-[7px] text-[0.86rem] font-semibold text-ink-soft transition-colors hover:text-ink">
+            データ種類から
+          </button>
+          <button type="button" class="rounded-full px-4 py-[7px] text-[0.86rem] font-semibold text-ink-soft transition-colors hover:text-ink">
+            分類から
+          </button>
+          <button type="button" class="rounded-full px-4 py-[7px] text-[0.86rem] font-semibold text-ink-soft transition-colors hover:text-ink">
+            難易度から
+          </button>
+        </div>
+        {/* TODO(Plan 3): 検索インプットはまだ機能なし（静的マークアップ） */}
+        <label class="ml-auto flex min-w-[240px] items-center gap-2 rounded-full border border-line-strong bg-card px-4 py-2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            class="flex-none text-ink-faint"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4-4" />
+          </svg>
+          <input
+            type="search"
+            placeholder="手法名・キーワードで探す（例：相関）"
+            aria-label="手法を検索"
+            class="w-full border-0 bg-transparent text-[0.9rem] text-ink outline-none placeholder:text-ink-faint"
+          />
+        </label>
+      </div>
+    </div>
   </section>
 
-  <div class="mb-4 flex items-baseline gap-3.5">
-    <h2 class="font-display text-lg font-bold">手法一覧</h2>
-    <span class="font-mono text-xs text-ink-faint">{methods.length} methods</span>
-  </div>
+  {/* ===================== 目的15領域グリッド ===================== */}
+  <section class="pb-14">
+    <div class="mb-[18px] mt-2 flex items-baseline gap-3.5">
+      <h2 class="font-display text-[1.16rem] font-bold">目的の領域から探す</h2>
+      <span class="font-mono text-[0.76rem] text-ink-faint">{PURPOSES.length} REGIONS</span>
+      <a
+        href={`/purpose/${firstPurpose.slug}`}
+        class="ml-auto text-[0.84rem] font-semibold text-water no-underline"
+      >
+        {firstPurpose.label} →
+      </a>
+    </div>
 
-  <ul class="grid gap-3.5 pb-10 md:grid-cols-2">
-    {
-      methods.map((m) => (
-        <li>
-          <a
-            href={`/methods/${m.id}`}
-            class="flex h-full flex-col gap-2.5 rounded border border-line bg-card p-5 no-underline transition-colors hover:border-ink"
-          >
-            <div class="flex items-center justify-between gap-2.5">
-              <span class="font-display text-lg font-bold text-ink">
-                {m.data.name}
-              </span>
-              <span class="font-mono text-xs text-ink-faint">
-                {m.data.reading}
-              </span>
-            </div>
-            <p class="text-[0.9rem] leading-relaxed text-ink-soft">
-              {m.data.oneLiner}
-            </p>
-            <div class="mt-0.5 flex flex-wrap items-center gap-2">
-              <span
-                class={`rounded-full px-2.5 py-0.5 text-[0.72rem] font-bold ${difficultyClass[m.data.difficulty]}`}
-              >
-                {m.data.difficulty}
-              </span>
-              {m.data.tags.slice(0, 2).map((t) => (
-                <span class="rounded-full border border-line bg-paper2 px-2.5 py-0.5 text-[0.72rem] text-ink-soft">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+    <div class="grid grid-cols-2 gap-px overflow-hidden rounded border border-line bg-line md:grid-cols-3">
+      {
+        PURPOSES.map((p, i) => (
+          <RegionCard
+            entry={p}
+            code={`R${String(i + 1).padStart(2, '0')}`}
+            count={methodsByPurpose(allData, p.label).length}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ===================== 副入口（データ種類 / 分類 / 難易度） ===================== */}
+  <section id="data" class="pb-16">
+    <div class="mb-[18px] flex items-baseline gap-3.5">
+      <h2 class="font-display text-[1.16rem] font-bold">別の入口から探す</h2>
+      <span class="font-mono text-[0.76rem] text-ink-faint">DATA / CATEGORY / LEVEL</span>
+    </div>
+
+    <div class="grid gap-3.5 md:grid-cols-3">
+      {/* TODO(Task 5): データ種類ハブ（/data 等）は未実装。暫定で #data アンカーに留める。 */}
+      <div id="data-card">
+        <SubEntryCard
+          title="データ種類から"
+          href="#data"
+          description="手元のデータの形から、適した手法へ。"
+          chips={dataChips}
+          dotColor="var(--color-water)"
+        />
+      </div>
+      {/* TODO(Task 5): 分類ハブ（/category 等）は未実装。暫定で #cat アンカーに留める。 */}
+      <div id="cat">
+        <SubEntryCard
+          title="数学・統計の分類から"
+          href="#cat"
+          description="手法を体系から俯瞰する。"
+          chips={mathChips}
+          dotColor="var(--color-gold)"
+        />
+      </div>
+      {/* TODO(Task 5): 難易度ハブ（/difficulty 等）は未実装。暫定で #diff アンカーに留める。 */}
+      <div id="diff">
+        <SubEntryCard
+          title="難易度から"
+          href="#diff"
+          description="まず読むべき手法を絞り込む。"
+          chips={diffChips}
+          dotColor="var(--color-signal)"
+        />
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -27,7 +27,11 @@ const diffChips = ['基礎', '初級', '中級', '上級', '高度'];
 // 副入口の最初の RegionCard（関係性を知りたい）を section-head の more リンクに使う（mockup 踏襲）。
 const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順序非依存）
 ---
-<BaseLayout title="分析手法アトラス｜「何を知りたい?」から分析手法を見つける" active="目的から">
+<BaseLayout
+  title="分析手法アトラス｜「何を知りたい?」から分析手法を見つける"
+  description="「何を知りたい?」という目的から、使えるデータ分析手法を見つけるカタログ。各手法が何を明らかにし・どんなデータが要り・いつ使うかをひと目で。"
+  active="目的から"
+>
   {/* ===================== ヒーロー（コンター背景） ===================== */}
   <section
     class="relative -mx-6 overflow-hidden px-6 before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-[url('/contour.svg')] before:bg-[length:1400px_auto] before:bg-[position:center_top] before:bg-no-repeat"

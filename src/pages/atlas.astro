@@ -8,7 +8,11 @@ import { buildGraph } from '../lib/graph';
 
 const { nodes, edges } = buildGraph(await allMethods());
 ---
-<BaseLayout title="関係マップ | 分析手法アトラス" active="関係マップ">
+<BaseLayout
+  title="関係マップ | 分析手法アトラス"
+  description="分析手法どうしのつながりを地図にした関係マップ。色は分類、線は関係の種類を表します。"
+  active="関係マップ"
+>
   <h1 class="font-display text-2xl font-bold mt-4">手法の関係マップ</h1>
   <p class="text-ink-soft mt-2 mb-6">
     手法どうしのつながりを地図にしたもの。色は分類、線は関係の種類を表します。

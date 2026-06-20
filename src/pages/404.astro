@@ -1,0 +1,32 @@
+---
+// src/pages/404.astro
+// 静的 404 ページ。BaseLayout 内にメッセージとトップ/分類一覧への導線を置く。
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="ページが見つかりません | 分析手法アトラス"
+  description="お探しのページは見つかりませんでした。目的や関係マップから分析手法を探し直せます。"
+>
+  <section class="py-16 md:py-24">
+    <p class="font-mono text-sm uppercase tracking-[0.18em] text-ink-faint">404</p>
+    <h1 class="mt-3 font-display text-3xl font-bold md:text-4xl">ページが見つかりません</h1>
+    <p class="mt-4 max-w-[60ch] text-ink-soft">
+      お探しのページは移動または削除されたか、URL が間違っている可能性があります。下のリンクから探し直してください。
+    </p>
+
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper no-underline transition-colors hover:bg-ink-soft"
+      >
+        目的から探す
+      </a>
+      <a
+        href="/atlas"
+        class="inline-flex items-center gap-2 rounded-full border border-line-strong bg-card px-5 py-2.5 text-sm font-semibold text-ink-soft no-underline transition-colors hover:border-ink hover:text-ink"
+      >
+        関係マップを見る
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -6,21 +6,34 @@ import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
   title: string;
+  description?: string;
   active?: string;
 }
 
-const { title, active } = Astro.props;
+const { title, description, active } = Astro.props;
 ---
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
   </head>
   <body class="min-h-screen bg-paper font-body text-ink antialiased">
+    {/* キーボードでのスキップリンク。通常は sr-only で隠し、フォーカス時のみ可視化する。 */}
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:border focus:border-line-strong focus:bg-card focus:px-4 focus:py-2 focus:text-ink focus:no-underline focus:outline-none focus:ring-2 focus:ring-signal"
+    >
+      本文へ
+    </a>
+
     <SiteHeader active={active} />
 
-    <main class="mx-auto max-w-[1120px] px-6 py-6 md:py-8">
+    <main id="main" class="mx-auto max-w-[1120px] px-6 py-6 md:py-8">
       <slot />
     </main>
 

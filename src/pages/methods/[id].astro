@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
 const { method } = Astro.props;
 ---
-<BaseLayout title={`${method.name}｜分析手法アトラス`}>
+<BaseLayout title={`${method.name}｜分析手法アトラス`} description={method.oneLiner}>
   <nav
     class="mb-1 flex flex-wrap items-center gap-2 font-mono text-xs text-ink-faint"
     aria-label="現在地"

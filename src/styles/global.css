@@ -22,3 +22,17 @@
 }
 
 body { background-color: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); }
+
+/* Tailwind v4 にはビルトインの sr-only がないため、@utility で定義。
+   視覚的に隠し、フォーカス時に画面左上へ表示する（キーボード操作のスキップリンク用）。 */
+@utility sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

@@ -1,6 +1,7 @@
 // tests/components.test.ts
 import { describe, it, expect } from 'vitest';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
+import BaseLayout from '../src/layouts/BaseLayout.astro';
 import SiteHeader from '../src/components/SiteHeader.astro';
 import MethodCard from '../src/components/MethodCard.astro';
 import RegionCard from '../src/components/RegionCard.astro';
@@ -9,6 +10,41 @@ import ComparisonTable from '../src/components/ComparisonTable.astro';
 import MethodChart from '../src/components/MethodChart.astro';
 import AtlasGraph from '../src/components/AtlasGraph.astro';
 import { sampleMethod } from './fixtures/sample-method';
+
+describe('BaseLayout', () => {
+  it('description/OG メタを描画し、lang=ja とスキップリンク・main#id を持つ', async () => {
+    const c = await AstroContainer.create();
+    const html = await c.renderToString(BaseLayout, {
+      props: { title: 'T', description: 'D' },
+      slots: { default: '<p>本文</p>' },
+    });
+    // lang
+    expect(html).toContain('lang="ja"');
+    // description / OG メタ
+    expect(html).toContain('<meta name="description" content="D">');
+    expect(html).toContain('<meta property="og:title" content="T">');
+    expect(html).toContain('<meta property="og:description" content="D">');
+    expect(html).toContain('<meta property="og:type" content="website">');
+    // スキップリンク + main#main
+    expect(html).toContain('href="#main"');
+    expect(html).toContain('本文へ');
+    expect(html).toMatch(/<main[^>]*id="main"/);
+    // slot
+    expect(html).toContain('本文');
+  });
+
+  it('description 未指定なら description/og:description メタを出さない', async () => {
+    const c = await AstroContainer.create();
+    const html = await c.renderToString(BaseLayout, {
+      props: { title: 'T' },
+      slots: { default: '<p>本文</p>' },
+    });
+    expect(html).not.toContain('name="description"');
+    expect(html).not.toContain('property="og:description"');
+    // title 系は出る
+    expect(html).toContain('<meta property="og:title" content="T">');
+  });
+});
 
 describe('SiteHeader', () => {
   it('ブランドと主要ナビを描画する', async () => {

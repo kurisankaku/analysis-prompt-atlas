@@ -9,7 +9,11 @@ import { buildSearchIndex } from '../lib/search';
 
 const docs = buildSearchIndex(await allMethods());
 ---
-<BaseLayout title="検索・絞り込み | 分析手法アトラス" active="難易度">
+<BaseLayout
+  title="検索・絞り込み | 分析手法アトラス"
+  description="手法名やキーワードで分析手法を検索し、難易度で絞り込めます。"
+  active="難易度"
+>
   <h1 class="font-display text-2xl font-bold mt-4">手法を検索・絞り込み</h1>
   <p class="mt-2 mb-6 text-ink-soft">
     手法名・キーワードで探す、または難易度で絞り込みます。

@@ -1,0 +1,47 @@
+---
+// src/components/MethodCard.astro
+// 手法カード。mockup hub.html の .entry を @theme トークン駆動の Tailwind で再現。
+// id はコレクションのキー（Method 自体には id が無い）。/methods/<id> へリンクする。
+import type { Method } from '../content/schema';
+import { difficultyBadgeClass } from '../lib/badges';
+
+interface Props {
+  method: Method;
+  id: string;
+}
+
+const { method, id } = Astro.props;
+---
+<a
+  href={`/methods/${id}`}
+  class="flex flex-col gap-2.5 rounded border border-line bg-card p-5 text-inherit no-underline transition-[border-color,box-shadow] duration-150 hover:border-ink hover:shadow-[0_1px_2px_rgba(22,48,46,.06),0_8px_24px_rgba(22,48,46,.06)]"
+>
+  {/* ---------- 名前 + 読み/英名 ・ 難易度バッジ ---------- */}
+  <div class="flex items-center justify-between gap-2.5">
+    <div>
+      <h3 class="font-display text-[1.18rem] font-bold">{method.name}</h3>
+      <span class="font-mono text-xs text-ink-faint">
+        {method.reading} ・ {method.english}
+      </span>
+    </div>
+    <span
+      class={`whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold ${difficultyBadgeClass(method.difficulty)}`}
+    >
+      {method.difficulty}
+    </span>
+  </div>
+
+  {/* ---------- 一言 ---------- */}
+  <p class="text-[0.9rem] leading-[1.65] text-ink-soft">{method.oneLiner}</p>
+
+  {/* ---------- データタグ ---------- */}
+  <div class="mt-0.5 flex flex-wrap items-center gap-2">
+    {
+      method.dataCategories.map((d) => (
+        <span class="rounded-full border border-line bg-paper2 px-2.5 py-0.5 text-[0.74rem] text-ink-soft">
+          {d}
+        </span>
+      ))
+    }
+  </div>
+</a>

@@ -1,0 +1,41 @@
+---
+// src/components/SubEntryCard.astro
+// 副入口カード。mockup index.html の .subcard を @theme トークン駆動の Tailwind で再現。
+// dotColor は見出し横の丸の色（CSS カラー値。mockup の var(--water)/var(--gold)/var(--signal) に対応）。
+interface Props {
+  title: string;
+  href: string;
+  description: string;
+  chips: string[];
+  dotColor: string;
+}
+
+const { title, href, description, chips, dotColor } = Astro.props;
+---
+<a
+  href={href}
+  class="flex flex-col gap-1.5 rounded border border-line bg-card px-5 py-[18px] text-inherit no-underline transition-colors hover:border-line-strong"
+>
+  {/* ---------- タイトル（色付きドット） ---------- */}
+  <span class="flex items-center gap-[9px] font-display text-base font-bold">
+    <span
+      class="size-[9px] flex-none rounded-full"
+      style={`background:${dotColor}`}
+      aria-hidden="true"></span>
+    {title}
+  </span>
+
+  {/* ---------- 説明 ---------- */}
+  <p class="text-[0.82rem] text-ink-soft">{description}</p>
+
+  {/* ---------- チップ ---------- */}
+  <div class="mt-1 flex flex-wrap gap-1.5">
+    {
+      chips.map((chip) => (
+        <span class="rounded-full border border-line bg-paper2 px-2.5 py-[3px] text-[0.74rem] text-ink-soft">
+          {chip}
+        </span>
+      ))
+    }
+  </div>
+</a>

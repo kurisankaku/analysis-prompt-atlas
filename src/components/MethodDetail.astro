@@ -2,21 +2,13 @@
 // src/components/MethodDetail.astro
 import type { Method } from '../content/schema';
 import SampleTable from './SampleTable.astro';
+import { difficultyBadgeClass } from '../lib/badges';
 
 interface Props {
   method: Method;
 }
 
 const { method } = Astro.props;
-
-// 難易度バッジの配色（mockup の .diff-* を踏襲）。
-const difficultyClass: Record<Method['difficulty'], string> = {
-  基礎: 'bg-[#E3F0E9] text-[#235D43]',
-  初級: 'bg-[#E6EEF4] text-[#2C5876]',
-  中級: 'bg-[#F4ECDA] text-[#8A6516]',
-  上級: 'bg-[#F4E2E9] text-[#8E2B53]',
-  高度: 'bg-[#ECE4F2] text-[#5B3A86]',
-};
 
 // 関係タイプのバッジ配色（mockup の .rt-* を踏襲、テーマトークンで表現）。
 const relationClass: Record<Method['related'][number]['type'], string> = {
@@ -43,7 +35,7 @@ const relationClass: Record<Method['related'][number]['type'], string> = {
           {method.mathCategories[0]}
         </span>
         <span
-          class={`rounded-full px-2.5 py-0.5 text-xs font-bold ${difficultyClass[method.difficulty]}`}
+          class={`rounded-full px-2.5 py-0.5 text-xs font-bold ${difficultyBadgeClass(method.difficulty)}`}
         >
           {method.difficulty}
         </span>

@@ -1,0 +1,36 @@
+---
+// src/components/RegionCard.astro
+// 目的領域カード。mockup index.html の .region を @theme トークン駆動の Tailwind で再現。
+// /purpose/<slug> へリンクし、R番号・件数・ラベル・説明を表示する。
+import type { TaxoEntry } from '../lib/taxonomy';
+
+interface Props {
+  entry: TaxoEntry;
+  code: string;
+  count: number;
+}
+
+const { entry, code, count } = Astro.props;
+---
+<a
+  href={`/purpose/${entry.slug}`}
+  class="group relative flex min-h-[116px] flex-col gap-1.5 bg-card px-[18px] pt-[18px] pb-4 text-inherit no-underline transition-colors duration-150 hover:bg-white"
+>
+  {/* ---------- R番号 ・ 件数 ---------- */}
+  <div class="flex items-center justify-between">
+    <span class="font-mono text-[0.7rem] tracking-[0.04em] text-signal">{code}</span>
+    <span class="font-mono text-[0.7rem] text-ink-faint">{count}手法</span>
+  </div>
+
+  {/* ---------- ラベル ---------- */}
+  <h3 class="font-display text-[1.06rem] font-bold tracking-[0.01em]">{entry.label}</h3>
+
+  {/* ---------- 説明 ---------- */}
+  <p class="text-[0.82rem] leading-[1.6] text-ink-soft">{entry.description}</p>
+
+  {/* ---------- ホバー時の矢印 ---------- */}
+  <span
+    class="absolute right-4 bottom-3.5 -translate-x-1 text-signal opacity-0 transition duration-150 group-hover:translate-x-0 group-hover:opacity-100"
+    aria-hidden="true">→</span
+  >
+</a>

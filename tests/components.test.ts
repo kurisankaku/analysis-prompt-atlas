@@ -5,6 +5,7 @@ import SiteHeader from '../src/components/SiteHeader.astro';
 import MethodCard from '../src/components/MethodCard.astro';
 import RegionCard from '../src/components/RegionCard.astro';
 import HubView from '../src/components/HubView.astro';
+import ComparisonTable from '../src/components/ComparisonTable.astro';
 import { sampleMethod } from './fixtures/sample-method';
 
 describe('SiteHeader', () => {
@@ -94,5 +95,33 @@ describe('HubView', () => {
     expect(html).toContain('画像データ'); // タイトルは出る
     expect(html).toContain('該当する手法はまだありません'); // 空状態
     expect(html).not.toContain(sampleMethod.name); // カードは出ない
+  });
+});
+
+describe('ComparisonTable', () => {
+  it('各手法を列に、比較項目を行に描画する', async () => {
+    const c = await AstroContainer.create();
+    const items = [
+      { id: 'mean', data: sampleMethod },
+      {
+        id: 'median',
+        data: { ...sampleMethod, name: '中央値', oneLiner: '真ん中の値', difficulty: '初級' },
+      },
+    ];
+    const html = await c.renderToString(ComparisonTable, { props: { items } });
+    // 手法名（列見出し）と詳細リンク
+    expect(html).toContain('平均');
+    expect(html).toContain('中央値');
+    expect(html).toContain('/methods/mean');
+    expect(html).toContain('/methods/median');
+    // 行ラベル
+    expect(html).toContain('一言でいうと');
+    expect(html).toContain('向いているデータ');
+    expect(html).toContain('得られる結果');
+    expect(html).toContain('難易度');
+    expect(html).toContain('注意点');
+    // 値
+    expect(html).toContain(sampleMethod.oneLiner);
+    expect(html).toContain('真ん中の値');
   });
 });

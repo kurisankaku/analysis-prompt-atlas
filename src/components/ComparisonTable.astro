@@ -1,0 +1,82 @@
+---
+// src/components/ComparisonTable.astro
+// 手法の比較データシート。mockup compare.html の .cmp（行＝比較項目／列＝各手法）を
+// @theme トークン駆動の Tailwind で再現する。横スクロールでモバイル対応。
+// items は2件以上を前提（呼び出し側が保証）。空/1件ガードは不要。
+import type { Method } from '../content/schema';
+import { difficultyBadgeClass } from '../lib/badges';
+
+interface Props {
+  items: { id: string; data: Method }[];
+}
+
+const { items } = Astro.props;
+
+// 比較行の定義。ラベル＋各手法の値を返すセレクタを持つ。
+const rows: { label: string; value: (m: Method) => string }[] = [
+  { label: '一言でいうと', value: (m) => m.oneLiner },
+  { label: '向いているデータ', value: (m) => m.suitableData.join('、') },
+  { label: '得られる結果', value: (m) => m.results },
+  { label: '注意点', value: (m) => m.cautions.join('、') },
+];
+
+const cellBase = 'border-b border-line px-4 py-[15px] text-left align-top';
+const rowKey =
+  'w-[150px] bg-card font-mono text-[0.74rem] font-normal uppercase tracking-[0.04em] text-ink-faint';
+---
+{/* ---------- スクロールラッパ（mockup .cmp-wrap） ---------- */}
+<div class="overflow-x-auto pb-[60px]">
+  <table
+    class="w-full min-w-[760px] border-separate border-spacing-0 overflow-hidden rounded border border-line bg-card"
+  >
+    {/* ---------- 手法見出し（mockup .cmp thead） ---------- */}
+    <thead>
+      <tr>
+        <th class={`${cellBase} ${rowKey} bg-paper2 sticky top-16`}>項目</th>
+        {
+          items.map((it) => (
+            <th class={`${cellBase} sticky top-16 bg-paper2`}>
+              <div class="font-display text-[1.08rem] font-bold text-ink">{it.data.name}</div>
+              <a
+                href={`/methods/${it.id}`}
+                class="mt-1.5 inline-block font-mono text-[0.66rem] text-signal no-underline hover:underline"
+              >
+                詳細を見る →
+              </a>
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+
+    {/* ---------- 比較項目（mockup .cmp tbody） ---------- */}
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr>
+            <td class={`${cellBase} ${rowKey}`}>{row.label}</td>
+            {items.map((it) => (
+              <td class={`${cellBase} text-[0.88rem] text-ink-soft`}>{row.value(it.data)}</td>
+            ))}
+          </tr>
+        ))
+      }
+
+      {/* ---------- 難易度（バッジ） ---------- */}
+      <tr>
+        <td class={`${cellBase} ${rowKey}`}>難易度</td>
+        {
+          items.map((it) => (
+            <td class={`${cellBase} text-[0.88rem] text-ink-soft`}>
+              <span
+                class={`inline-block rounded-full px-2.5 py-0.5 text-[0.72rem] font-bold ${difficultyBadgeClass(it.data.difficulty)}`}
+              >
+                {it.data.difficulty}
+              </span>
+            </td>
+          ))
+        }
+      </tr>
+    </tbody>
+  </table>
+</div>

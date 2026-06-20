@@ -12,9 +12,10 @@ interface Props {
   title: string;
   description: string;
   items: { id: string; data: Method }[];
+  compareHref?: string;
 }
 
-const { code, axisLabel, title, description, items } = Astro.props;
+const { code, axisLabel, title, description, items, compareHref } = Astro.props;
 ---
 {/* ---------- パンくず（mockup .breadcrumb） ---------- */}
 <nav
@@ -32,27 +33,30 @@ const { code, axisLabel, title, description, items } = Astro.props;
   <h1 class="mt-2 font-display text-[clamp(1.8rem,4vw,2.6rem)] font-black">{title}</h1>
   <p class="mt-3 max-w-[60ch] text-ink-soft">{description}</p>
 
-  {/* ---------- ツール（静的・比較は Plan 4 で機能） ---------- */}
-  <div class="mt-5 flex flex-wrap items-center gap-2.5">
-    {/* TODO(Plan 4): 比較ビューは未実装。暫定で # に留める。 */}
-    <a
-      href="#"
-      class="inline-flex items-center gap-2 rounded border border-signal bg-signal px-3.5 py-2 text-[0.84rem] font-semibold text-paper no-underline transition-colors hover:bg-signal-deep"
-    >
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        aria-hidden="true"
-      >
-        <path d="M3 6h18M3 12h18M3 18h18" />
-      </svg>
-      この領域の手法を比較
-    </a>
-  </div>
+  {/* ---------- ツール（mockup .hub-tools / .btn-primary） ---------- */}
+  {
+    compareHref && (
+      <div class="mt-5 flex flex-wrap items-center gap-2.5">
+        <a
+          href={compareHref}
+          class="inline-flex items-center gap-2 rounded border border-signal bg-signal px-3.5 py-2 text-[0.84rem] font-semibold text-paper no-underline transition-colors hover:bg-signal-deep"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+          この軸の手法を比較
+        </a>
+      </div>
+    )
+  }
 </div>
 
 {/* ---------- 手法グリッド（mockup .entry-grid）／空状態 ---------- */}

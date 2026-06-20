@@ -10,14 +10,15 @@ export async function getStaticPaths() {
   const all = await allMethods();
   return MATH_CATS.map((c, i) => {
     const items = all.filter((m) => methodsByMath([m.data], c.label).length > 0);
+    const compareHref = items.length >= 2 ? `/category/${c.slug}/compare` : undefined;
     return {
       params: { slug: c.slug },
-      props: { entry: c, code: `C${String(i + 1).padStart(2, '0')}`, items },
+      props: { entry: c, code: `C${String(i + 1).padStart(2, '0')}`, items, compareHref },
     };
   });
 }
 
-const { entry, code, items } = Astro.props;
+const { entry, code, items, compareHref } = Astro.props;
 ---
 <BaseLayout title={`${entry.label}｜分析手法アトラス`} active="分類">
   <HubView
@@ -26,5 +27,6 @@ const { entry, code, items } = Astro.props;
     title={entry.label}
     description={entry.description}
     items={items}
+    compareHref={compareHref}
   />
 </BaseLayout>

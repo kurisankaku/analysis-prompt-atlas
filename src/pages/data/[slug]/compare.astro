@@ -1,0 +1,30 @@
+---
+// src/pages/data/[slug]/compare.astro
+// データ種類ごとの比較ページ。手法が2件以上あるデータ種類のみ生成（リンク切れ防止）。
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ComparisonTable from '../../../components/ComparisonTable.astro';
+import { DATA_TYPES, methodsByData } from '../../../lib/taxonomy';
+import { allMethods } from '../../../lib/methods';
+
+export async function getStaticPaths() {
+  const all = await allMethods();
+  return DATA_TYPES.map((d) => ({
+    d,
+    items: all.filter((m) => methodsByData([m.data], d.label).length > 0),
+  }))
+    .filter(({ items }) => items.length >= 2)
+    .map(({ d, items }) => ({ params: { slug: d.slug }, props: { entry: d, items } }));
+}
+
+const { entry, items } = Astro.props;
+---
+<BaseLayout title={`${entry.label}の手法を比較｜分析手法アトラス`} active="データ種類">
+  <p class="mt-4 mb-2 font-mono text-sm text-ink-faint">
+    <a class="underline hover:text-ink" href={`/data/${entry.slug}`}>← {entry.label}</a>
+  </p>
+  <h1 class="mb-6 font-display text-[clamp(1.6rem,3.5vw,2.2rem)] font-black">
+    <span class="font-mono text-[0.78rem] tracking-[0.05em] text-signal">データ種類</span><br />
+    「{entry.label}」の手法を比較（{items.length}件）
+  </h1>
+  <ComparisonTable items={items} />
+</BaseLayout>

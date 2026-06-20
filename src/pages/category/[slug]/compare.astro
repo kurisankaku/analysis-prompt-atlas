@@ -1,0 +1,30 @@
+---
+// src/pages/category/[slug]/compare.astro
+// 数学・統計分類ごとの比較ページ。手法が2件以上ある分類のみ生成（リンク切れ防止）。
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ComparisonTable from '../../../components/ComparisonTable.astro';
+import { MATH_CATS, methodsByMath } from '../../../lib/taxonomy';
+import { allMethods } from '../../../lib/methods';
+
+export async function getStaticPaths() {
+  const all = await allMethods();
+  return MATH_CATS.map((c) => ({
+    c,
+    items: all.filter((m) => methodsByMath([m.data], c.label).length > 0),
+  }))
+    .filter(({ items }) => items.length >= 2)
+    .map(({ c, items }) => ({ params: { slug: c.slug }, props: { entry: c, items } }));
+}
+
+const { entry, items } = Astro.props;
+---
+<BaseLayout title={`${entry.label}の手法を比較｜分析手法アトラス`} active="分類">
+  <p class="mt-4 mb-2 font-mono text-sm text-ink-faint">
+    <a class="underline hover:text-ink" href={`/category/${entry.slug}`}>← {entry.label}</a>
+  </p>
+  <h1 class="mb-6 font-display text-[clamp(1.6rem,3.5vw,2.2rem)] font-black">
+    <span class="font-mono text-[0.78rem] tracking-[0.05em] text-signal">分類</span><br />
+    「{entry.label}」の手法を比較（{items.length}件）
+  </h1>
+  <ComparisonTable items={items} />
+</BaseLayout>

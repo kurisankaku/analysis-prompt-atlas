@@ -67,11 +67,3 @@ export function methodsByData(methods: Method[], label: string): Method[] {
 export function methodsByMath(methods: Method[], label: string): Method[] {
   return methods.filter((m) => m.mathCategories.includes(label as Method['mathCategories'][number]));
 }
-
-export function countByLabel(
-  methods: Method[],
-  axisField: 'purposeCategories' | 'dataCategories' | 'mathCategories',
-  label: string,
-): number {
-  return methods.filter((m) => (m[axisField] as readonly string[]).includes(label)).length;
-}

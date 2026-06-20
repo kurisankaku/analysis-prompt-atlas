@@ -5,7 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RegionCard from '../components/RegionCard.astro';
 import SubEntryCard from '../components/SubEntryCard.astro';
-import { PURPOSES, DATA_TYPES, MATH_CATS, methodsByPurpose } from '../lib/taxonomy';
+import { PURPOSES, DATA_TYPES, MATH_CATS, methodsByPurpose, purposeBySlug } from '../lib/taxonomy';
 import { allMethods } from '../lib/methods';
 
 const all = await allMethods();
@@ -25,7 +25,7 @@ const mathChips = [
 const diffChips = ['基礎', '初級', '中級', '上級', '高度'];
 
 // 副入口の最初の RegionCard（関係性を知りたい）を section-head の more リンクに使う（mockup 踏襲）。
-const firstPurpose = PURPOSES[2]; // 関係性を知りたい（R03）
+const firstPurpose = purposeBySlug('relationship')!; // R03（slug 駆動で順序非依存）
 ---
 <BaseLayout title="分析手法アトラス｜「何を知りたい?」から分析手法を見つける" active="目的から">
   {/* ===================== ヒーロー（コンター背景） ===================== */}
@@ -134,27 +134,27 @@ const firstPurpose = PURPOSES[2]; // 関係性を知りたい（R03）
     </div>
 
     <div class="grid gap-3.5 md:grid-cols-3">
-      {/* TODO(Task 5): データ種類ハブ（/data 等）は未実装。暫定で #data アンカーに留める。 */}
+      {/* 代表ハブ（/data/numeric）へ。/data 一覧ページは将来の拡張（RegionCard の more と同じ趣旨）。 */}
       <div id="data-card">
         <SubEntryCard
           title="データ種類から"
-          href="#data"
+          href="/data/numeric"
           description="手元のデータの形から、適した手法へ。"
           chips={dataChips}
           dotColor="var(--color-water)"
         />
       </div>
-      {/* TODO(Task 5): 分類ハブ（/category 等）は未実装。暫定で #cat アンカーに留める。 */}
+      {/* 代表ハブ（/category/basic-stats）へ。/category 一覧ページは将来の拡張。 */}
       <div id="cat">
         <SubEntryCard
           title="数学・統計の分類から"
-          href="#cat"
+          href="/category/basic-stats"
           description="手法を体系から俯瞰する。"
           chips={mathChips}
           dotColor="var(--color-gold)"
         />
       </div>
-      {/* TODO(Task 5): 難易度ハブ（/difficulty 等）は未実装。暫定で #diff アンカーに留める。 */}
+      {/* TODO(Plan 3): 難易度フィルタ */}
       <div id="diff">
         <SubEntryCard
           title="難易度から"

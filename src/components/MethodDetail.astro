@@ -2,6 +2,7 @@
 // src/components/MethodDetail.astro
 import type { Method } from '../content/schema';
 import SampleTable from './SampleTable.astro';
+import MethodChart from './MethodChart.astro';
 import { difficultyBadgeClass } from '../lib/badges';
 
 interface Props {
@@ -121,6 +122,22 @@ const relationClass: Record<Method['related'][number]['type'], string> = {
       <p class="mt-3.5 text-ink">{method.inputData}</p>
       <SampleTable table={method.sampleTable} />
     </section>
+
+    {/* ---------- サンプルで見る（sampleChart がある場合のみ） ---------- */}
+    {
+      method.sampleChart && (
+        <section class="border-b border-line py-7">
+          <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+            <span
+              class="h-5 w-[7px] flex-none rounded-[1px] bg-signal"
+              aria-hidden="true"
+            />
+            サンプルで見る
+          </h2>
+          <MethodChart chart={method.sampleChart} />
+        </section>
+      )
+    }
 
     {/* ---------- 使う／使わない ---------- */}
     <section class="border-b border-line py-7">

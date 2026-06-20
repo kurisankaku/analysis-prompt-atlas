@@ -24,7 +24,7 @@ sampleTable:
     - ["F", "22", "15"]
 sampleChart:
   type: scatter
-  caption: 来店回数と購入金額で、3つのグループに分かれて見える。
+  caption: 来店回数と購入金額で、3つのグループに分かれて見える（イメージ）。
   series:
     - label: グループ1（少回数・少額）
       points: [[2, 5], [3, 6], [4, 7]]

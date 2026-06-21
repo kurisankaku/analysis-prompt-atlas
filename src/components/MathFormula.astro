@@ -1,0 +1,32 @@
+---
+// src/components/MathFormula.astro
+// LaTeX 文字列を KaTeX でビルド時にHTML化する（クライアントJS不使用・MathML併出で読み上げ対応）。
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+
+interface Props {
+  tex: string;
+  display?: boolean;
+}
+const { tex, display = false } = Astro.props;
+
+let html: string;
+try {
+  html = katex.renderToString(tex, {
+    displayMode: display,
+    throwOnError: false,
+    output: 'htmlAndMathml',
+    strict: 'ignore',
+  });
+} catch {
+  // 想定外の失敗時はそのまま素のテキストを出す（ページは壊さない）。
+  html = `<code>${tex}</code>`;
+}
+---
+{
+  display ? (
+    <div class="katex-block overflow-x-auto py-1" set:html={html} />
+  ) : (
+    <span set:html={html} />
+  )
+}

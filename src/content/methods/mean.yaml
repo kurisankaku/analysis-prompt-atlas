@@ -51,6 +51,22 @@ related:
     type: 比較対象
     note: 外れ値に強い代表値。平均と併せて見ると分布の偏りが分かる。
 aiPromptExample: このデータの平均を計算し、全体の水準を一言でまとめてください。外れ値の影響があれば指摘してください。
+derivation:
+  intro: 平均は「全部を合計して、個数で割る」だけ。記号に置きかえても、やっていることは同じ。
+  symbols:
+    - { sym: "x_i", meaning: "i番目のデータの値（例：3人目の点数）" }
+    - { sym: "n", meaning: "データの個数（ここでは5人）" }
+    - { sym: "\\bar{x}", meaning: "平均（「エックスバー」と読む）" }
+    - { sym: "\\sum", meaning: "「全部を足す」という記号（シグマ）" }
+  steps:
+    - formula: "\\bar{x} = \\dfrac{x_1 + x_2 + \\cdots + x_n}{n}"
+      explain: すべての値を1つずつ足し、その合計をデータの個数で割る。これが平均の定義そのもの。
+      example: "\\bar{x} = \\dfrac{60 + 70 + 80 + 90 + 100}{5}"
+      result: まず分子に合計、分母に個数を置く
+    - formula: "\\bar{x} = \\dfrac{1}{n}\\sum_{i=1}^{n} x_i"
+      explain: "「x_1 + … + x_n」を短く書くとシグマ記号になる。長い足し算の省略形なので意味は変わらない。"
+      example: "\\bar{x} = \\dfrac{400}{5} = 80"
+      result: 平均は80点
 difficulty: 基礎
 tags: ["基礎統計", "解釈しやすい"]
 keywords: ["平均", "mean", "average", "代表値", "算術平均"]

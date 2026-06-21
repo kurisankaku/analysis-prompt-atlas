@@ -259,6 +259,28 @@ export const DIAGRAM_TYPES = [
   'tree', 'dendrogram', 'vectors', 'neighborhood', 'clusters',
 ] as const;
 
+// ---------------------------------------------------------------------------
+// 計算の手順（derivation）— 数式（LaTeX）＋数学が苦手な人向けの説明
+// ---------------------------------------------------------------------------
+// formula/example/sym は KaTeX で描画する LaTeX 文字列。
+// explain/meaning/result は日本語の平易な説明文。
+const derivationStep = z.object({
+  formula: z.string(),             // 一般式（LaTeX, display）
+  explain: z.string(),             // この式が何をしているかの平易な説明
+  example: z.string().optional(),  // ページの例の数値を代入した式（LaTeX）
+  result: z.string().optional(),   // 代入結果の一言（日本語）
+});
+const symbolDef = z.object({
+  sym: z.string(),                 // 記号（LaTeX, inline）
+  meaning: z.string(),             // 記号の意味（日本語）
+});
+const derivationSchema = z.object({
+  intro: z.string().optional(),    // 全体の導入（任意・1〜2文）
+  symbols: z.array(symbolDef).default([]),  // 記号の意味
+  steps: z.array(derivationStep).min(1),    // 手順（最低1つ）
+});
+export type Derivation = z.infer<typeof derivationSchema>;
+
 const relationSchema = z.object({
   id: z.string(),
   type: z.enum(RELATION_TYPES),
@@ -290,6 +312,8 @@ export const methodSchema = z.object({
   whenToUse: z.array(z.string()).min(1),
   whenNotToUse: z.array(z.string()).min(1),
   cautions: z.array(z.string()).min(1),
+  // 計算の手順（数式＋平易な説明）
+  derivation: derivationSchema.optional(),
   // つながり・補助
   related: z.array(relationSchema),
   aiPromptExample: z.string(),

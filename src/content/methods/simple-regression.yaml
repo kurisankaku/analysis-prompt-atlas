@@ -22,7 +22,11 @@ sampleTable:
     - ["33", "100"]
 sampleChart:
   type: scatter
-  caption: 気温が上がるほど売上が増える右肩上がりの関係。
+  caption: データを貫く回帰直線で予測。R²は当てはまりの良さ。
+  fit: true
+  fitLabel: "売上 = a×気温 + b"
+  x: { label: "気温", unit: "℃" }
+  y: { label: "売上", unit: "個" }
   series:
     - label: 気温と売上
       points: [[20, 30], [25, 55], [28, 70], [30, 85], [33, 100]]

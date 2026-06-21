@@ -19,6 +19,24 @@ sampleTable:
     - ["雨", "20", "不来店"]
     - ["晴", "15", "不来店"]
     - ["曇", "25", "来店"]
+sampleChart:
+  type: tree
+  caption: 条件で枝分かれし、葉で分類が決まる。
+  root:
+    label: 天気は晴れ?
+    children:
+      - condition: はい
+        label: 気温は22℃以上?
+        children:
+          - condition: はい
+            leaf: 来店
+            leafColor: good
+          - condition: いいえ
+            leaf: 不来店
+            leafColor: signal
+      - condition: いいえ
+        leaf: 不来店
+        leafColor: signal
 results: 「天気は晴か？ → 気温は22℃以上か？ → 来店」のように枝分かれする木構造のルールと、各データの分類結果。
 howToRead: 木の上ほど重要な質問（結果を大きく分ける条件）。枝を上からたどると、なぜそのクラスに分類されたかの理由がそのまま読める。
 beforeAfter:

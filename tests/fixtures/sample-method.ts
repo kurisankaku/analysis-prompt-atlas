@@ -18,6 +18,14 @@ export const sampleMethod = {
       ['Bさん', '70'],
     ],
   },
+  sampleChart: {
+    type: 'vectors',
+    caption: 'テスト用の模式図',
+    vectors: [
+      { label: 'A', x: 3, y: 1 },
+      { label: 'B', x: 2, y: 2 },
+    ],
+  },
   results: 'データ全体を代表する1つの数値。',
   howToRead: '平均80点なら全体の中心は約80点。全員が80点という意味ではない。',
   beforeAfter: {

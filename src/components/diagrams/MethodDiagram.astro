@@ -1,0 +1,29 @@
+---
+// src/components/diagrams/MethodDiagram.astro
+// データ図ではなく概念を説明する模式図のディスパッチャ（静的SVG・JSゼロ）。
+// type ごとに専用コンポーネントへ振り分け、figure/caption をここで一括して付ける。
+import type { SampleChartConfig } from '../../content/schema';
+import TreeDiagram from './TreeDiagram.astro';
+import Dendrogram from './Dendrogram.astro';
+import VectorDiagram from './VectorDiagram.astro';
+import Neighborhood from './Neighborhood.astro';
+import ClustersDiagram from './ClustersDiagram.astro';
+
+interface Props {
+  config: SampleChartConfig;
+}
+const { config } = Astro.props;
+const caption = 'caption' in config ? config.caption : undefined;
+---
+<figure class="my-4">
+  <div class="overflow-hidden rounded border border-line bg-card">
+    {config.type === 'tree' && <TreeDiagram config={config} />}
+    {config.type === 'dendrogram' && <Dendrogram config={config} />}
+    {config.type === 'vectors' && <VectorDiagram config={config} />}
+    {config.type === 'neighborhood' && <Neighborhood config={config} />}
+    {config.type === 'clusters' && <ClustersDiagram config={config} />}
+  </div>
+  {caption && (
+    <figcaption class="mt-2 font-mono text-xs text-ink-faint">{caption}</figcaption>
+  )}
+</figure>

@@ -21,6 +21,15 @@ sampleTable:
     - ["B", "6", "2", "0", "1.00"]
     - ["C", "0", "1", "3", "0.10"]
     - ["D", "1", "0", "0", "0.95"]
+sampleChart:
+  type: vectors
+  caption: 向きが近いほど似ている（cosθが1に近い）。
+  x: { label: 猫 }
+  y: { label: 犬 }
+  vectors:
+    - { label: 文章A, x: 3, y: 1, color: signal }
+    - { label: 文章B, x: 6, y: 2, color: water }
+    - { label: 文章C, x: 0, y: 3, color: good }
 results: 2つのデータの類似度を表す数値。出現回数のような0以上の値では0〜1の範囲になり、1に近いほど向き（傾向）が似ている、0に近いほど無関係。
 howToRead: 1に近いほど傾向が似ている、0付近なら共通点がほとんどない。文章AとBは単語数（量）は違うが向きが同じなので類似度1.00。量の大小ではなく「成分の比率・傾向」を見ている点がポイント。
 beforeAfter:

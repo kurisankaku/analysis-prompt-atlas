@@ -19,6 +19,22 @@ sampleTable:
     - ["120", "9", "みかん"]
     - ["160", "6", "りんご"]
     - ["110", "8", "みかん"]
+sampleChart:
+  type: neighborhood
+  caption: 新データに近いk個の多数決でクラスを決める。
+  x: { label: 重さ, unit: g }
+  y: { label: 甘さ, unit: 0-10 }
+  k: 3
+  query: { x: 140, y: 7 }
+  points:
+    - { x: 150, y: 7, cls: りんご, color: signal }
+    - { x: 160, y: 6, cls: りんご, color: signal }
+    - { x: 155, y: 5, cls: りんご, color: signal }
+    - { x: 145, y: 6, cls: りんご, color: signal }
+    - { x: 120, y: 9, cls: みかん, color: water }
+    - { x: 110, y: 8, cls: みかん, color: water }
+    - { x: 115, y: 9, cls: みかん, color: water }
+    - { x: 125, y: 8, cls: みかん, color: water }
 results: 新しいデータに最も近いk個の既知データを探し、その多数派のクラスを予測として返す。kは「何個のご近所を見るか」を決める設定値。
 howToRead: 「最も近いk個のうち多数派がりんご→このデータもりんご」と読む。kが小さいとノイズに敏感、大きすぎると境界がぼやける。
 beforeAfter:

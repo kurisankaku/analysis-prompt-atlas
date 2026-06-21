@@ -28,5 +28,8 @@ describe('MethodDetail', () => {
     expect(html).toContain(sampleMethod.analogy);
     expect(html).toContain(sampleMethod.whatYouLearn);
     expect(html).toContain('生徒'); // ミニ例表の列見出し
+    // 図のセクション（sampleChart があるとき）
+    expect(html).toContain('サンプルで見る');
+    expect(html).toContain('<svg');
   });
 });

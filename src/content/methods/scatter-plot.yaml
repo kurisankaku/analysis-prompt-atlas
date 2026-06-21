@@ -23,7 +23,14 @@ sampleTable:
     - ["F", "6", "90"]
 sampleChart:
   type: scatter
-  caption: 勉強時間が長いほど点数が高い、右肩上がりの関係。
+  fit: true
+  caption: 右肩上がり＝正の関係。
+  x:
+    label: 勉強時間
+    unit: 時間
+  y:
+    label: 点数
+    unit: 点
   series:
     - label: 勉強時間と点数
       points: [[1, 55], [2, 60], [3, 70], [4, 75], [5, 85], [6, 90]]

@@ -23,10 +23,16 @@ sampleTable:
     - ["5", "M"]
 sampleChart:
   type: bar
-  caption: サイズ別の販売数。Mが3着で最頻値。
+  caption: 最も多いサイズ（最頻値）。Mが3着で一番売れている。
+  x: { label: "サイズ" }
+  y: { label: "販売数", unit: "着" }
+  categories: ["S", "M", "L"]
   series:
     - label: 販売数
+      color: signal
       points: [[1, 1], [2, 3], [3, 1]]
+  annotations:
+    - { x: 2, y: 3, label: "最頻値", place: 'top' }
 results: 最も多く現れた値（この例ではサイズM、3着）。「いちばん定番」が一目で分かる。
 howToRead: 最頻値Mなら「最も売れたのはMサイズ」。複数の値が同数で並ぶこともあり、その場合は最頻値が複数になる（多峰）。件数が少ないと偶然で決まりやすい。
 beforeAfter:

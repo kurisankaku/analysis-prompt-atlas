@@ -1,0 +1,109 @@
+---
+// src/components/diagrams/ClustersDiagram.astro
+// k-means（type:'clusters'）。クラスタ別に色分けした点と重心（✕）を描き、
+// 「自然なかたまり＋各かたまりの中心」を示す。数値目盛り＋軸ラベル付き。
+import { tokenToVar, axisTitle } from '../../lib/chart-config';
+import { niceTicks } from '../../lib/chart-stats';
+import type { SampleChartConfig, ChartColor } from '../../content/schema';
+
+type ClConfig = Extract<SampleChartConfig, { type: 'clusters' }>;
+interface Props { config: ClConfig }
+const { config } = Astro.props;
+
+const W = 640;
+const H = 360;
+const leftPad = 56;
+const rightPad = 20;
+const topPad = 20;
+const botPad = 52;
+const plotW = W - leftPad - rightPad;
+const plotH = H - topPad - botPad;
+
+const pts = config.clusters.flatMap((c) => [...c.points, c.centroid]);
+const xlo = Math.min(...pts.map((p) => p[0]));
+const xhi = Math.max(...pts.map((p) => p[0]));
+const ylo = Math.min(...pts.map((p) => p[1]));
+const yhi = Math.max(...pts.map((p) => p[1]));
+const padX = (xhi - xlo) * 0.1 || 1;
+const padY = (yhi - ylo) * 0.1 || 1;
+const X0 = xlo - padX, X1 = xhi + padX;
+const Y0 = ylo - padY, Y1 = yhi + padY;
+const px = (x: number) => leftPad + ((x - X0) / (X1 - X0)) * plotW;
+const py = (y: number) => topPad + plotH - ((y - Y0) / (Y1 - Y0)) * plotH;
+
+const SERIES: ChartColor[] = ['signal', 'water', 'good', 'gold'];
+const colorFor = (i: number, override?: ChartColor) => tokenToVar(override ?? SERIES[i % SERIES.length]);
+
+const xticks = niceTicks(X0, X1, 5);
+const yticks = niceTicks(Y0, Y1, 5);
+const xTitle = axisTitle(config.x);
+const yTitle = axisTitle(config.y);
+---
+<div>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label={config.caption ?? 'k-means クラスタの模式図'}
+    class="block h-auto w-full"
+  >
+    {/* 軸 */}
+    <line x1={leftPad} y1={topPad} x2={leftPad} y2={topPad + plotH} stroke="var(--color-line-strong)" />
+    <line x1={leftPad} y1={topPad + plotH} x2={leftPad + plotW} y2={topPad + plotH} stroke="var(--color-line-strong)" />
+    <g font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-faint)">
+      {xticks.filter((t) => t >= X0 && t <= X1).map((t) => (
+        <g>
+          <line x1={px(t)} y1={topPad + plotH} x2={px(t)} y2={topPad + plotH + 4} stroke="var(--color-line)" />
+          <text x={px(t)} y={topPad + plotH + 16} text-anchor="middle">{t}</text>
+        </g>
+      ))}
+      {yticks.filter((t) => t >= Y0 && t <= Y1).map((t) => (
+        <g>
+          <line x1={leftPad - 4} y1={py(t)} x2={leftPad} y2={py(t)} stroke="var(--color-line)" />
+          <text x={leftPad - 7} y={py(t)} dy="0.32em" text-anchor="end">{t}</text>
+        </g>
+      ))}
+    </g>
+    {xTitle && (
+      <text x={leftPad + plotW / 2} y={H - 16} text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--color-ink-soft)">{xTitle}</text>
+    )}
+    {yTitle && (
+      <text x={16} y={topPad + plotH / 2} text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--color-ink-soft)" transform={`rotate(-90 16 ${topPad + plotH / 2})`}>{yTitle}</text>
+    )}
+
+    {/* クラスタの点と重心 */}
+    {config.clusters.map((c, ci) => {
+      const col = colorFor(ci, c.color);
+      const cx = px(c.centroid[0]);
+      const cy = py(c.centroid[1]);
+      return (
+        <g>
+          {c.points.map((p) => (
+            <circle cx={px(p[0])} cy={py(p[1])} r="5" fill={col} fill-opacity="0.8" />
+          ))}
+          {/* 重心（✕） */}
+          <g stroke="var(--color-ink)" stroke-width="2.4">
+            <line x1={cx - 7} y1={cy - 7} x2={cx + 7} y2={cy + 7} />
+            <line x1={cx - 7} y1={cy + 7} x2={cx + 7} y2={cy - 7} />
+          </g>
+          <g stroke={col} stroke-width="1.4">
+            <line x1={cx - 7} y1={cy - 7} x2={cx + 7} y2={cy + 7} />
+            <line x1={cx - 7} y1={cy + 7} x2={cx + 7} y2={cy - 7} />
+          </g>
+        </g>
+      );
+    })}
+  </svg>
+
+  {/* 凡例 */}
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line px-4 py-3 text-xs text-ink-soft">
+    {config.clusters.map((c, ci) => (
+      <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block size-3 rounded-full" style={`background:${colorFor(ci, c.color)}`} />
+        {c.label}
+      </span>
+    ))}
+    <span class="inline-flex items-center gap-1.5">
+      <span class="font-bold text-ink">✕</span>重心
+    </span>
+  </div>
+</div>

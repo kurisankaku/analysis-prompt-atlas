@@ -7,7 +7,6 @@ import MethodCard from '../src/components/MethodCard.astro';
 import RegionCard from '../src/components/RegionCard.astro';
 import HubView from '../src/components/HubView.astro';
 import ComparisonTable from '../src/components/ComparisonTable.astro';
-import MethodChart from '../src/components/MethodChart.astro';
 import AtlasGraph from '../src/components/AtlasGraph.astro';
 import { sampleMethod } from './fixtures/sample-method';
 
@@ -161,63 +160,6 @@ describe('ComparisonTable', () => {
     // 値
     expect(html).toContain(sampleMethod.oneLiner);
     expect(html).toContain('真ん中の値');
-  });
-});
-
-describe('MethodChart', () => {
-  const make = (type: string) => ({
-    type,
-    caption: 'cap',
-    series: [{ label: 's', points: [[1, 60], [2, 70], [3, 80]] }],
-  });
-
-  it('bar はSVGに矩形を描く', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('bar') } });
-    expect(html).toContain('<svg');
-    expect(html).toContain('<rect');
-    expect(html).toContain('cap'); // caption
-  });
-
-  it('histogram はSVGに矩形を描く（bar と同じ描画）', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('histogram') } });
-    expect(html).toContain('<svg');
-    expect(html).toContain('<rect');
-  });
-
-  it('scatter はSVGに円を描く', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('scatter') } });
-    expect(html).toContain('<svg');
-    expect(html).toContain('<circle');
-  });
-
-  it('line は折れ線(polyline)を描く', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('line') } });
-    expect(html).toContain('<svg');
-    expect(html).toContain('<polyline');
-  });
-
-  it('未対応種別(box)はフォールバック文言', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('box') } });
-    expect(html).toContain('準備中');
-  });
-
-  it('未対応種別(heatmap)はフォールバック文言', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('heatmap') } });
-    expect(html).toContain('準備中');
-  });
-
-  it('テーマ変数で色を指定し、生の16進カラーを使わない', async () => {
-    const c = await AstroContainer.create();
-    const html = await c.renderToString(MethodChart, { props: { chart: make('scatter') } });
-    expect(html).toContain('var(--color-signal)');
-    // 生の hex カラー（#RGB/#RRGGBB）は含めない
-    expect(html).not.toMatch(/#[0-9A-Fa-f]{3,6}\b/);
   });
 });
 

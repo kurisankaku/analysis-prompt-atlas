@@ -1,0 +1,107 @@
+---
+// src/components/diagrams/VectorDiagram.astro
+// コサイン類似度（type:'vectors'）。原点からのベクトルを矢印で描き、最初の2本の
+// なす角の弧と cosθ を示す。「向きが近い＝似ている」を視覚化する。
+import { tokenToVar } from '../../lib/chart-config';
+import { cosineSimilarity, cosineAngleDeg } from '../../lib/chart-stats';
+import { axisTitle } from '../../lib/chart-config';
+import type { SampleChartConfig, ChartColor } from '../../content/schema';
+
+type VecConfig = Extract<SampleChartConfig, { type: 'vectors' }>;
+interface Props { config: VecConfig }
+const { config } = Astro.props;
+
+const W = 640;
+const H = 360;
+const ox = 72;          // 原点
+const oy = H - 64;
+const SERIES: ChartColor[] = ['signal', 'water', 'good', 'gold'];
+
+const maxX = Math.max(1, ...config.vectors.map((v) => v.x));
+const maxY = Math.max(1, ...config.vectors.map((v) => v.y));
+const s = Math.min((W - 150) / maxX, (oy - 40) / maxY);
+const px = (x: number) => ox + x * s;
+const py = (y: number) => oy - y * s;
+
+const AH = 11;
+const vecs = config.vectors.map((v, i) => {
+  const ex = px(v.x);
+  const ey = py(v.y);
+  const ang = Math.atan2(ey - oy, ex - ox);
+  const a1 = ang + Math.PI * 0.85;
+  const a2 = ang - Math.PI * 0.85;
+  const head = `${ex},${ey} ${ex + AH * Math.cos(a1)},${ey + AH * Math.sin(a1)} ${ex + AH * Math.cos(a2)},${ey + AH * Math.sin(a2)}`;
+  return { ...v, ex, ey, color: tokenToVar(v.color, SERIES[i % SERIES.length]), head };
+});
+
+// 最初の2本のなす角。
+const v0 = config.vectors[0];
+const v1 = config.vectors[1];
+const cos = cosineSimilarity([v0.x, v0.y], [v1.x, v1.y]);
+const deg = cosineAngleDeg([v0.x, v0.y], [v1.x, v1.y]);
+const r = 50;
+const a0 = Math.atan2(py(v0.y) - oy, px(v0.x) - ox);
+const aa1 = Math.atan2(py(v1.y) - oy, px(v1.x) - ox);
+const sweep = aa1 > a0 ? 1 : 0;
+const arc = `M ${ox + r * Math.cos(a0)} ${oy + r * Math.sin(a0)} A ${r} ${r} 0 0 ${sweep} ${ox + r * Math.cos(aa1)} ${oy + r * Math.sin(aa1)}`;
+const aMid = (a0 + aa1) / 2;
+const xTitle = axisTitle(config.x);
+const yTitle = axisTitle(config.y);
+---
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={config.caption ?? 'ベクトルのなす角の模式図'}
+  class="block h-auto w-full"
+>
+  {/* 軸 */}
+  <line x1={ox} y1={oy} x2={W - 24} y2={oy} stroke="var(--color-line)" />
+  <line x1={ox} y1={oy} x2={ox} y2={28} stroke="var(--color-line)" />
+  {xTitle && (
+    <text x={W - 24} y={oy + 18} text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-faint)">{xTitle} →</text>
+  )}
+  {yTitle && (
+    <text x={ox - 8} y={30} text-anchor="end" font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-faint)" transform={`rotate(-90 ${ox - 8} 30)`}>{yTitle} →</text>
+  )}
+
+  {/* なす角の弧と cosθ */}
+  <path d={arc} fill="none" stroke="var(--color-ink-faint)" stroke-width="1.2" />
+  <text
+    x={ox + (r + 18) * Math.cos(aMid)}
+    y={oy + (r + 18) * Math.sin(aMid)}
+    dy="0.32em"
+    text-anchor="middle"
+    font-family="var(--font-mono)"
+    font-size="11"
+    font-weight="700"
+    fill="var(--color-ink-soft)"
+    paint-order="stroke"
+    stroke="var(--color-card)"
+    stroke-width="3"
+    stroke-linejoin="round"
+  >{`cosθ=${(Math.round(cos * 100) / 100).toFixed(2)}（${Math.round(deg)}°）`}</text>
+
+  {/* ベクトル */}
+  {vecs.map((v) => (
+    <g>
+      <line x1={ox} y1={oy} x2={v.ex} y2={v.ey} stroke={v.color} stroke-width="2.4" />
+      <polygon points={v.head} fill={v.color} />
+      <text
+        x={v.ex + (v.ex >= ox ? 8 : -8)}
+        y={v.ey - 6}
+        text-anchor={v.ex >= ox ? 'start' : 'end'}
+        font-family="var(--font-body)"
+        font-size="11.5"
+        font-weight="700"
+        fill={v.color}
+        paint-order="stroke"
+        stroke="var(--color-card)"
+        stroke-width="3"
+        stroke-linejoin="round"
+      >{v.label}</text>
+    </g>
+  ))}
+
+  {/* 原点 */}
+  <circle cx={ox} cy={oy} r="3" fill="var(--color-ink)" />
+</svg>

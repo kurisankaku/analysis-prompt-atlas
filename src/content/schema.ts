@@ -33,16 +33,231 @@ const sampleTableSchema = z.object({
   rows: z.array(z.array(z.string())),
 });
 
-// サンプル分布チャートの指定。実際の描画はPlan 5で行う。
-const sampleChartSchema = z.object({
-  type: z.enum(['histogram', 'scatter', 'box', 'line', 'bar', 'heatmap']),
-  caption: z.string().optional(),
-  // データ系列。チャート種別ごとの解釈はPlan 5のチャートコンポーネントが担う。
-  series: z.array(z.object({
-    label: z.string().optional(),
-    points: z.array(z.array(z.number())),
-  })),
+// ---------------------------------------------------------------------------
+// サンプル図（sampleChart）の定義
+// ---------------------------------------------------------------------------
+// 図の色は @theme トークン名で指定し、描画側で var(--color-<name>) に変換する。
+// 生の 16 進カラーをコンテンツ側でもコンポーネント側でも使わない規律のため、
+// 色は固定の列挙にしている。
+export const CHART_COLORS = [
+  'signal', 'signal-deep', 'water', 'good', 'gold',
+  'ink', 'ink-soft', 'ink-faint', 'line', 'line-strong',
+] as const;
+export type ChartColor = (typeof CHART_COLORS)[number];
+const chartColor = z.enum(CHART_COLORS);
+
+// 軸ラベル＋単位（例: { label: '勉強時間', unit: '時間' }）。
+const axisSpec = z.object({
+  label: z.string(),
+  unit: z.string().optional(),
 });
+
+// 基準線（平均線・しきい値など）。
+const refLine = z.object({
+  axis: z.enum(['x', 'y']),
+  value: z.number(),
+  label: z.string().optional(),
+  color: chartColor.default('gold'),
+  dashed: z.boolean().default(true),
+});
+
+// 基準帯（±1SD・IQR など）。
+const refArea = z.object({
+  axis: z.enum(['x', 'y']),
+  from: z.number(),
+  to: z.number(),
+  label: z.string().optional(),
+  color: chartColor.default('water'),
+});
+
+// 点への注記（「最頻値」「異常の疑い」など）。
+const pointAnnotation = z.object({
+  x: z.number(),
+  y: z.number(),
+  label: z.string(),
+  color: chartColor.optional(),
+  // ラベルの寄せ方向（既定: 点の上）。
+  place: z.enum(['top', 'bottom', 'left', 'right']).default('top'),
+});
+
+const series = z.object({
+  label: z.string().optional(),
+  color: chartColor.optional(),
+  points: z.array(z.tuple([z.number(), z.number()])).min(1),
+});
+
+// データチャート共通のメタ。
+const chartBase = {
+  caption: z.string().optional(),
+  x: axisSpec.optional(),
+  y: axisSpec.optional(),
+  referenceLines: z.array(refLine).default([]),
+  referenceAreas: z.array(refArea).default([]),
+  annotations: z.array(pointAnnotation).default([]),
+};
+
+// ---- データチャート ----
+const barChart = z.object({
+  type: z.literal('bar'),
+  // 多系列を横並びの群棒にするか（false なら積み上げず単純な棒）。
+  grouped: z.boolean().default(false),
+  // 順序カテゴリの x ラベル（例: ['S','M','L']）。指定時は points の x をインデックス扱い。
+  categories: z.array(z.string()).optional(),
+  series: z.array(series).min(1),
+  ...chartBase,
+});
+
+const lineChart = z.object({
+  type: z.literal('line'),
+  series: z.array(series).min(1),
+  ...chartBase,
+});
+
+const scatterChart = z.object({
+  type: z.literal('scatter'),
+  // 最小二乗の回帰直線（＋R²）を重ねる。
+  fit: z.boolean().default(false),
+  fitLabel: z.string().optional(),
+  series: z.array(series).min(1),
+  ...chartBase,
+});
+
+const histogramChart = z.object({
+  type: z.literal('histogram'),
+  // points = [階級の代表値, 度数]
+  series: z.array(series).min(1),
+  ...chartBase,
+});
+
+const boxSummary = z.object({
+  label: z.string(),
+  min: z.number(),
+  q1: z.number(),
+  median: z.number(),
+  q3: z.number(),
+  max: z.number(),
+  color: chartColor.optional(),
+});
+const boxplotChart = z.object({
+  type: z.literal('boxplot'),
+  boxes: z.array(boxSummary).min(1),
+  ...chartBase,
+});
+
+const logisticChart = z.object({
+  type: z.literal('logistic'),
+  // 実測の 0/1 アウトカム
+  points: z.array(z.tuple([z.number(), z.number()])).min(1),
+  // フィット済みロジスティック曲線 1/(1+e^-(b0+b1 x))
+  curve: z.object({ b0: z.number(), b1: z.number() }),
+  threshold: z.number().default(0.5),
+  ...chartBase,
+});
+
+// ---- 模式図（schematic diagrams） ----
+type TreeNodeInput = {
+  label?: string;
+  condition?: string;
+  leaf?: string;
+  leafColor?: ChartColor;
+  children?: TreeNodeInput[];
+};
+const treeNode: z.ZodType<TreeNodeInput> = z.lazy(() =>
+  z.object({
+    // 判定ノードは label（質問）、葉は leaf を使う。どちらか一方でよい。
+    label: z.string().optional(),
+    condition: z.string().optional(),
+    leaf: z.string().optional(),
+    leafColor: chartColor.optional(),
+    children: z.array(treeNode).optional(),
+  }),
+);
+const treeDiagram = z.object({
+  type: z.literal('tree'),
+  root: treeNode,
+  // >1 のとき N 本の小さな木を並べる（ランダムフォレスト）。
+  ensemble: z.number().int().min(1).optional(),
+  // 多数決などの結果ラベル（アンサンブル用）。
+  result: z.string().optional(),
+  caption: z.string().optional(),
+});
+
+const dendrogramDiagram = z.object({
+  type: z.literal('dendrogram'),
+  leaves: z.array(z.string()).min(2),
+  // 併合の順序。a,b は葉ラベル or 既出マージの 0 始まりインデックス。
+  merges: z.array(z.object({
+    a: z.union([z.string(), z.number()]),
+    b: z.union([z.string(), z.number()]),
+    height: z.number(),
+  })).min(1),
+  cut: z.number().optional(),
+  cutLabel: z.string().optional(),
+  y: axisSpec.optional(),
+  caption: z.string().optional(),
+});
+
+const vectorsDiagram = z.object({
+  type: z.literal('vectors'),
+  vectors: z.array(z.object({
+    label: z.string(),
+    x: z.number(),
+    y: z.number(),
+    color: chartColor.optional(),
+  })).min(2),
+  showAngle: z.boolean().default(true),
+  x: axisSpec.optional(),
+  y: axisSpec.optional(),
+  caption: z.string().optional(),
+});
+
+const neighborhoodDiagram = z.object({
+  type: z.literal('neighborhood'),
+  points: z.array(z.object({
+    x: z.number(),
+    y: z.number(),
+    cls: z.string(),
+    color: chartColor.optional(),
+  })).min(1),
+  query: z.object({ x: z.number(), y: z.number() }),
+  k: z.number().int().min(1),
+  x: axisSpec.optional(),
+  y: axisSpec.optional(),
+  caption: z.string().optional(),
+});
+
+const clustersDiagram = z.object({
+  type: z.literal('clusters'),
+  clusters: z.array(z.object({
+    label: z.string(),
+    color: chartColor.optional(),
+    points: z.array(z.tuple([z.number(), z.number()])).min(1),
+    centroid: z.tuple([z.number(), z.number()]),
+  })).min(1),
+  x: axisSpec.optional(),
+  y: axisSpec.optional(),
+  caption: z.string().optional(),
+});
+
+const sampleChartSchema = z.discriminatedUnion('type', [
+  barChart,
+  lineChart,
+  scatterChart,
+  histogramChart,
+  boxplotChart,
+  logisticChart,
+  treeDiagram,
+  dendrogramDiagram,
+  vectorsDiagram,
+  neighborhoodDiagram,
+  clustersDiagram,
+]);
+
+export type SampleChartConfig = z.infer<typeof sampleChartSchema>;
+// 模式図（静的SVG）として描く type の集合。これ以外は Recharts アイランドで描く。
+export const DIAGRAM_TYPES = [
+  'tree', 'dendrogram', 'vectors', 'neighborhood', 'clusters',
+] as const;
 
 const relationSchema = z.object({
   id: z.string(),
@@ -65,7 +280,8 @@ export const methodSchema = z.object({
   suitablePurposes: z.array(z.string()).min(1),
   inputData: z.string(),
   sampleTable: sampleTableSchema,
-  sampleChart: sampleChartSchema.optional(),
+  // すべての手法ページに「意味のある図」を必ず付ける方針のため必須にする。
+  sampleChart: sampleChartSchema,
   // 結果
   results: z.string(),
   howToRead: z.string(),

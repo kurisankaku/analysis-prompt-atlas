@@ -17,7 +17,9 @@
     "astro": "^5.18.2",
     "fuse.js": "^7.4.2",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-is": "^19.2.7",
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

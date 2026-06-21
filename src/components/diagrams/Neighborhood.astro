@@ -1,0 +1,147 @@
+---
+// src/components/diagrams/Neighborhood.astro
+// k近傍法（type:'neighborhood'）。クラス別の点・クエリ点（星）・k近傍を囲む破線の楕円で
+// 「近いk個の多数決」を示す。数値目盛り＋軸ラベル付き。
+import { tokenToVar, axisTitle } from '../../lib/chart-config';
+import { niceTicks } from '../../lib/chart-stats';
+import type { SampleChartConfig, ChartColor } from '../../content/schema';
+
+type NbConfig = Extract<SampleChartConfig, { type: 'neighborhood' }>;
+interface Props { config: NbConfig }
+const { config } = Astro.props;
+
+const W = 640;
+const H = 360;
+const leftPad = 56;
+const rightPad = 20;
+const topPad = 20;
+const botPad = 52;
+const plotW = W - leftPad - rightPad;
+const plotH = H - topPad - botPad;
+
+const allx = [...config.points.map((p) => p.x), config.query.x];
+const ally = [...config.points.map((p) => p.y), config.query.y];
+const xlo = Math.min(...allx), xhi = Math.max(...allx);
+const ylo = Math.min(...ally), yhi = Math.max(...ally);
+const padX = (xhi - xlo) * 0.12 || 1;
+const padY = (yhi - ylo) * 0.12 || 1;
+const X0 = xlo - padX, X1 = xhi + padX;
+const Y0 = ylo - padY, Y1 = yhi + padY;
+const sx = plotW / (X1 - X0);
+const sy = plotH / (Y1 - Y0);
+const px = (x: number) => leftPad + (x - X0) * sx;
+const py = (y: number) => topPad + plotH - (y - Y0) * sy;
+
+// k近傍の半径（データ距離）→ 楕円（軸ごとの尺度が異なるため）。
+const dists = config.points
+  .map((p) => Math.hypot(p.x - config.query.x, p.y - config.query.y))
+  .sort((a, b) => a - b);
+const kIdx = Math.min(config.k, dists.length) - 1;
+const rData = dists[kIdx] ?? 0;
+
+const SERIES: ChartColor[] = ['water', 'signal', 'good', 'gold'];
+const classes = [...new Set(config.points.map((p) => p.cls))];
+const classColor = (cls: string, override?: ChartColor) =>
+  tokenToVar(override ?? SERIES[Math.max(0, classes.indexOf(cls)) % SERIES.length]);
+
+const xticks = niceTicks(X0, X1, 5);
+const yticks = niceTicks(Y0, Y1, 5);
+const xTitle = axisTitle(config.x);
+const yTitle = axisTitle(config.y);
+
+// クエリの星形。
+const star = (cx: number, cy: number, rad: number) => {
+  const pts: string[] = [];
+  for (let i = 0; i < 10; i++) {
+    const rr = i % 2 ? rad * 0.45 : rad;
+    const a = -Math.PI / 2 + (i * Math.PI) / 5;
+    pts.push(`${cx + rr * Math.cos(a)},${cy + rr * Math.sin(a)}`);
+  }
+  return pts.join(' ');
+};
+---
+<div>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label={config.caption ?? 'k近傍法の模式図'}
+    class="block h-auto w-full"
+  >
+    {/* 軸 */}
+    <line x1={leftPad} y1={topPad} x2={leftPad} y2={topPad + plotH} stroke="var(--color-line-strong)" />
+    <line x1={leftPad} y1={topPad + plotH} x2={leftPad + plotW} y2={topPad + plotH} stroke="var(--color-line-strong)" />
+    <g font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-faint)">
+      {xticks.filter((t) => t >= X0 && t <= X1).map((t) => (
+        <g>
+          <line x1={px(t)} y1={topPad + plotH} x2={px(t)} y2={topPad + plotH + 4} stroke="var(--color-line)" />
+          <text x={px(t)} y={topPad + plotH + 16} text-anchor="middle">{t}</text>
+        </g>
+      ))}
+      {yticks.filter((t) => t >= Y0 && t <= Y1).map((t) => (
+        <g>
+          <line x1={leftPad - 4} y1={py(t)} x2={leftPad} y2={py(t)} stroke="var(--color-line)" />
+          <text x={leftPad - 7} y={py(t)} dy="0.32em" text-anchor="end">{t}</text>
+        </g>
+      ))}
+    </g>
+    {xTitle && (
+      <text x={leftPad + plotW / 2} y={H - 16} text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--color-ink-soft)">{xTitle}</text>
+    )}
+    {yTitle && (
+      <text x={16} y={topPad + plotH / 2} text-anchor="middle" font-family="var(--font-body)" font-size="12" fill="var(--color-ink-soft)" transform={`rotate(-90 16 ${topPad + plotH / 2})`}>{yTitle}</text>
+    )}
+
+    {/* k近傍を囲む破線楕円 */}
+    <ellipse
+      cx={px(config.query.x)}
+      cy={py(config.query.y)}
+      rx={rData * sx}
+      ry={rData * sy}
+      fill="var(--color-signal)"
+      fill-opacity="0.07"
+      stroke="var(--color-signal)"
+      stroke-opacity="0.6"
+      stroke-dasharray="5 4"
+      stroke-width="1.4"
+    />
+
+    {/* データ点（クラス別の色） */}
+    {config.points.map((p) => (
+      <circle cx={px(p.x)} cy={py(p.y)} r="5" fill={classColor(p.cls, p.color)} fill-opacity="0.85" />
+    ))}
+
+    {/* クエリ点（星） */}
+    <polygon
+      points={star(px(config.query.x), py(config.query.y), 9)}
+      fill="var(--color-signal-deep)"
+      stroke="var(--color-card)"
+      stroke-width="1.2"
+    />
+    <text
+      x={px(config.query.x) + 12}
+      y={py(config.query.y) - 8}
+      font-family="var(--font-body)"
+      font-size="10.5"
+      font-weight="700"
+      fill="var(--color-signal-deep)"
+      paint-order="stroke"
+      stroke="var(--color-card)"
+      stroke-width="3"
+      stroke-linejoin="round"
+    >{`新データ（k=${config.k}で多数決）`}</text>
+  </svg>
+
+  {/* 凡例 */}
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line px-4 py-3 text-xs text-ink-soft">
+    {classes.map((c) => (
+      <span class="inline-flex items-center gap-1.5">
+        <span class="inline-block size-3 rounded-full" style={`background:${classColor(c)}`} />
+        {c}
+      </span>
+    ))}
+    <span class="inline-flex items-center gap-1.5">
+      <span class="inline-block size-3" style="background:var(--color-signal-deep);clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)"></span>
+      新データ
+    </span>
+  </div>
+</div>

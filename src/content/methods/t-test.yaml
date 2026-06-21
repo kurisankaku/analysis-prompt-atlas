@@ -21,6 +21,13 @@ sampleTable:
     - ["B（従来）", "74"]
     - ["B（従来）", "70"]
     - ["B（従来）", "76"]
+sampleChart:
+  type: boxplot
+  caption: 2群の中央値差が偶然か検定（重なり具合に注目）。
+  y: { label: "点数", unit: "点" }
+  boxes:
+    - { label: "A群", min: 76, q1: 78, median: 82, q3: 85, max: 88, color: water }
+    - { label: "B群", min: 68, q1: 70, median: 74, q3: 76, max: 80, color: signal }
 results: t値とp値。p値が小さい（一般に0.05未満）ほど「平均の差は偶然とは言いにくい＝意味のある差」と判断する。
 howToRead: p値が0.05未満なら「平均の差は統計的に有意（偶然では説明しにくい）」。0.05以上なら「差があるとは言い切れない」。ただしp値は差の大きさそのものではないので、平均の差の実際の大きさも併せて見る。
 beforeAfter:

@@ -28,6 +28,13 @@ describe('method content', () => {
     }
   });
 
+  it('すべての手法に図（sampleChart）がある', () => {
+    for (const e of entries) {
+      expect(e.data.sampleChart, `${e.id} に図がない`).toBeTruthy();
+      expect(typeof e.data.sampleChart.type, `${e.id} の図に type がない`).toBe('string');
+    }
+  });
+
   it('related[].id がすべて実在する（参照整合）', () => {
     const ids = new Set(entries.map((e) => e.id));
     for (const e of entries) {

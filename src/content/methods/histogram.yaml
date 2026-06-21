@@ -22,7 +22,18 @@ sampleTable:
     - ["90〜100点", "3"]
 sampleChart:
   type: histogram
-  caption: 70〜80点に山がある分布。中心は約75点で左右にすそが広がる。
+  caption: 階級ごとの人数。70〜80に山。
+  x:
+    label: 点数
+    unit: 点
+  y:
+    label: 人数
+    unit: 人
+  referenceLines:
+    - axis: x
+      value: 75
+      label: 中心≈75
+      color: gold
   series:
     - label: 人数
       points: [[55, 2], [65, 5], [75, 12], [85, 8], [95, 3]]

@@ -20,6 +20,40 @@ sampleTable:
     - ["70", "0.0", "平均ちょうど"]
     - ["80", "+1.0", "やや高い"]
     - ["100", "+3.0", "極端に高い（異常の疑い）"]
+sampleChart:
+  type: histogram
+  caption: 平均から何SD離れているか＝z。±2SDを超えると珍しい。
+  x:
+    label: 値
+  y:
+    label: 頻度
+  referenceLines:
+    - axis: x
+      value: 70
+      label: 平均(z=0)
+      color: gold
+    - axis: x
+      value: 80
+      label: +1SD
+    - axis: x
+      value: 60
+      label: -1SD
+    - axis: x
+      value: 90
+      label: +2SD
+      color: signal
+    - axis: x
+      value: 50
+      label: -2SD
+      color: water
+  annotations:
+    - x: 100
+      y: 1
+      label: z=+3 異常の疑い
+      color: signal-deep
+  series:
+    - label: 頻度
+      points: [[40, 1], [50, 3], [60, 8], [70, 12], [80, 8], [90, 3], [100, 1]]
 results: 各値が平均から標準偏差いくつ分離れているかを表す数値（0が平均、±1が標準偏差1個分）。プラスは平均より大きい、マイナスは小さいことを表す。
 howToRead: 0に近いほど平均的、絶対値が大きいほど珍しい。目安として絶対値2を超えると「やや外れ値」、3を超えると「強い外れ値（異常の疑い）」とされることが多い。符号は平均より上か下かを示す。
 beforeAfter:

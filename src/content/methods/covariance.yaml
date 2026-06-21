@@ -20,6 +20,28 @@ sampleTable:
     - ["3日目", "30", "60"]
     - ["4日目", "33", "75"]
     - ["5日目", "35", "85"]
+sampleChart:
+  type: scatter
+  fit: true
+  caption: x,yが一緒に増減＝正の共分散。
+  x:
+    label: 気温
+    unit: ℃
+  y:
+    label: 売上
+    unit: 個
+  referenceLines:
+    - axis: x
+      value: 30.2
+      label: 平均
+      color: gold
+    - axis: y
+      value: 63
+      label: 平均
+      color: gold
+  series:
+    - label: 気温と売上
+      points: [[25, 40], [28, 55], [30, 60], [33, 75], [35, 85]]
 results: 連動の向きと大きさを表す1つの数値。この例ではプラスの大きな値になり、「気温が高い日ほど売上も多い」正の関係が読み取れる。
 howToRead: 符号がプラスなら2つは一緒に増える正の関係、マイナスなら片方が増えるともう片方が減る負の関係、0付近なら連動はほとんどない。ただし値の大きさは元データの単位に左右されるため、「どれくらい強いか」は共分散だけでは比べられない。強さを比べたいときは相関係数を使う。
 beforeAfter:

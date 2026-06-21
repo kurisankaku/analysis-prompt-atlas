@@ -1,0 +1,101 @@
+---
+// src/components/diagrams/Dendrogram.astro
+// 階層クラスタリング（type:'dendrogram'）。葉を下に並べ、併合をU字ブラケットで上へ。
+// 高さ軸に数値目盛りを付け、cut（破線）で「ここで切ると何グループ」を示す。
+import { layoutDendrogram } from '../../lib/dendrogram-layout';
+import { niceTicks } from '../../lib/chart-stats';
+import { axisTitle } from '../../lib/chart-config';
+import type { SampleChartConfig } from '../../content/schema';
+
+type DendroConfig = Extract<SampleChartConfig, { type: 'dendrogram' }>;
+interface Props { config: DendroConfig }
+const { config } = Astro.props;
+
+const W = 640;
+const H = 340;
+const leftPad = 56;
+const rightPad = 24;
+const topPad = 24;
+const botPad = 48;
+const plotW = W - leftPad - rightPad;
+const plotH = H - topPad - botPad;
+
+const layout = layoutDendrogram(config.leaves, config.merges);
+const n = config.leaves.length;
+const maxH = (layout.maxHeight || 1) * 1.12;
+
+const xPix = (i: number) => leftPad + (n === 1 ? 0.5 : i / (n - 1)) * plotW;
+const yPix = (h: number) => topPad + (1 - h / maxH) * plotH;
+const ticks = niceTicks(0, maxH, 5).filter((t) => t <= maxH + 1e-9);
+const yLabel = axisTitle(config.y) ?? '距離（高さ）';
+---
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  role="img"
+  aria-label={config.caption ?? 'デンドログラムの模式図'}
+  class="block h-auto w-full"
+>
+  {/* 高さ軸 */}
+  <line x1={leftPad} y1={topPad} x2={leftPad} y2={topPad + plotH} stroke="var(--color-line-strong)" />
+  <g font-family="var(--font-mono)" font-size="10" fill="var(--color-ink-faint)" text-anchor="end">
+    {ticks.map((t) => (
+      <g>
+        <line x1={leftPad - 4} y1={yPix(t)} x2={leftPad} y2={yPix(t)} stroke="var(--color-line)" />
+        <text x={leftPad - 7} y={yPix(t)} dy="0.32em">{t}</text>
+      </g>
+    ))}
+  </g>
+  <text
+    x={16}
+    y={topPad + plotH / 2}
+    text-anchor="middle"
+    font-family="var(--font-body)"
+    font-size="12"
+    fill="var(--color-ink-soft)"
+    transform={`rotate(-90 16 ${topPad + plotH / 2})`}
+  >{yLabel}</text>
+
+  {/* 併合ブラケット（U字） */}
+  <g stroke="var(--color-water)" stroke-width="1.7" fill="none" stroke-linejoin="round">
+    {layout.brackets.map((b) => (
+      <path
+        d={`M ${xPix(b.x1)} ${yPix(b.y1)} L ${xPix(b.x1)} ${yPix(b.height)} L ${xPix(b.x2)} ${yPix(b.height)} L ${xPix(b.x2)} ${yPix(b.y2)}`}
+      />
+    ))}
+  </g>
+
+  {/* カット線 */}
+  {config.cut != null && (
+    <g>
+      <line
+        x1={leftPad}
+        y1={yPix(config.cut)}
+        x2={W - rightPad}
+        y2={yPix(config.cut)}
+        stroke="var(--color-signal)"
+        stroke-dasharray="5 4"
+        stroke-width="1.6"
+      />
+      <text
+        x={W - rightPad}
+        y={yPix(config.cut) - 6}
+        text-anchor="end"
+        font-family="var(--font-body)"
+        font-size="10.5"
+        font-weight="700"
+        fill="var(--color-signal)"
+        paint-order="stroke"
+        stroke="var(--color-card)"
+        stroke-width="3"
+        stroke-linejoin="round"
+      >{config.cutLabel ?? 'ここで切る'}</text>
+    </g>
+  )}
+
+  {/* 葉ラベル */}
+  <g text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--color-ink)">
+    {config.leaves.map((l, i) => (
+      <text x={xPix(i)} y={topPad + plotH + 20}>{l}</text>
+    ))}
+  </g>
+</svg>

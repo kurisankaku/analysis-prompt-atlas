@@ -17,6 +17,20 @@ sampleTable:
   rows:
     - ["男性", "30", "70"]
     - ["女性", "55", "45"]
+sampleChart:
+  type: bar
+  caption: クロス集計の偏り（観測のズレ）を見る。
+  grouped: true
+  categories: ["男性", "女性"]
+  x: { label: "性別" }
+  y: { label: "人数", unit: "人" }
+  series:
+    - label: 購入
+      color: signal
+      points: [[1, 30], [2, 55]]
+    - label: 非購入
+      color: water
+      points: [[1, 70], [2, 45]]
 results: カイ二乗値とp値。p値が小さい（一般に0.05未満）ほど「2つのカテゴリは無関係とは言いにくい＝関連がある」と判断する。
 howToRead: p値が0.05未満なら「2つの分類に統計的な関連がある（割合の偏りは偶然では説明しにくい）」。0.05以上なら「関連があるとは言い切れない」。どの組み合わせで偏りが大きいかはクロス集計表の割合を見て解釈する。
 beforeAfter:

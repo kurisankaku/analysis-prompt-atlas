@@ -22,7 +22,11 @@ sampleTable:
     - ["E", "-1.7", "-1.7"]
 sampleChart:
   type: scatter
-  caption: 多数の変数を第1・第2主成分の2軸にまとめると、データの広がりが見える。
+  caption: 多数の変数をPC1/PC2の2軸に圧縮して広がりを見る。
+  x: { label: "第1主成分(PC1)" }
+  y: { label: "第2主成分(PC2)" }
+  annotations:
+    - { x: 2.1, y: -0.3, label: "PC1=最大ばらつき方向", place: "top" }
   series:
     - label: 主成分で見たデータ
       points: [[2.1, -0.3], [1.8, 0.5], [-0.2, 1.9], [-2.0, -0.4], [-1.7, -1.7], [0.3, 0.8]]

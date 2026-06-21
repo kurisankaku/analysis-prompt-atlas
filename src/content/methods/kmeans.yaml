@@ -23,15 +23,23 @@ sampleTable:
     - ["E", "20", "12"]
     - ["F", "22", "15"]
 sampleChart:
-  type: scatter
-  caption: 来店回数と購入金額で、3つのグループに分かれて見える（イメージ）。
-  series:
+  type: clusters
+  caption: データを3つのかたまりに分け、各重心(✕)を中心に置く。
+  x: { label: 来店回数, unit: 回 }
+  y: { label: 購入金額, unit: 千円 }
+  clusters:
     - label: グループ1（少回数・少額）
+      color: signal
       points: [[2, 5], [3, 6], [4, 7]]
+      centroid: [3, 6]
     - label: グループ2（中回数・高額）
+      color: water
       points: [[9, 40], [10, 42], [11, 38]]
+      centroid: [10, 40]
     - label: グループ3（多回数・少額）
+      color: good
       points: [[20, 12], [22, 15], [24, 13]]
+      centroid: [22, 13.3]
 results: 各データがどのグループ（クラスタ）に属するかの割り当てと、各グループの中心（重心）。例では「少額・少回数」「高額・中回数」「少額・多回数」の3タイプに分かれる。
 howToRead: 同じグループのデータは性質が似ている。各グループの重心の値を見ると、そのグループがどんな特徴の集団か（例：来店は多いが少額）が分かる。グループ数 k は自分で決めた値なので、k を変えると結果も変わる。
 beforeAfter:

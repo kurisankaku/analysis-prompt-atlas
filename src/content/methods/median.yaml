@@ -20,6 +20,19 @@ sampleTable:
     - ["C", "400"]
     - ["D", "450"]
     - ["E", "5000"]
+sampleChart:
+  type: bar
+  caption: 外れ値Eで平均(黄)は1300に跳ね上がるが、中央値(ピンク)は400で実態に近い。
+  x: { label: "人" }
+  y: { label: "年収", unit: "万円" }
+  categories: ["A", "B", "C", "D", "E"]
+  series:
+    - label: 年収
+      color: water
+      points: [[1, 300], [2, 350], [3, 400], [4, 450], [5, 5000]]
+  referenceLines:
+    - { axis: 'y', value: 400, label: "中央値400", color: signal }
+    - { axis: 'y', value: 1300, label: "平均1300", color: gold, dashed: true }
 results: 真ん中に位置する1つの数値（この例では400）。平均（約1300）より実態に近い代表値になる。
 howToRead: 中央値400・平均1300のように大きくズレるときは、一部の極端な大きい値が平均を押し上げているサイン。実感に近いのは中央値。
 beforeAfter:

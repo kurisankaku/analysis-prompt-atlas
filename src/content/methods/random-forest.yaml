@@ -19,6 +19,26 @@ sampleTable:
     - ["2", "5", "5000", "解約"]
     - ["18", "1", "4000", "継続"]
     - ["1", "8", "6000", "解約"]
+sampleChart:
+  type: tree
+  caption: 多数の木の多数決で安定して予測。
+  ensemble: 3
+  result: 継続
+  root:
+    label: 利用月数は12以上?
+    children:
+      - condition: はい
+        label: 問合せ回数は3以下?
+        children:
+          - condition: はい
+            leaf: 継続
+            leafColor: good
+          - condition: いいえ
+            leaf: 解約
+            leafColor: signal
+      - condition: いいえ
+        leaf: 解約
+        leafColor: signal
 results: 多数の木の多数決による分類・予測結果と、各要因の「重要度（予測への効き具合）」。1本の木より安定した結果が得られる。
 howToRead: 出力は「木たちの投票結果」。重要度の高い変数ほど予測を左右する。1本の木のような明快なルール図は得にくいが、精度と安定性が高い。
 beforeAfter:

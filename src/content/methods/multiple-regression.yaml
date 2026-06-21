@@ -19,6 +19,17 @@ sampleTable:
     - ["20", "28", "3", "160"]
     - ["15", "20", "10", "100"]
     - ["25", "30", "2", "190"]
+sampleChart:
+  type: bar
+  caption: 係数の符号と大きさで各要因の効きを比較。
+  categories: ["広告費", "気温", "駅距離"]
+  x: { label: "要因" }
+  y: { label: "係数（効きの大きさ）" }
+  referenceLines:
+    - { axis: y, value: 0, label: "0", color: line-strong, dashed: false }
+  series:
+    - label: 係数
+      points: [[1, 3.5], [2, 1.2], [3, -6.0]]
 results: 「売上 ＝ a1×広告費 ＋ a2×気温 ＋ a3×駅距離 ＋ b」という式と、各係数（要因ごとの効き具合）、当てはまりの良さ（自由度調整済みR²）。
 howToRead: 各係数の符号と大きさで「その要因が結果を上げるか下げるか・どれだけ効くか」を読む。ただし変数同士の単位が違うと大きさの直接比較はできない点に注意。
 beforeAfter:

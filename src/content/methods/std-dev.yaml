@@ -21,10 +21,17 @@ sampleTable:
     - ["85〜95点", "2"]
 sampleChart:
   type: histogram
-  caption: 平均約76点・標準偏差約10点。多くが66〜86点に収まる。
+  caption: 平均±1SDの範囲に大半が収まる。
+  x: { label: "点数", unit: "点" }
+  y: { label: "人数", unit: "人" }
   series:
     - label: 人数
+      color: water
       points: [[60, 1], [70, 4], [80, 3], [90, 2]]
+  referenceLines:
+    - { axis: 'x', value: 76, label: "平均", color: gold }
+  referenceAreas:
+    - { axis: 'x', from: 67, to: 85, label: "±1SD", color: water }
 results: ばらつきを表す1つの数値（この例では約10点）。平均±標準偏差（66〜86点）あたりに多くのデータが入る目安になる。
 howToRead: 標準偏差が小さいほどデータが平均の近くに揃い、大きいほど散らばっている。釣鐘型の分布なら、おおよそ平均±1標準偏差に約7割、±2標準偏差に約95％が収まる。平均が同じでも標準偏差が違えば安定度が違う。
 beforeAfter:

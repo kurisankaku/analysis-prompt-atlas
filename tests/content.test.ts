@@ -35,6 +35,13 @@ describe('method content', () => {
     }
   });
 
+  it('すべての手法に計算の手順（derivation）がある', () => {
+    for (const e of entries) {
+      expect(e.data.derivation, `${e.id} に計算の手順がない`).toBeTruthy();
+      expect(Array.isArray(e.data.derivation.steps) && e.data.derivation.steps.length, `${e.id} の手順が空`).toBeTruthy();
+    }
+  });
+
   it('related[].id がすべて実在する（参照整合）', () => {
     const ids = new Set(entries.map((e) => e.id));
     for (const e of entries) {

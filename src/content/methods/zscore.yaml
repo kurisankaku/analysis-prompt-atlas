@@ -77,6 +77,22 @@ related:
     type: 類似
     note: 偏差値は z-score を10倍して50を足したもの。中身は同じ考え方。
 aiPromptExample: このデータの各値の z-score を計算し、絶対値が2や3を超える外れ値（異常の疑い）があれば挙げて説明してください。
+derivation:
+  intro: z-scoreは「平均から標準偏差いくつ分ずれているか」を表す値。平均を引いて標準偏差で割るだけ。ここでは平均70・標準偏差10のデータで、100という値を計算する。
+  symbols:
+    - { sym: "x", meaning: "変換したい値（ここでは100）" }
+    - { sym: "\\bar{x}", meaning: "平均（ここでは70）" }
+    - { sym: "\\sigma", meaning: "標準偏差（ここでは10）" }
+    - { sym: "z", meaning: "z-score（標準得点）" }
+  steps:
+    - formula: "x - \\bar{x}"
+      explain: まず値から平均を引く。平均よりどれだけ離れているか（差）を出す。プラスなら上、マイナスなら下。
+      example: "100 - 70 = 30"
+      result: 平均より30だけ大きい
+    - formula: "z = \\dfrac{x - \\bar{x}}{\\sigma}"
+      explain: その差を標準偏差で割る。「ばらつき何個分ずれているか」に直すので、単位の違うデータでも同じものさしで比べられる。
+      example: "z = \\dfrac{30}{10} = 3"
+      result: 標準偏差3個分上＝強い外れ値の疑い
 difficulty: 初級
 tags: ["異常検知", "標準化", "外れ値"]
 keywords: ["z-score", "zスコア", "標準得点", "標準化", "外れ値", "異常検知", "標準偏差"]

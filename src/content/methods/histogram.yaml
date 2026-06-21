@@ -62,6 +62,21 @@ related:
     type: 補完
     note: 山の位置（中心）を平均で数値化すると、分布の中心が明確になる。
 aiPromptExample: このデータを適切な階級幅でヒストグラムにし、分布の形（山の数・偏り・外れ値）を一言で説明してください。
+derivation:
+  intro: ヒストグラムの棒の高さは「その階級に何件入ったか（度数）」。全体に占める割合を見たいときは度数を全体の件数で割って相対度数にする。
+  symbols:
+    - { sym: "f_k", meaning: "k番目の階級の度数（人数）" }
+    - { sym: "n", meaning: "データ全体の件数" }
+    - { sym: "r_k", meaning: "k番目の階級の相対度数（割合）" }
+  steps:
+    - formula: "n = f_1 + f_2 + \\cdots + f_K"
+      explain: まず各階級の度数を全部足して、全体の件数を求める。
+      example: "n = 2 + 5 + 12 + 8 + 3 = 30"
+      result: 全体は30人
+    - formula: "r_k = \\dfrac{f_k}{n}"
+      explain: 注目する階級の度数を全体の件数で割ると、その階級が占める割合になる。
+      example: "r = \\dfrac{12}{30} = 0.4"
+      result: 70〜80点の階級が全体の40%
 difficulty: 基礎
 tags: ["基礎統計", "可視化", "解釈しやすい"]
 keywords: ["ヒストグラム", "histogram", "度数分布", "分布", "階級", "ばらつき"]

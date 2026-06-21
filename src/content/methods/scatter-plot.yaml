@@ -59,6 +59,21 @@ related:
     type: 補完
     note: 2変数が一緒に動く度合いを数値で表す。散布図の向きと対応する。
 aiPromptExample: この2列の数値を散布図にして、関係の向き（正・負）と強さ、外れ値の有無を一言で説明してください。
+derivation:
+  intro: 散布図の中身は計算ではなく「対応づけ」。1件ごとに横軸の値xと縦軸の値yを組にして、平面上の1点として打つだけ。
+  symbols:
+    - { sym: "x_i", meaning: "i番目のデータの横軸の値（勉強時間）" }
+    - { sym: "y_i", meaning: "i番目のデータの縦軸の値（点数）" }
+    - { sym: "(x_i, y_i)", meaning: "平面に打つ1つの点" }
+  steps:
+    - formula: "(x_i, y_i)"
+      explain: 1件の横の値と縦の値を組にして、その位置に点を打つ。これを全件くり返す。
+      example: "(1, 55),\\ (2, 60),\\ (3, 70)"
+      result: A・B・Cが3つの点になる
+    - formula: "x_i \\uparrow \\Rightarrow y_i \\uparrow"
+      explain: xが増えると点が右へ、yが増えると点が上へ動く。右肩上がりに並べば正の関係。
+      example: "1 \\to 6,\\ 55 \\to 90"
+      result: 右上がりに並び、正の関係
 difficulty: 基礎
 tags: ["基礎統計", "可視化", "関係性", "解釈しやすい"]
 keywords: ["散布図", "scatter plot", "相関", "2変数", "関係性", "プロット"]

@@ -53,6 +53,25 @@ related:
     type: 発展
     note: より複雑な分類には木を多数集めるランダムフォレストが強い。
 aiPromptExample: このデータでロジスティック回帰を行い、各要因の影響と1件ごとのYES確率を出し、しきい値0.5での分類結果を説明してください。
+derivation:
+  intro: ロジスティック回帰は、まず回帰のように直線の値zを作り、それをS字の曲線で0〜1の「確率」に変換する。0.5を境にYES／NOを判定する。
+  symbols:
+    - { sym: "x", meaning: "説明変数（ここでは勉強時間）" }
+    - { sym: "z", meaning: "直線で計算した中間の値（b_0 + b_1 x）" }
+    - { sym: "p", meaning: "YESになる確率（0〜1のあいだ）" }
+    - { sym: "e", meaning: "自然対数の底（約2.718の定数）" }
+  steps:
+    - formula: "z = b_0 + b_1 x"
+      explain: まず回帰と同じように直線の値zを作る。係数b_1が正なら、xが増えるほどzが大きくなる。
+      example: "z = -4 + 1.0 \\times 5 = 1"
+      result: 勉強5時間ならz＝1
+    - formula: "p = \\dfrac{1}{1 + e^{-z}}"
+      explain: zをシグモイド関数に通すと、どんな値でも必ず0〜1のあいだに収まる。これがYESの確率になる。
+      example: "p = \\dfrac{1}{1 + e^{-1}} \\approx \\dfrac{1}{1.37} \\approx 0.73"
+      result: 勉強5時間の合格確率は約73%
+    - formula: "p \\geq 0.5"
+      explain: 確率がしきい値0.5以上ならYES（合格）、未満ならNO（不合格）と判定する。0.73は0.5以上なので「合格」と予測する。
+      result: 確率0.73はしきい値0.5以上なので合格と判定
 difficulty: 中級
 tags: ["分類", "回帰分析", "確率"]
 keywords: ["ロジスティック回帰", "logistic regression", "分類", "確率", "2値分類", "オッズ比"]

@@ -56,6 +56,26 @@ related:
     type: 発展
     note: 原因が複数あるときは説明変数を増やした重回帰分析に進む。
 aiPromptExample: このデータで単回帰分析を行い、予測式と決定係数R²を出して、関係の向き・強さと予測の信頼度を一言で説明してください。
+derivation:
+  intro: 単回帰は「データに一番フィットする直線」を1本引くこと。傾きと切片を、点と直線のズレ（誤差）が一番小さくなるように決める。
+  symbols:
+    - { sym: "\\hat{y}", meaning: "直線が予測するyの値（「ワイハット」と読む）" }
+    - { sym: "a", meaning: "傾き（xが1増えるとyがいくつ変わるか）" }
+    - { sym: "b", meaning: "切片（xが0のときのyの値）" }
+    - { sym: "\\bar{x}", meaning: "xの平均（気温の平均）" }
+    - { sym: "\\bar{y}", meaning: "yの平均（売上の平均）" }
+  steps:
+    - formula: "\\hat{y} = a x + b"
+      explain: 予測したい直線の形。傾きaと切片bの2つを決めれば、気温xから売上yを予測できる。
+      result: 求めたいのは傾きaと切片bの2つ
+    - formula: "a = \\dfrac{\\mathrm{Cov}(x,y)}{\\mathrm{Var}(x)}"
+      explain: "傾きaは「xとyが一緒に動く度合い（共分散）」を「xのばらつき（分散）」で割って求める。点と直線のズレの2乗の合計が最小になるよう選ばれる（最小二乗法）。"
+      example: "a \\approx 5"
+      result: 気温が1℃上がると売上は約5個増える
+    - formula: "b = \\bar{y} - a \\bar{x}"
+      explain: 切片bは、直線が必ずデータの平均点（x̄, ȳ）を通るように決める。平均値さえ分かれば計算できる。
+      example: "b = 68 - 5 \\times 27.2 = -68"
+      result: 予測式は「売上 ＝ 5×気温 − 68」
 difficulty: 中級
 tags: ["回帰分析", "予測", "解釈しやすい"]
 keywords: ["単回帰分析", "simple regression", "linear regression", "回帰", "予測", "最小二乗法"]

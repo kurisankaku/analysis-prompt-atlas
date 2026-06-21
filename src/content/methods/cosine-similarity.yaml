@@ -53,6 +53,26 @@ related:
     type: 類似
     note: どちらも「2つの並びがどれだけ同じように動くか」を測る。考え方が近い指標。
 aiPromptExample: これらのデータをベクトルと見なしてコサイン類似度を計算し、対象に最も傾向が似ているものを挙げて理由を説明してください。
+derivation:
+  intro: コサイン類似度は「内積」を「それぞれの長さの積」で割るだけ。長さで割ることで量の大小が消え、向き（傾向）の近さだけが残る。
+  symbols:
+    - { sym: "A \\cdot B", meaning: "内積（同じ成分どうしを掛けて足す）" }
+    - { sym: "|A|", meaning: "ベクトルAの長さ" }
+    - { sym: "|B|", meaning: "ベクトルBの長さ" }
+    - { sym: "\\cos\\theta", meaning: "コサイン類似度（向きの近さ）" }
+  steps:
+    - formula: "A \\cdot B = a_1 b_1 + a_2 b_2 + \\cdots"
+      explain: 同じ項目どうしの回数を掛けて足す。文章Aを(3,1,0)、文章Bを(6,2,0)とする。
+      example: "A \\cdot B = 3 \\times 6 + 1 \\times 2 + 0 \\times 0 = 20"
+      result: 内積は20
+    - formula: "|A| = \\sqrt{a_1^2 + a_2^2 + \\cdots}"
+      explain: 各成分を2乗して足し、ルートを取ると、そのベクトルの長さになる。
+      example: "|A| = \\sqrt{10},\\ |B| = \\sqrt{40}"
+      result: それぞれの長さが出た
+    - formula: "\\cos\\theta = \\dfrac{A \\cdot B}{|A| \\, |B|}"
+      explain: 内積を2つの長さの積で割る。長さの影響が消えて、向きの近さだけが残る。
+      example: "\\cos\\theta = \\dfrac{20}{\\sqrt{10} \\times \\sqrt{40}} = \\dfrac{20}{20} = 1.00"
+      result: 類似度1.00で向きが完全に一致
 difficulty: 初級
 tags: ["類似度", "ベクトル", "テキスト"]
 keywords: ["コサイン類似度", "cosine similarity", "類似度", "ベクトル", "角度", "テキスト類似", "レコメンド"]

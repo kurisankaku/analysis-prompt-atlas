@@ -52,6 +52,21 @@ related:
     type: 比較対象
     note: 外れ値に弱い代表値。中央値と併せて分布の偏りを判断する。
 aiPromptExample: このデータの中央値を出し、平均との差から分布の偏り（外れ値の影響）を説明してください。
+derivation:
+  intro: 中央値は「小さい順に並べて、ちょうど真ん中の値を選ぶ」だけ。合計も割り算もいらない。
+  symbols:
+    - { sym: "x_{(k)}", meaning: "小さい順に並べたときk番目の値（カッコ付きは並べ替え後を表す）" }
+    - { sym: "n", meaning: "データの個数（ここでは5件）" }
+    - { sym: "\\mathrm{Med}", meaning: "中央値（メディアン）" }
+  steps:
+    - formula: "x_{(1)} \\le x_{(2)} \\le \\cdots \\le x_{(n)}"
+      explain: まずデータを小さい順に並べる。並べ替えると「何番目が真ん中か」を位置で言えるようになる。
+      example: "300 \\le 350 \\le 400 \\le 450 \\le 5000"
+      result: 5件を小さい順に並べた
+    - formula: "\\mathrm{Med} = x_{\\left(\\frac{n+1}{2}\\right)}"
+      explain: 個数nが奇数なら、ちょうど真ん中の順位は(n+1)/2番目。その位置の値が中央値になる。
+      example: "\\mathrm{Med} = x_{\\left(\\frac{5+1}{2}\\right)} = x_{(3)} = 400"
+      result: 真ん中（3番目）は400万円
 difficulty: 基礎
 tags: ["基礎統計", "解釈しやすい", "少量データでも可"]
 keywords: ["中央値", "median", "代表値", "ロバスト"]

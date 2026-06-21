@@ -56,6 +56,21 @@ related:
     type: 併用
     note: ならした傾向に加え、ばらつきの大きさも見ると変動の激しさが分かる。
 aiPromptExample: この時系列データの3日移動平均と7日移動平均を計算し、全体の傾向（上昇か下降か）を説明してください。
+derivation:
+  intro: 移動平均は「直近k個の平均」を1つずつずらしながら計算するだけ。平均を取ることで日々のギザギザがならされて、流れが見やすくなる。
+  symbols:
+    - { sym: "x_t", meaning: "t日目（t番目）のデータの値" }
+    - { sym: "k", meaning: "平均を取る期間（窓の幅。例：3日）" }
+    - { sym: "MA_t", meaning: "t日目の移動平均の値" }
+  steps:
+    - formula: "MA_t = \\dfrac{x_{t-k+1} + \\cdots + x_t}{k}"
+      explain: いまの日を含めて直近k個の値を足し、kで割る。これがその日の移動平均。ふつうの平均を「直近k件だけ」に限定したもの。
+      example: "MA_3 = \\dfrac{100 + 120 + 80}{3} = 100"
+      result: 3日目の3日移動平均は100
+    - formula: "MA_{t+1} = \\dfrac{x_{t-k+2} + \\cdots + x_{t+1}}{k}"
+      explain: 窓を1日ぶんだけ右にずらして、また同じように平均を取る。これを繰り返すと滑らかな線ができる。
+      example: "MA_4 = \\dfrac{120 + 80 + 140}{3} \\approx 113"
+      result: 4日目は約113。1日ずつずらして繰り返す
 difficulty: 初級
 tags: ["時系列", "傾向", "平滑化"]
 keywords: ["移動平均", "moving average", "時系列", "平滑化", "トレンド", "ならし"]

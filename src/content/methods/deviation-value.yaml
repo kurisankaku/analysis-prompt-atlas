@@ -58,6 +58,22 @@ related:
     type: 類似
     note: 同じ標準化の考え方。z-scoreを「平均50・標準偏差10」に直したのが偏差値。
 aiPromptExample: この点数を、集団の平均と標準偏差をもとに偏差値へ変換し、集団の中での相対的な位置を説明してください。
+derivation:
+  intro: 偏差値は「平均からのズレを標準偏差で測り、平均がちょうど50になるように直した値」。ここでは平均60点・標準偏差10点のテストで、70点の人を計算する。
+  symbols:
+    - { sym: "x", meaning: "変換したい値（ここでは70点）" }
+    - { sym: "\\bar{x}", meaning: "集団の平均（ここでは60点）" }
+    - { sym: "\\sigma", meaning: "標準偏差（ここでは10点）" }
+    - { sym: "T", meaning: "偏差値（T-score）" }
+  steps:
+    - formula: "\\dfrac{x - \\bar{x}}{\\sigma}"
+      explain: まず「平均から標準偏差いくつ分ずれているか」を出す。平均を引いて、標準偏差で割るだけ。
+      example: "\\dfrac{70 - 60}{10} = 1"
+      result: 平均より標準偏差1個分上
+    - formula: "T = 50 + 10 \\times \\dfrac{x - \\bar{x}}{\\sigma}"
+      explain: そのズレを10倍して50に足す。平均ちょうどなら50、標準偏差1個分上がるごとに偏差値は10ずつ増える。
+      example: "T = 50 + 10 \\times 1 = 60"
+      result: 70点は偏差値60
 difficulty: 初級
 tags: ["基礎統計", "ランキング", "標準化"]
 keywords: ["偏差値", "deviation value", "T-score", "標準化", "相対評価", "順位"]

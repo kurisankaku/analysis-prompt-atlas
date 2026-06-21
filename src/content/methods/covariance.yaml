@@ -67,6 +67,26 @@ related:
     type: 類似
     note: 1変数の散らばりが分散、2変数の連動が共分散。同じ「平均からのズレ」を使う。
 aiPromptExample: この2列の共分散を計算し、2つの数値が正・負どちらの向きに連動しているかを説明してください。強さは相関係数で確認すべき点も添えてください。
+derivation:
+  intro: 共分散は「xの平均からのズレ」と「yの平均からのズレ」を掛けて平均しただけ。両方が同じ向きにズレる日が多いとプラスになる。
+  symbols:
+    - { sym: "\\bar{x}", meaning: "xの平均（気温の平均）" }
+    - { sym: "\\bar{y}", meaning: "yの平均（売上の平均）" }
+    - { sym: "n", meaning: "データの個数" }
+    - { sym: "Cov(x,y)", meaning: "共分散" }
+  steps:
+    - formula: "\\bar{x} = \\dfrac{25+28+30+33+35}{5},\\ \\bar{y} = \\dfrac{40+55+60+75+85}{5}"
+      explain: まず両方の平均を出す。これが「ズレ」を測る基準になる。
+      example: "\\bar{x} = 30.2,\\ \\bar{y} = 63"
+      result: 平均は気温30.2℃・売上63個
+    - formula: "(x_i-\\bar{x})(y_i-\\bar{y})"
+      explain: 各日について、平均からのズレ同士を掛ける。両方プラス（または両方マイナス）なら積はプラス。
+      example: "(25-30.2)(40-63) = 119.6"
+      result: 1日目の積は+119.6
+    - formula: "Cov(x,y) = \\dfrac{1}{n}\\sum (x_i-\\bar{x})(y_i-\\bar{y})"
+      explain: その積を全部足して個数で割る。プラスが多ければ全体もプラスになる。
+      example: "Cov = \\dfrac{277}{5} = 55.4"
+      result: 共分散は+55.4で正の連動
 difficulty: 中級
 tags: ["基礎統計", "関係性"]
 keywords: ["共分散", "covariance", "関係性", "連動", "正負"]

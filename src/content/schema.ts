@@ -312,8 +312,8 @@ export const methodSchema = z.object({
   whenToUse: z.array(z.string()).min(1),
   whenNotToUse: z.array(z.string()).min(1),
   cautions: z.array(z.string()).min(1),
-  // 計算の手順（数式＋平易な説明）
-  derivation: derivationSchema.optional(),
+  // 計算の手順（数式＋平易な説明）。全手法に付ける方針のため必須。
+  derivation: derivationSchema,
   // つながり・補助
   related: z.array(relationSchema),
   aiPromptExample: z.string(),

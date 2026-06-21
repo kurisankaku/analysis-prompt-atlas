@@ -58,6 +58,25 @@ related:
     type: 補完
     note: 箱の中の線は中央値。代表値として併せて読むと理解が深まる。
 aiPromptExample: このデータをグループ別の箱ひげ図にまとめ、中央値・ばらつき・外れ値の違いを一言で比較してください。
+derivation:
+  intro: 箱ひげ図は5つの数（最小・Q1・中央値・Q3・最大）で描く。箱の高さ（四分位範囲IQR）と、その1.5倍を使って外れ値の境目を決める。
+  symbols:
+    - { sym: "Q_1", meaning: "第1四分位数（下から1/4の位置）" }
+    - { sym: "Q_3", meaning: "第3四分位数（下から3/4の位置）" }
+    - { sym: "IQR", meaning: "四分位範囲（箱の高さ）" }
+  steps:
+    - formula: "IQR = Q_3 - Q_1"
+      explain: 箱の上端から下端を引くと、真ん中50%が収まる範囲（箱の高さ）になる。
+      example: "IQR = 85 - 62 = 23"
+      result: 箱の高さは23点
+    - formula: "Q_1 - 1.5 \\times IQR"
+      explain: 箱の下端からIQRの1.5倍だけ下がった所が、外れ値とみなす下の境目。
+      example: "62 - 1.5 \\times 23 = 27.5"
+      result: 27.5点より下は外れ値の目安
+    - formula: "Q_3 + 1.5 \\times IQR"
+      explain: 箱の上端からIQRの1.5倍だけ上がった所が、外れ値とみなす上の境目。
+      example: "85 + 1.5 \\times 23 = 119.5"
+      result: 119.5点より上は外れ値の目安（最大98は範囲内）
 difficulty: 初級
 tags: ["基礎統計", "可視化", "ばらつき", "外れ値検出"]
 keywords: ["箱ひげ図", "boxplot", "box plot", "五数要約", "四分位範囲", "外れ値"]

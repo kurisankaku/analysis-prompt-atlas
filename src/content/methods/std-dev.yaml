@@ -57,6 +57,21 @@ related:
     type: 発展
     note: 平均と標準偏差を使って各データの相対位置を点数化したのが偏差値。
 aiPromptExample: このデータの平均と標準偏差を計算し、多くのデータがどの範囲に収まるかを元の単位で説明してください。
+derivation:
+  intro: 標準偏差は「分散の平方根」。分散は単位が2乗（点²）で読みにくいので、平方根をとって元の単位（点）に戻したのが標準偏差。ここでは平均76点・分散100のテストで考える。
+  symbols:
+    - { sym: "\\sigma^2", meaning: "分散（ばらつきを2乗した単位で表した値）" }
+    - { sym: "\\sigma", meaning: "標準偏差（「シグマ」と読む）" }
+    - { sym: "\\sqrt{\\;}", meaning: "平方根（2乗すると中身になる数）" }
+  steps:
+    - formula: "\\sigma^2 = \\dfrac{1}{n}\\sum_{i=1}^{n}(x_i - \\bar{x})^2"
+      explain: まず分散を求める。各データの平均からのズレを2乗して平均した値で、ばらつきの大きさを表す。
+      example: "\\sigma^2 = 100"
+      result: 分散は100（単位は点²）
+    - formula: "\\sigma = \\sqrt{\\sigma^2}"
+      explain: 分散の平方根をとる。2乗で大きくなり単位もズレた値を、平方根で元の単位（点）に戻すと直感的に読める。
+      example: "\\sigma = \\sqrt{100} = 10"
+      result: 標準偏差は約10点
 difficulty: 初級
 tags: ["基礎統計", "ばらつき", "解釈しやすい"]
 keywords: ["標準偏差", "standard deviation", "SD", "ばらつき", "散らばり", "シグマ"]

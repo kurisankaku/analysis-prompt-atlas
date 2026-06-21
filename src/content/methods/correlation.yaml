@@ -24,7 +24,7 @@ sampleTable:
 sampleChart:
   type: scatter
   fit: true
-  caption: 強い正の相関（r≈+0.9）。直線によく乗る。
+  caption: とても強い正の相関（r≈+0.99）。直線によく乗る。
   x:
     label: 広告費
     unit: 万円
@@ -60,6 +60,22 @@ related:
     type: 発展
     note: 関係を直線の式にして予測まで行うのが単回帰。相関の次のステップ。
 aiPromptExample: この2列の相関係数を計算し、関係の強さと向きを説明してください。あわせて相関は因果ではない点に注意して解釈してください。
+derivation:
+  intro: 相関係数は「共分散」を2つのばらつき（標準偏差）で割って、−1〜+1におさめた値。割り算で単位を打ち消し、関係の強さだけを取り出す。
+  symbols:
+    - { sym: "Cov(x,y)", meaning: "共分散（一緒に動く度合い）" }
+    - { sym: "\\sigma_x", meaning: "xの標準偏差（ばらつき）" }
+    - { sym: "\\sigma_y", meaning: "yの標準偏差（ばらつき）" }
+    - { sym: "r", meaning: "相関係数（−1〜+1）" }
+  steps:
+    - formula: "Cov(x,y) = \\dfrac{1}{n}\\sum (x_i-\\bar{x})(y_i-\\bar{y})"
+      explain: まず平均からのズレ同士を掛けて平均し、一緒に動く度合い（共分散）を出す。
+      example: "Cov \\approx 360.4"
+      result: 共分散はプラス（一緒に増える）
+    - formula: "r = \\dfrac{Cov(x,y)}{\\sigma_x \\, \\sigma_y}"
+      explain: 共分散を2つのばらつきの積で割ると、単位が消えて−1〜+1の値になる。
+      example: "r \\approx \\dfrac{360.4}{8.54 \\times 42.6} \\approx 0.99"
+      result: 0.99で非常に強い正の相関
 difficulty: 初級
 tags: ["基礎統計", "関係性", "解釈しやすい"]
 keywords: ["相関係数", "correlation", "ピアソン", "相関", "関係性", "-1から1"]

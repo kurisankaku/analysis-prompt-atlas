@@ -40,6 +40,18 @@ export const sampleMethod = {
   ],
   aiPromptExample:
     'このデータの平均を出し、全体の水準を一言で説明してください。',
+  derivation: {
+    intro: 'テスト用の計算手順。',
+    symbols: [{ sym: 'n', meaning: 'データの個数' }],
+    steps: [
+      {
+        formula: '\\bar{x} = \\dfrac{1}{n}\\sum_{i=1}^{n} x_i',
+        explain: 'すべての値を足して個数で割る。',
+        example: '\\bar{x} = \\dfrac{400}{5} = 80',
+        result: '平均は80点',
+      },
+    ],
+  },
   difficulty: '基礎',
   tags: ['基礎統計', '解釈しやすい'],
   keywords: ['平均', 'mean', 'average', '代表値'],

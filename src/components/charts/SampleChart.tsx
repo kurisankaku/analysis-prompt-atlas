@@ -47,16 +47,68 @@ function padDomain(lo: number, hi: number, frac = 0.08): [number, number] {
   return [lo - pad, hi + pad];
 }
 
+const fmtVal = (v: number) => (Math.round(v * 100) / 100).toLocaleString('ja-JP');
+
+// 文字列のおおよその描画幅（全角は約1em、半角は約0.58em）。
+const textWidth = (s: string, fs: number) => {
+  let w = 0;
+  for (const ch of s) w += /[　-鿿＀-￯]/.test(ch) ? fs : fs * 0.58;
+  return w;
+};
+
+// 基準線・基準帯に「名前＋数値」を背景つきチップで“常時”表示する Recharts ラベル。
+// ホバー不要で、一番見たい値が必ずグラフ上で読める。
+function refChip(text: string, color: string, place: 'yLine' | 'xLine' | 'area') {
+  return function RefChipLabel(props: { viewBox?: { x?: number; y?: number; width?: number; height?: number } }) {
+    const vb = props?.viewBox ?? {};
+    const fs = 11;
+    const padX = 5;
+    const padY = 3;
+    const w = textWidth(text, fs) + padX * 2;
+    const h = fs + padY * 2;
+    const vx = vb.x ?? 0;
+    const vy = vb.y ?? 0;
+    const vw = vb.width ?? 0;
+    let x: number;
+    let y: number;
+    if (place === 'yLine') {
+      x = vx + vw - w - 4; // 横線の右端、線に乗せる
+      y = vy - h / 2;
+    } else if (place === 'xLine') {
+      x = vx - w / 2;      // 縦線の上端
+      y = vy + 2;
+    } else {
+      x = vx + vw / 2 - w / 2; // 帯の上辺中央
+      y = vy + 3;
+    }
+    return (
+      <g>
+        <rect x={x} y={y} width={w} height={h} rx={3} fill="var(--color-card)" stroke={color} strokeWidth={1} />
+        <text x={x + w / 2} y={y + h / 2} textAnchor="middle" dominantBaseline="central" fontSize={fs} fontWeight={700} fontFamily="var(--font-body)" fill={color}>
+          {text}
+        </text>
+      </g>
+    );
+  };
+}
+
 // referenceLines / referenceAreas / annotations を Recharts 要素に変換する。
 function refElements(config: SampleChartConfig, opts: { allowX: boolean; allowAnnotations: boolean }): ReactElement[] {
   const out: ReactElement[] = [];
   const rls = 'referenceLines' in config ? config.referenceLines : [];
   const ras = 'referenceAreas' in config ? config.referenceAreas : [];
   const ans = 'annotations' in config ? config.annotations : [];
+  const xUnit = 'x' in config && config.x?.unit ? config.x.unit : '';
+  const yUnit = 'y' in config && config.y?.unit ? config.y.unit : '';
 
   rls.forEach((rl, i) => {
     if (rl.axis === 'x' && !opts.allowX) return;
     const color = tokenToVar(rl.color, 'gold');
+    const unit = rl.axis === 'y' ? yUnit : xUnit;
+    const valStr = fmtVal(rl.value);
+    const base = rl.label ?? '';
+    // ラベルに既に数値が含まれていなければ「名前 値単位」に補う。
+    const text = base.includes(valStr) ? base : [base, `${valStr}${unit}`].filter(Boolean).join(' ');
     out.push(
       <ReferenceLine
         key={`rl-${i}`}
@@ -65,7 +117,7 @@ function refElements(config: SampleChartConfig, opts: { allowX: boolean; allowAn
         strokeWidth={1.6}
         strokeDasharray={rl.dashed ? '5 4' : undefined}
         ifOverflow="extendDomain"
-        label={rl.label ? { value: rl.label, position: rl.axis === 'y' ? 'right' : 'top', fill: color, fontSize: 11, fontWeight: 700 } : undefined}
+        label={refChip(text, color, rl.axis === 'y' ? 'yLine' : 'xLine')}
       />,
     );
   });
@@ -73,6 +125,9 @@ function refElements(config: SampleChartConfig, opts: { allowX: boolean; allowAn
   ras.forEach((ra, i) => {
     if (ra.axis === 'x' && !opts.allowX) return;
     const color = tokenToVar(ra.color, 'water');
+    const unit = ra.axis === 'y' ? yUnit : xUnit;
+    const range = `${fmtVal(ra.from)}〜${fmtVal(ra.to)}${unit}`;
+    const text = [ra.label ?? '', range].filter(Boolean).join(' ');
     out.push(
       <ReferenceArea
         key={`ra-${i}`}
@@ -82,7 +137,7 @@ function refElements(config: SampleChartConfig, opts: { allowX: boolean; allowAn
         stroke={color}
         strokeOpacity={0.35}
         ifOverflow="extendDomain"
-        label={ra.label ? { value: ra.label, fill: color, fontSize: 11 } : undefined}
+        label={refChip(text, color, 'area')}
       />,
     );
   });
@@ -183,8 +238,8 @@ function buildChart(config: SampleChartConfig, dims?: { width: number; height: n
         <XAxis dataKey="x" type="number" domain={[xlo, xhi]} ticks={niceTicks(xlo, xhi, 6)} tickFormatter={fmtTick} axisLine={axisLine} tickLine={tickLine} tick={tickStyle} label={xAxisLabel(xSpec)} />
         <YAxis type="number" domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} tickFormatter={fmtTick} axisLine={axisLine} tickLine={tickLine} tick={tickStyle} label={yAxisLabel(ySpec)} />
         <Tooltip content={<TipContent />} cursor={cursor} />
-        <ReferenceLine y={config.threshold} stroke="var(--color-gold)" strokeDasharray="5 4" strokeWidth={1.6} label={{ value: `しきい値 ${config.threshold}`, position: 'right', fill: 'var(--color-gold)', fontSize: 11, fontWeight: 700 }} />
-        <ReferenceLine x={boundary} stroke="var(--color-ink-faint)" strokeDasharray="3 3" label={{ value: `境界 x=${Math.round(boundary * 10) / 10}`, position: 'top', fill: 'var(--color-ink-faint)', fontSize: 10 }} />
+        <ReferenceLine y={config.threshold} stroke="var(--color-gold)" strokeDasharray="5 4" strokeWidth={1.6} label={refChip(`しきい値 ${config.threshold}`, 'var(--color-gold)', 'yLine')} />
+        <ReferenceLine x={boundary} stroke="var(--color-ink-faint)" strokeDasharray="3 3" label={refChip(`境界 x=${Math.round(boundary * 10) / 10}`, 'var(--color-ink-faint)', 'xLine')} />
         {refElements(config, { allowX: true, allowAnnotations: true })}
         <Line dataKey="p" stroke="var(--color-signal)" strokeWidth={2.4} dot={false} isAnimationActive={false} name="合格確率" />
         <Scatter data={obs} dataKey="y" fill="var(--color-water)" name="実測(0/1)" isAnimationActive={false} />

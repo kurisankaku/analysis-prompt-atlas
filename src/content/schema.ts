@@ -281,6 +281,18 @@ const derivationSchema = z.object({
 });
 export type Derivation = z.infer<typeof derivationSchema>;
 
+// ---------------------------------------------------------------------------
+// 答え（keyResults）— このページの例データで「実際に求まった値」
+// ---------------------------------------------------------------------------
+// データ表の直下に大きく出す。value は "80" / "M" / "+0.99" / "15〜30" など柔軟に文字列。
+const keyResult = z.object({
+  label: z.string(),               // 例: 平均
+  value: z.string(),               // 例: 80
+  unit: z.string().optional(),     // 例: 点
+  hint: z.string().optional(),     // 例: 合計400 ÷ 5人
+});
+export type KeyResult = z.infer<typeof keyResult>;
+
 const relationSchema = z.object({
   id: z.string(),
   type: z.enum(RELATION_TYPES),
@@ -302,6 +314,8 @@ export const methodSchema = z.object({
   suitablePurposes: z.array(z.string()).min(1),
   inputData: z.string(),
   sampleTable: sampleTableSchema,
+  // 例データで実際に求まった「答え」。データ表の直下に大きく表示する。
+  keyResults: z.array(keyResult).min(1).optional(),
   // すべての手法ページに「意味のある図」を必ず付ける方針のため必須にする。
   sampleChart: sampleChartSchema,
   // 結果

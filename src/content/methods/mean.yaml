@@ -20,9 +20,11 @@ sampleTable:
     - ["Cさん", "80"]
     - ["Dさん", "90"]
     - ["Eさん", "100"]
+keyResults:
+  - { label: 平均, value: "80", unit: 点, hint: 合計400 ÷ 5人 }
 sampleChart:
   type: bar
-  caption: 5人の点数。棒の高さが各点、黄色の線が平均80点。
+  caption: 5人の点数。棒の高さが各点、黄色の線が平均。
   x: { label: "生徒" }
   y: { label: "点数", unit: "点" }
   categories: ["Aさん", "Bさん", "Cさん", "Dさん", "Eさん"]
@@ -31,7 +33,7 @@ sampleChart:
       color: signal
       points: [[1, 60], [2, 70], [3, 80], [4, 90], [5, 100]]
   referenceLines:
-    - { axis: 'y', value: 80, label: "平均80点", color: gold, dashed: true }
+    - { axis: 'y', value: 80, label: "平均", color: gold, dashed: true }
 results: データ全体を代表する1つの数値（この例では80点）。全体としてどのくらいの水準かを一言で表せる。
 howToRead: 平均80点なら「全体の中心はおよそ80点」。ただし全員が80点という意味ではなく、低い人も高い人もいる。極端な値があると平均はそちらに引っ張られる。
 beforeAfter:

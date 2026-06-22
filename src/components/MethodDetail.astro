@@ -126,6 +126,31 @@ const relationClass: Record<Method['related'][number]['type'], string> = {
       </h2>
       <p class="mt-3.5 text-ink">{method.inputData}</p>
       <SampleTable table={method.sampleTable} />
+
+      {/* このデータでの「答え」（求められた値）をデータ表の直下に大きく出す */}
+      {
+        method.keyResults && method.keyResults.length > 0 && (
+          <div class="mt-5 rounded-lg border border-gold bg-card px-[18px] py-4">
+            <div class="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-gold">
+              このデータでの答え
+            </div>
+            <div class="mt-2.5 flex flex-wrap items-end gap-x-8 gap-y-3.5">
+              {method.keyResults.map((r) => (
+                <div>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-[0.84rem] text-ink-soft">{r.label}</span>
+                    <span class="font-display text-[1.75rem] font-bold leading-none text-ink">
+                      {r.value}
+                    </span>
+                    {r.unit && <span class="text-[0.92rem] text-ink-soft">{r.unit}</span>}
+                  </div>
+                  {r.hint && <div class="mt-1 text-[0.78rem] text-ink-faint">{r.hint}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
     </section>
 
     {/* ---------- サンプルで見る（sampleChart がある場合のみ） ---------- */}

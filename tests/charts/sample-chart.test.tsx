@@ -37,7 +37,7 @@ const barCfg: SampleChartConfig = {
   y: { label: '点数', unit: '点' },
   categories: ['A', 'B', 'C', 'D', 'E'],
   series: [{ label: '点数', points: [[1, 60], [2, 70], [3, 80], [4, 90], [5, 100]] }],
-  referenceLines: [{ axis: 'y', value: 80, label: '平均80点', color: 'gold', dashed: true }],
+  referenceLines: [{ axis: 'y', value: 80, label: '平均', color: 'gold', dashed: true }],
   referenceAreas: [],
   annotations: [],
 } as SampleChartConfig;
@@ -89,10 +89,17 @@ describe('SampleChart 構造', () => {
     expect(container.querySelectorAll('.recharts-cartesian-axis-tick').length).toBeGreaterThan(0);
   });
 
-  it('基準線（平均線）を描く', () => {
+  it('基準線に名前＋数値（単位つき）を常時表示する', () => {
     const { container } = render(<SampleChart config={scatterCfg} {...D} />);
     expect(container.querySelector('.recharts-reference-line')).toBeTruthy();
+    // 「平均」だけでなく実数値＋単位もグラフ上に出る
     expect(container.innerHTML).toContain('平均');
+    expect(container.innerHTML).toContain('180万円');
+  });
+
+  it('棒グラフの平均線も数値を表示する（平均 80点）', () => {
+    const { container } = render(<SampleChart config={barCfg} {...D} />);
+    expect(container.innerHTML).toContain('80点');
   });
 
   it('回帰直線（fit）の R² ラベルを描く', () => {

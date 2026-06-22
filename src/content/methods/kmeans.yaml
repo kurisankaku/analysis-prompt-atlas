@@ -22,6 +22,8 @@ sampleTable:
     - ["D", "10", "42"]
     - ["E", "20", "12"]
     - ["F", "22", "15"]
+keyResults:
+  - { label: 見つかったグループ, value: "3つ", hint: 各かたまりの重心を中心に分割 }
 sampleChart:
   type: clusters
   caption: データを3つのかたまりに分け、各重心(✕)を中心に置く。

@@ -20,6 +20,9 @@ sampleTable:
     - ["中央値", "75"]
     - ["第3四分位数", "85"]
     - ["最大値", "98"]
+keyResults:
+  - { label: 中央値, value: "75", unit: 点, hint: 真ん中の人の点 }
+  - { label: 四分位範囲(IQR), value: "23", unit: 点, hint: 85 − 62 }
 sampleChart:
   type: boxplot
   caption: 箱が真ん中50%、中の線が中央値、ひげが全体の広がり。

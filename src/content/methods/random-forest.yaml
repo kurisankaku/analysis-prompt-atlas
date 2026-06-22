@@ -19,6 +19,8 @@ sampleTable:
     - ["2", "5", "5000", "解約"]
     - ["18", "1", "4000", "継続"]
     - ["1", "8", "6000", "解約"]
+keyResults:
+  - { label: 多数決の結果, value: "継続", hint: 3本中2本が継続（継続・継続・解約） }
 sampleChart:
   type: tree
   caption: 多数の木の多数決で安定して予測。

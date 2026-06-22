@@ -17,6 +17,9 @@ sampleTable:
   rows:
     - ["男性", "30", "70"]
     - ["女性", "55", "45"]
+keyResults:
+  - { label: 判定, value: "関連あり", hint: p<0.05 }
+  - { label: 男性×購入の期待度数, value: "42.5", unit: 人, hint: 100×85÷200 }
 sampleChart:
   type: bar
   caption: クロス集計の偏り（観測のズレ）を見る。

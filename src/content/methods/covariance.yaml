@@ -20,6 +20,8 @@ sampleTable:
     - ["3日目", "30", "60"]
     - ["4日目", "33", "75"]
     - ["5日目", "35", "85"]
+keyResults:
+  - { label: 共分散, value: "+55.4", hint: 正＝一緒に増える }
 sampleChart:
   type: scatter
   fit: true

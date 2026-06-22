@@ -21,6 +21,8 @@ sampleTable:
     - ["D", "4", "75"]
     - ["E", "5", "85"]
     - ["F", "6", "90"]
+keyResults:
+  - { label: 関係の向き, value: "正（右上がり）", hint: 勉強時間が増えると点数も上がる }
 sampleChart:
   type: scatter
   fit: true

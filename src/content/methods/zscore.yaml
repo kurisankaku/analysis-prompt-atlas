@@ -20,6 +20,8 @@ sampleTable:
     - ["70", "0.0", "平均ちょうど"]
     - ["80", "+1.0", "やや高い"]
     - ["100", "+3.0", "極端に高い（異常の疑い）"]
+keyResults:
+  - { label: 100のz, value: "+3", hint: 平均から3SD離れている（異常の疑い） }
 sampleChart:
   type: histogram
   caption: 平均から何SD離れているか＝z。±2SDを超えると珍しい。
@@ -30,7 +32,7 @@ sampleChart:
   referenceLines:
     - axis: x
       value: 70
-      label: 平均(z=0)
+      label: 平均
       color: gold
     - axis: x
       value: 80

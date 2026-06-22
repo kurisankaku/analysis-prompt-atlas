@@ -19,6 +19,9 @@ sampleTable:
     - ["65〜75点", "4"]
     - ["75〜85点", "3"]
     - ["85〜95点", "2"]
+keyResults:
+  - { label: 平均, value: "76", unit: 点 }
+  - { label: 標準偏差, value: "10", unit: 点, hint: "√分散（分散100）" }
 sampleChart:
   type: histogram
   caption: 平均±1SDの範囲に大半が収まる。

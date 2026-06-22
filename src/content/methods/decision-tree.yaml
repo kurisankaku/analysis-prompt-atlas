@@ -19,6 +19,8 @@ sampleTable:
     - ["雨", "20", "不来店"]
     - ["晴", "15", "不来店"]
     - ["曇", "25", "来店"]
+keyResults:
+  - { label: 分類結果, value: "晴れ&22℃以上 → 来店", hint: 枝をたどって葉で決まる }
 sampleChart:
   type: tree
   caption: 条件で枝分かれし、葉で分類が決まる。

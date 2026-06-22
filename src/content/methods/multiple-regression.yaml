@@ -19,6 +19,9 @@ sampleTable:
     - ["20", "28", "3", "160"]
     - ["15", "20", "10", "100"]
     - ["25", "30", "2", "190"]
+keyResults:
+  - { label: 予測式, value: "売上=b0+3.5×広告費+1.2×気温−6.0×駅距離" }
+  - { label: 最も効く要因, value: "駅距離（−6.0）", hint: 係数の絶対値が最大 }
 sampleChart:
   type: bar
   caption: 係数の符号と大きさで各要因の効きを比較。
@@ -26,7 +29,7 @@ sampleChart:
   x: { label: "要因" }
   y: { label: "係数（効きの大きさ）" }
   referenceLines:
-    - { axis: y, value: 0, label: "0", color: line-strong, dashed: false }
+    - { axis: y, value: 0, label: "ゼロ基準", color: line-strong, dashed: false }
   series:
     - label: 係数
       points: [[1, 3.5], [2, 1.2], [3, -6.0]]

@@ -21,6 +21,8 @@ sampleTable:
     - ["3", "M"]
     - ["4", "S"]
     - ["5", "M"]
+keyResults:
+  - { label: 最頻値, value: "M", hint: 3着で最多 }
 sampleChart:
   type: bar
   caption: 最も多いサイズ（最頻値）。Mが3着で一番売れている。

@@ -20,6 +20,8 @@ sampleTable:
     - ["C", "-0.2", "1.9"]
     - ["D", "-2.0", "-0.4"]
     - ["E", "-1.7", "-1.7"]
+keyResults:
+  - { label: 第1主成分の寄与率, value: "約70%", hint: 2軸で大半のばらつきを説明 }
 sampleChart:
   type: scatter
   caption: 多数の変数をPC1/PC2の2軸に圧縮して広がりを見る。

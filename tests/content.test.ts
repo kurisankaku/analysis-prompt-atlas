@@ -35,6 +35,12 @@ describe('method content', () => {
     }
   });
 
+  it('すべての手法に答え（keyResults）がある', () => {
+    for (const e of entries) {
+      expect(Array.isArray(e.data.keyResults) && e.data.keyResults.length, `${e.id} に答えがない`).toBeTruthy();
+    }
+  });
+
   it('すべての手法に計算の手順（derivation）がある', () => {
     for (const e of entries) {
       expect(e.data.derivation, `${e.id} に計算の手順がない`).toBeTruthy();

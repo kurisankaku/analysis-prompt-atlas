@@ -19,6 +19,8 @@ sampleTable:
     - ["120", "9", "みかん"]
     - ["160", "6", "りんご"]
     - ["110", "8", "みかん"]
+keyResults:
+  - { label: 新データの分類, value: "りんご", hint: 近い3個の多数決 }
 sampleChart:
   type: neighborhood
   caption: 新データに近いk個の多数決でクラスを決める。

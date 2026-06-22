@@ -20,6 +20,9 @@ sampleTable:
     - ["70〜80点", "12"]
     - ["80〜90点", "8"]
     - ["90〜100点", "3"]
+keyResults:
+  - { label: 最多の階級, value: "70〜80点", hint: 12人 }
+  - { label: 中心の目安, value: "75", unit: 点, hint: 階級の中央 }
 sampleChart:
   type: histogram
   caption: 階級ごとの人数。70〜80に山。
@@ -32,7 +35,7 @@ sampleChart:
   referenceLines:
     - axis: x
       value: 75
-      label: 中心≈75
+      label: 中心
       color: gold
   series:
     - label: 人数

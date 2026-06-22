@@ -20,6 +20,9 @@ sampleTable:
     - ["60点", "50"]
     - ["70点", "60"]
     - ["80点", "70"]
+keyResults:
+  - { label: 70点の偏差値, value: "60", hint: 平均より標準偏差1個分上 }
+  - { label: 60点の偏差値, value: "50", hint: 平均ちょうど＝偏差値50 }
 sampleChart:
   type: line
   caption: 点数が平均なら偏差値50。平均±標準偏差ごとに偏差値は10ずつ動く。
@@ -30,7 +33,7 @@ sampleChart:
       color: signal
       points: [[40, 30], [50, 40], [60, 50], [70, 60], [80, 70]]
   referenceLines:
-    - { axis: 'y', value: 50, label: "平均=偏差値50", color: gold }
+    - { axis: 'y', value: 50, label: "平均", color: gold }
   annotations:
     - { x: 70, y: 60, label: "偏差値60" }
 results: 各データの相対位置を表す数値（平均ちょうどなら50）。点数が平均より標準偏差1つ分上なら偏差値60、1つ分下なら40になる。

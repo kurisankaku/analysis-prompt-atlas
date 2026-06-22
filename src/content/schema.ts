@@ -314,8 +314,8 @@ export const methodSchema = z.object({
   suitablePurposes: z.array(z.string()).min(1),
   inputData: z.string(),
   sampleTable: sampleTableSchema,
-  // 例データで実際に求まった「答え」。データ表の直下に大きく表示する。
-  keyResults: z.array(keyResult).min(1).optional(),
+  // 例データで実際に求まった「答え」。データ表の直下に大きく表示する。全手法に付ける。
+  keyResults: z.array(keyResult).min(1),
   // すべての手法ページに「意味のある図」を必ず付ける方針のため必須にする。
   sampleChart: sampleChartSchema,
   // 結果

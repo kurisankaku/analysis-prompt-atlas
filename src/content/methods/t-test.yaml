@@ -21,6 +21,9 @@ sampleTable:
     - ["B（従来）", "74"]
     - ["B（従来）", "70"]
     - ["B（従来）", "76"]
+keyResults:
+  - { label: 平均の差, value: "約8点", hint: A群81.7 − B群73.3 }
+  - { label: 判定, value: "有意差あり", hint: p<0.05 }
 sampleChart:
   type: boxplot
   caption: 2群の中央値差が偶然か検定（重なり具合に注目）。

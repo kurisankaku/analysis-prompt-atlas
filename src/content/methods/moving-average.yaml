@@ -21,6 +21,8 @@ sampleTable:
     - ["4日", "140", "113"]
     - ["5日", "90", "103"]
     - ["6日", "160", "130"]
+keyResults:
+  - { label: 直近の3日移動平均, value: "130", unit: 万円, hint: 6日目 (140+90+160)÷3 }
 sampleChart:
   type: line
   caption: ギザギザの元データを移動平均でなめらかに。

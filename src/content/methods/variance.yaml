@@ -17,6 +17,9 @@ sampleTable:
   rows:
     - ["A組", "58, 60, 62, 59, 61"]
     - ["B組", "40, 60, 80, 50, 70"]
+keyResults:
+  - { label: A組の分散, value: "2", hint: ばらつき小 }
+  - { label: B組の分散, value: "200", hint: 平均は同じ60点でも散らばり大 }
 sampleChart:
   type: boxplot
   caption: 平均が同じでも箱の高さ＝ばらつきが違う。A組は揃い、B組は大きく散らばる。

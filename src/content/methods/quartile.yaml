@@ -19,6 +19,10 @@ sampleTable:
     - ["4〜6位", "18, 20, 22"]
     - ["7〜9位", "25, 28, 30"]
     - ["10〜11位", "35, 60"]
+keyResults:
+  - { label: 第1四分位数, value: "15", unit: 分, hint: 下から25% }
+  - { label: 中央値, value: "22", unit: 分, hint: 第2四分位数 }
+  - { label: 第3四分位数, value: "30", unit: 分, hint: 四分位範囲（IQR）は15分 }
 sampleChart:
   type: boxplot
   caption: 箱の幅がIQR=四分位範囲（Q3−Q1）。真ん中50％の散らばりを外れ値に強く示す。

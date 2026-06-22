@@ -21,6 +21,8 @@ sampleTable:
     - ["4日目", "25", "200"]
     - ["5日目", "30", "210"]
     - ["6日目", "35", "250"]
+keyResults:
+  - { label: 相関係数 r, value: "+0.99", hint: とても強い正の相関 }
 sampleChart:
   type: scatter
   fit: true

@@ -40,6 +40,7 @@ export const sampleMethod = {
   ],
   aiPromptExample:
     'このデータの平均を出し、全体の水準を一言で説明してください。',
+  keyResults: [{ label: '平均', value: '80', unit: '点', hint: '合計400 ÷ 5人' }],
   derivation: {
     intro: 'テスト用の計算手順。',
     symbols: [{ sym: 'n', meaning: 'データの個数' }],

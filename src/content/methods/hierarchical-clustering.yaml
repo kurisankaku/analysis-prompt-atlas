@@ -21,6 +21,8 @@ sampleTable:
     - ["C", "2", "300"]
     - ["D", "3", "290"]
     - ["E", "5", "200"]
+keyResults:
+  - { label: 2グループに分けると, value: "{A,B,E} / {C,D}", hint: 似た商品どうしが先に併合 }
 sampleChart:
   type: dendrogram
   caption: 似た者どうしを順に併合。切る高さでグループ数が決まる。

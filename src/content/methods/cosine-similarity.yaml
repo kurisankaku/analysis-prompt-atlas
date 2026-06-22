@@ -21,6 +21,9 @@ sampleTable:
     - ["B", "6", "2", "0", "1.00"]
     - ["C", "0", "1", "3", "0.10"]
     - ["D", "1", "0", "0", "0.95"]
+keyResults:
+  - { label: cosθ（文章A・B）, value: "1.00", hint: 向きが同じ＝似ている }
+  - { label: cosθ（文章A・C）, value: "0.10", hint: 向きが違う＝似ていない }
 sampleChart:
   type: vectors
   caption: 向きが近いほど似ている（cosθが1に近い）。

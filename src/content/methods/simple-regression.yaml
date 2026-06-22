@@ -20,6 +20,9 @@ sampleTable:
     - ["28", "70"]
     - ["30", "85"]
     - ["33", "100"]
+keyResults:
+  - { label: 回帰式, value: "売上=5×気温−68", hint: 傾き5・切片−68 }
+  - { label: 傾き, value: "5", unit: 個/℃, hint: 気温が1℃上がると売上+5個 }
 sampleChart:
   type: scatter
   caption: データを貫く回帰直線で予測。R²は当てはまりの良さ。

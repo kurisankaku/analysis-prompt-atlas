@@ -19,6 +19,9 @@ sampleTable:
     - ["3", "0"]
     - ["5", "1"]
     - ["8", "1"]
+keyResults:
+  - { label: 勉強5時間の合格確率, value: "約73%", hint: 0.5以上→合格と判定 }
+  - { label: 判定, value: "合格", hint: しきい値0.5以上 }
 sampleChart:
   type: logistic
   caption: 0/1の点をS字曲線で確率に。0.5を境に判定。

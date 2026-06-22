@@ -56,6 +56,15 @@ related:
     type: 類似
     note: どちらも「2つの並びがどれだけ同じように動くか」を測る。考え方が近い指標。
 aiPromptExample: これらのデータをベクトルと見なしてコサイン類似度を計算し、対象に最も傾向が似ているものを挙げて理由を説明してください。
+codeExample:
+  lang: python
+  note: scikit-learn の cosine_similarity を使用。
+  code: |
+    from sklearn.metrics.pairwise import cosine_similarity  # 類似度の計算用
+    A = [3, 1, 0]                                           # このページの例（文章Aの単語出現回数 猫/犬/魚）
+    B = [6, 2, 0]                                           # このページの例（文章Bの単語出現回数）
+    cos = cosine_similarity([A], [B])[0, 0]                 # AとBのコサイン類似度を計算
+    print(round(cos, 2))                                    # 1.0 → 答えカードと一致（向きが同じ＝似ている）
 derivation:
   intro: コサイン類似度は「内積」を「それぞれの長さの積」で割るだけ。長さで割ることで量の大小が消え、向き（傾向）の近さだけが残る。
   symbols:

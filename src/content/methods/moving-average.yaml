@@ -58,6 +58,15 @@ related:
     type: 併用
     note: ならした傾向に加え、ばらつきの大きさも見ると変動の激しさが分かる。
 aiPromptExample: この時系列データの3日移動平均と7日移動平均を計算し、全体の傾向（上昇か下降か）を説明してください。
+codeExample:
+  lang: python
+  note: pandas を使用。
+  code: |
+    import pandas as pd                       # 時系列処理に pandas を使う
+    sales = pd.Series([100, 120, 80, 140, 90, 160])  # 日次の売上（1〜6日目）
+    ma3 = sales.rolling(3).mean()             # 窓幅3日の移動平均（1日ずつずらして平均）
+    print(ma3.round().tolist())               # [nan, nan, 100, 113, 103, 130]
+    print(round(ma3.iloc[-1]))                # 直近(6日目)の3日移動平均 → 130（答えカードと一致）
 derivation:
   intro: 移動平均は「直近k個の平均」を1つずつずらしながら計算するだけ。平均を取ることで日々のギザギザがならされて、流れが見やすくなる。
   symbols:

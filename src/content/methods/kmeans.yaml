@@ -68,6 +68,17 @@ related:
     type: 前処理
     note: 特徴量が多いとき PCA で次元を減らしてから k-means にかけると、計算も安定し可視化もしやすい。
 aiPromptExample: このデータを k-means でグループ分けし、適切なグループ数の目安と各グループの特徴を説明してください。事前に標準化が必要かも教えてください。
+codeExample:
+  lang: python
+  note: scikit-learn の KMeans を使用。
+  code: |
+    from sklearn.cluster import KMeans  # k-means クラスタリング
+    # [来店回数, 購入金額(千円)]を特徴量に
+    X = [[2, 5], [3, 6], [9, 40], [10, 42], [20, 12], [22, 15]]  # 例データ
+    model = KMeans(n_clusters=3, n_init=10, random_state=0).fit(X)  # 3グループに分割
+    print(len(set(model.labels_)))    # 3 → 見つかったグループ数（答えカードと一致）
+    print(model.labels_)              # 各データの所属グループ番号
+    print(model.cluster_centers_)     # 各グループの重心
 derivation:
   intro: k-meansは「各点を一番近い中心(重心)のグループに入れる→グループの真ん中を計算し直す」をくり返すだけ。動きが止まったら完成。
   symbols:

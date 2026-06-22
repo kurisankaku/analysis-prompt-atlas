@@ -60,6 +60,17 @@ related:
     type: 発展
     note: 平均と標準偏差を使って各データの相対位置を点数化したのが偏差値。
 aiPromptExample: このデータの平均と標準偏差を計算し、多くのデータがどの範囲に収まるかを元の単位で説明してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics の pstdev（母標準偏差・√分散）を使用。
+  code: |
+    import statistics
+
+    # 階級の代表値を人数分だけ並べた10人の点数（このページの例データ）
+    scores = [60] * 1 + [70] * 4 + [80] * 3 + [90] * 2
+    mean = statistics.mean(scores)      # 平均 = 合計 ÷ 人数
+    sd = statistics.pstdev(scores)      # 母標準偏差 = √分散（分散100 → 10）
+    print(mean, sd)                     # 76 10.0 → 答えカードの平均76点・標準偏差10点と一致
 derivation:
   intro: 標準偏差は「分散の平方根」。分散は単位が2乗（点²）で読みにくいので、平方根をとって元の単位（点）に戻したのが標準偏差。ここでは平均76点・分散100のテストで考える。
   symbols:

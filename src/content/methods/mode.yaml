@@ -60,6 +60,15 @@ related:
     type: 併用
     note: 度数分布を図にすると、どの値が最頻値かが直感的に分かる。
 aiPromptExample: このデータの最頻値（いちばん多い値）を求め、平均・中央値との違いから分布の特徴を説明してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics を使用（Counter().most_common(1) でも可）。
+  code: |
+    import statistics
+
+    sizes = ["M", "L", "M", "S", "M"]    # 5件のTシャツのサイズ（このページの例データ）
+    mode = statistics.mode(sizes)        # 最も多く出てくる値を返す（カテゴリでも可）
+    print(mode)                          # M → 答えカードの「最頻値M（3着で最多）」と一致
 derivation:
   intro: 最頻値は「それぞれの値が何回出たかを数えて、いちばん回数が多い値を選ぶ」だけ。
   symbols:

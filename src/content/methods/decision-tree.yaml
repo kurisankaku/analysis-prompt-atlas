@@ -65,6 +65,16 @@ related:
     type: 比較対象
     note: ルールで分けるか、近い仲間で分けるかという発想の違い。
 aiPromptExample: このデータで決定木を作り、分類ルールを枝分かれで示し、過学習を防ぐための深さの目安も助言してください。
+codeExample:
+  lang: python
+  note: scikit-learn の DecisionTreeClassifier を使用。
+  code: |
+    from sklearn.tree import DecisionTreeClassifier  # 決定木の分類器
+    # 天気を数値化（晴=2, 曇=1, 雨=0）し、[天気, 気温]を特徴量に
+    X = [[2, 28], [0, 20], [2, 15], [1, 25]]  # 例データの説明変数
+    y = ["来店", "不来店", "不来店", "来店"]    # 目的変数（来店有無）
+    model = DecisionTreeClassifier().fit(X, y)  # 木を学習
+    print(model.predict([[2, 25]])[0])          # 晴れ&22℃以上 → 来店（答えカードと一致）
 derivation:
   intro: 決定木は「どの質問で分けると、グループがいちばんキレイに分かれるか」を不純度という物差しで測る。不純度が小さいほど、そのグループは1つのクラスでそろっている。
   symbols:

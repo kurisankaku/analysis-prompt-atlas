@@ -69,6 +69,15 @@ related:
     type: 類似
     note: 1変数の散らばりが分散、2変数の連動が共分散。同じ「平均からのズレ」を使う。
 aiPromptExample: この2列の共分散を計算し、2つの数値が正・負どちらの向きに連動しているかを説明してください。強さは相関係数で確認すべき点も添えてください。
+codeExample:
+  lang: python
+  note: numpy で母共分散を計算（bias=True で 1/n の定義に合わせる）。
+  code: |
+    import numpy as np                                   # 共分散の計算用
+    temp = [25, 28, 30, 33, 35]                          # このページの例（気温）
+    sales = [40, 55, 60, 75, 85]                         # このページの例（売上）
+    cov = np.cov(temp, sales, bias=True)[0, 1]           # bias=True で 1/n の母共分散にする
+    print(round(cov, 1))                                 # 55.4 → 答えカードと一致（正＝一緒に増える）
 derivation:
   intro: 共分散は「xの平均からのズレ」と「yの平均からのズレ」を掛けて平均しただけ。両方が同じ向きにズレる日が多いとプラスになる。
   symbols:

@@ -343,8 +343,8 @@ export const methodSchema = z.object({
   // つながり・補助
   related: z.array(relationSchema),
   aiPromptExample: z.string(),
-  // プログラムで計算する例（Python）。AIへの頼み方の下に表示する。
-  codeExample: codeExampleSchema.optional(),
+  // プログラムで計算する例（Python）。AIへの頼み方の下に表示する。全手法に付ける。
+  codeExample: codeExampleSchema,
   // メタ
   difficulty: z.enum(DIFFICULTIES),
   tags: z.array(z.string()),

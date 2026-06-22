@@ -41,6 +41,13 @@ describe('method content', () => {
     }
   });
 
+  it('すべての手法にコード例（codeExample）がある', () => {
+    for (const e of entries) {
+      expect(e.data.codeExample?.code, `${e.id} にコード例がない`).toBeTruthy();
+      expect(e.data.codeExample.lang, `${e.id} のコード例に lang がない`).toBeTruthy();
+    }
+  });
+
   it('すべての手法に計算の手順（derivation）がある', () => {
     for (const e of entries) {
       expect(e.data.derivation, `${e.id} に計算の手順がない`).toBeTruthy();

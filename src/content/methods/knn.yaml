@@ -63,6 +63,16 @@ related:
     type: 比較対象
     note: 近い仲間で分けるか、ルールの枝分かれで分けるかという発想の違い。
 aiPromptExample: このデータでk近傍法を使い、新しいデータを分類してください。事前に標準化し、適切なkも提案してください。
+codeExample:
+  lang: python
+  note: scikit-learn の KNeighborsClassifier を使用。
+  code: |
+    from sklearn.neighbors import KNeighborsClassifier  # k近傍法の分類器
+    # [重さ(g), 甘さ(0-10)]を特徴量に
+    X = [[150, 7], [120, 9], [160, 6], [110, 8]]  # 例データの説明変数
+    y = ["りんご", "みかん", "りんご", "みかん"]    # 既知データのクラス
+    model = KNeighborsClassifier(n_neighbors=3).fit(X, y)  # 近い3個で多数決
+    print(model.predict([[140, 7]])[0])           # りんご（答えカードと一致）
 derivation:
   intro: k近傍法は「知りたいデータから近い順にk個のご近所を探し、その多数派と同じクラスにする」だけ。近さは2点間の距離で測る。
   symbols:

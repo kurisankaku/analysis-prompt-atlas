@@ -52,6 +52,17 @@ related:
     type: 類似
     note: 1変数の散らばりが分散、2変数の連動が共分散。考え方が地続き。
 aiPromptExample: このデータの分散を計算し、平均が同じ他のデータと比べてばらつきが大きいか小さいかを説明してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics の pvariance（母分散・n で割る）を使用。
+  code: |
+    import statistics
+
+    a = [58, 60, 62, 59, 61]    # A組の点数・ばらつき小（このページの例データ）
+    b = [40, 60, 80, 50, 70]    # B組の点数・ばらつき大（平均はどちらも60）
+    var_a = statistics.pvariance(a)    # 母分散 = 偏差を2乗して n で平均
+    var_b = statistics.pvariance(b)    # 同上（散らばりが大きいほど値も大きい）
+    print(var_a, var_b)               # 2 200 → 答えカードのA組2・B組200と一致
 derivation:
   intro: 分散は「各データが平均からどれだけズレているか」を2乗してならした値。2乗するのはマイナスのズレを消して大きさだけを見るため。ここではA組（58,60,62,59,61・平均60）で計算する。
   symbols:

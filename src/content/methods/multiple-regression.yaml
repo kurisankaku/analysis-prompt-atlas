@@ -59,6 +59,17 @@ related:
     type: 前処理
     note: 事前に変数間の相関を見て多重共線性をチェックする。
 aiPromptExample: このデータで重回帰分析を行い、各説明変数の係数と自由度調整済みR²を出し、多重共線性の懸念があれば指摘してください。
+codeExample:
+  lang: python
+  note: scikit-learn を使用。
+  code: |
+    from sklearn.linear_model import LinearRegression  # 重回帰モデルを読み込む
+    X = [[10, 25, 5], [20, 28, 3], [15, 20, 10], [25, 30, 2]]  # 広告費・気温・駅距離
+    y = [120, 160, 100, 190]                          # 売上(万円) … 目的変数
+    model = LinearRegression().fit(X, y)              # 4店舗のデータで係数を学習
+    print(model.coef_)                                # 各要因の係数（符号と大きさで効きを比較）
+    print(round(model.intercept_, 1))                 # 切片b0
+    # ※4行のみのため係数はカードの3.5/1.2/−6.0と完全一致しなくてよい（概念を示す例）
 derivation:
   intro: 重回帰は単回帰の拡張で、原因（説明変数）を複数並べて足し算するだけ。各係数が「その要因がどれだけ効くか」を表す。
   symbols:

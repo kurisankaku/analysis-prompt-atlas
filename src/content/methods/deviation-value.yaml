@@ -61,6 +61,18 @@ related:
     type: 類似
     note: 同じ標準化の考え方。z-scoreを「平均50・標準偏差10」に直したのが偏差値。
 aiPromptExample: この点数を、集団の平均と標準偏差をもとに偏差値へ変換し、集団の中での相対的な位置を説明してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics で平均・母標準偏差を求めて偏差値に変換。
+  code: |
+    import statistics
+
+    scores = [40, 50, 60, 70, 80]       # 集団の点数（平均60・標準偏差10／このページの例データ）
+    mean = statistics.mean(scores)      # 平均（基準＝偏差値50）
+    sd = statistics.pstdev(scores)      # 母標準偏差
+    x = 70                              # 偏差値を知りたい点数
+    t = 50 + 10 * (x - mean) / sd       # 偏差値 = 50 + 10×(値−平均)/標準偏差
+    print(t)                           # 60.0 → 答えカードの「70点の偏差値60」と一致
 derivation:
   intro: 偏差値は「平均からのズレを標準偏差で測り、平均がちょうど50になるように直した値」。ここでは平均60点・標準偏差10点のテストで、70点の人を計算する。
   symbols:

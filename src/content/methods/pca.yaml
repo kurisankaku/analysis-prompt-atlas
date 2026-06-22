@@ -58,6 +58,17 @@ related:
     type: 前処理
     note: 次元を減らしてから階層クラスタリングにかけると距離計算が安定する。
 aiPromptExample: このデータに主成分分析を行い、第1・第2主成分の寄与率と、各主成分がどんな変数の組み合わせを表しているかを分かりやすく説明してください。
+codeExample:
+  lang: python
+  note: scikit-learn を使用。
+  code: |
+    from sklearn.decomposition import PCA     # 次元削減の PCA を読み込む
+    X = [[90, 85, 30, 40, 95], [80, 88, 35, 30, 90],  # 5教科の点数（生徒ごと）
+         [40, 45, 88, 92, 50], [30, 35, 20, 25, 30],
+         [25, 20, 40, 35, 28]]
+    pca = PCA(n_components=2).fit(X)          # ばらつき最大の2軸に圧縮
+    ratio = pca.explained_variance_ratio_     # 各主成分の寄与率
+    print(round(ratio[0], 2))                 # 第1主成分の寄与率 → 約0.7（答えカードと一致）
 derivation:
   intro: PCAは「データがいちばん大きく散らばっている向き」を新しい軸（第1主成分）に選び、その軸上にデータを写し取るだけ。少ない軸でデータの違いをなるべく多く残すのが狙い。
   symbols:

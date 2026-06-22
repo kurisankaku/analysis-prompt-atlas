@@ -57,6 +57,16 @@ related:
     type: 補完
     note: カテゴリの最頻値（最多カテゴリ）を見ると、偏りの中身を直感的に把握できる。
 aiPromptExample: このクロス集計にカイ二乗検定を行い、2つのカテゴリに関連があるか（p値）と、どの組み合わせで偏りが大きいかを説明してください。
+codeExample:
+  lang: python
+  note: scipy.stats を使用。
+  code: |
+    from scipy import stats                          # 統計検定の scipy.stats を読み込む
+    table = [[30, 70], [55, 45]]                     # 性別×購入のクロス集計（男性/女性）
+    chi2, p, dof, expected = stats.chi2_contingency(table)  # 独立性のカイ二乗検定
+    print(round(chi2, 2), round(p, 4))               # カイ二乗値とp値を表示
+    print(round(expected[0][0], 1))                  # 男性×購入の期待度数 → 42.5（答えカードと一致）
+    print(p < 0.05)                                  # True → 関連あり（答えカードと一致）
 derivation:
   intro: カイ二乗検定は「実際の件数（観測度数O）」と「関連がなければこうなるはずの件数（期待度数E）」のズレを合計するだけ。ズレが大きいほど「関連あり」に近づく。
   symbols:

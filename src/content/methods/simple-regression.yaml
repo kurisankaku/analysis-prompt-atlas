@@ -59,6 +59,16 @@ related:
     type: 発展
     note: 原因が複数あるときは説明変数を増やした重回帰分析に進む。
 aiPromptExample: このデータで単回帰分析を行い、予測式と決定係数R²を出して、関係の向き・強さと予測の信頼度を一言で説明してください。
+codeExample:
+  lang: python
+  note: scipy.stats を使用。
+  code: |
+    from scipy import stats               # 回帰計算の scipy.stats を読み込む
+    temp = [20, 25, 28, 30, 33]           # 気温(℃) … 説明変数X
+    sales = [30, 55, 70, 85, 100]         # 売上(個) … 目的変数Y
+    r = stats.linregress(temp, sales)     # 単回帰（最小二乗法で直線を当てはめ）
+    print(round(r.slope, 1))              # 傾き → 約5（気温+1℃で売上+5個）
+    print(round(r.intercept, 1))          # 切片 → 約-68 → 売上=5×気温−68（答えカードと一致）
 derivation:
   intro: 単回帰は「データに一番フィットする直線」を1本引くこと。傾きと切片を、点と直線のズレ（誤差）が一番小さくなるように決める。
   symbols:

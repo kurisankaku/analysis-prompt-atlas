@@ -55,6 +55,16 @@ related:
     type: 比較対象
     note: 外れ値に弱い代表値。中央値と併せて分布の偏りを判断する。
 aiPromptExample: このデータの中央値を出し、平均との差から分布の偏り（外れ値の影響）を説明してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics を使用（外れ値に弱い平均と対比できる）。
+  code: |
+    import statistics
+
+    incomes = [300, 350, 400, 450, 5000]    # 5人の年収・万円（このページの例データ）
+    median = statistics.median(incomes)      # 並べ替えて真ん中（3番目）の値
+    mean = statistics.mean(incomes)          # 比較用の平均（外れ値Eに引っ張られる）
+    print(median, mean)                      # 400 1300 → 答えカードの中央値400・平均1300と一致
 derivation:
   intro: 中央値は「小さい順に並べて、ちょうど真ん中の値を選ぶ」だけ。合計も割り算もいらない。
   symbols:

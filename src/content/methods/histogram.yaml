@@ -65,6 +65,21 @@ related:
     type: 補完
     note: 山の位置（中心）を平均で数値化すると、分布の中心が明確になる。
 aiPromptExample: このデータを適切な階級幅でヒストグラムにし、分布の形（山の数・偏り・外れ値）を一言で説明してください。
+codeExample:
+  lang: python
+  note: numpy で度数を集計し、matplotlib で描画。
+  code: |
+    import numpy as np                                  # 集計用
+    import matplotlib.pyplot as plt                     # 描画用
+    scores = [55, 58,                                   # このページの例（30人の点数）
+              62, 64, 66, 68, 69,
+              71, 72, 73, 74, 75, 75, 76, 77, 78, 78, 79, 79,
+              81, 83, 85, 86, 87, 88, 89, 89,
+              91, 93, 96]
+    bins = [50, 60, 70, 80, 90, 100]                    # 10点刻みの階級
+    counts, _ = np.histogram(scores, bins=bins)         # 階級ごとの人数を集計
+    plt.hist(scores, bins=bins)                          # ヒストグラムを描画
+    print(counts)                                        # [2 5 12 8 3] → 70〜80点が最多（12人）
 derivation:
   intro: ヒストグラムの棒の高さは「その階級に何件入ったか（度数）」。全体に占める割合を見たいときは度数を全体の件数で割って相対度数にする。
   symbols:

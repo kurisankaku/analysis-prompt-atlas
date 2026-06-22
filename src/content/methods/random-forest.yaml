@@ -67,6 +67,17 @@ related:
     type: 比較対象
     note: どちらも分類に使えるが、考え方（木の多数決 vs 近い仲間）が異なる。
 aiPromptExample: このデータでランダムフォレストによる分類を行い、精度と各変数の重要度を出し、過学習の有無を検証データで確認してください。
+codeExample:
+  lang: python
+  note: scikit-learn の RandomForestClassifier を使用。
+  code: |
+    from sklearn.ensemble import RandomForestClassifier  # ランダムフォレスト
+    # [利用月数, 問合せ回数, 月額(円)]を特徴量に
+    X = [[24, 0, 3000], [2, 5, 5000], [18, 1, 4000], [1, 8, 6000]]  # 例データ
+    y = ["継続", "解約", "継続", "解約"]                              # 解約有無
+    model = RandomForestClassifier(n_estimators=3, random_state=0).fit(X, y)  # 3本の木を学習
+    # 複数の木の多数決（3本中2本が継続）で結論を出す
+    print(model.predict([[20, 1, 3500]])[0])  # 継続（答えカードと一致）
 derivation:
   intro: ランダムフォレストは「少しずつ違う決定木をたくさん作り、その予測を多数決でまとめる」だけ。1本ごとの当てずっぽうなミスが、多数決で打ち消し合って安定する。
   symbols:

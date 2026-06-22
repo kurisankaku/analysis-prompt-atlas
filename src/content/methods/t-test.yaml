@@ -57,6 +57,16 @@ related:
     type: 補完
     note: 各グループのばらつき（標準偏差）が差の判定に影響する。併せて確認する。
 aiPromptExample: この2グループの点数にt検定を行い、平均の差が統計的に有意か（p値）と、差の大きさを分かりやすく説明してください。
+codeExample:
+  lang: python
+  note: scipy.stats を使用。
+  code: |
+    from scipy import stats          # 統計検定の scipy.stats を読み込む
+    a = [82, 78, 85]                 # A群（新方式）の点数
+    b = [74, 70, 76]                 # B群（従来）の点数
+    t, p = stats.ttest_ind(a, b)     # 2群の平均差を t検定（t値・p値）
+    print(round(t, 2), round(p, 3))  # t値とp値を表示
+    print(p < 0.05)                  # True → 有意差あり（答えカードと一致）
 derivation:
   intro: t検定は「2つのグループの平均の差」を「ばらつき（誤差）」で割るだけ。差がばらつきに比べて大きいほど、偶然とは言いにくくなる。
   symbols:

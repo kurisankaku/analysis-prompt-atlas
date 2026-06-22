@@ -58,6 +58,18 @@ related:
     type: 前処理
     note: 特徴量が多いとき PCA で次元を減らしてから使うと、距離計算が安定し木も見やすくなる。
 aiPromptExample: このデータを階層クラスタリングでまとめ、デンドログラムをどの高さで切ると何グループになるかと、各グループの特徴を説明してください。
+codeExample:
+  lang: python
+  note: scikit-learn の AgglomerativeClustering を使用。
+  code: |
+    from sklearn.cluster import AgglomerativeClustering  # 階層クラスタリング
+    labels_name = ["A", "B", "C", "D", "E"]  # 各商品の名前
+    # [甘さ, 価格]を特徴量に
+    X = [[8, 120], [7, 130], [2, 300], [3, 290], [5, 200]]  # 例データ
+    model = AgglomerativeClustering(n_clusters=2, linkage="ward").fit(X)  # 2グループに併合
+    # 近い商品どうしが先に併合され、2グループに分かれる
+    for name, c in zip(labels_name, model.labels_):
+        print(name, c)  # A,B,E が同じ組 / C,D が別の組（答えカード {A,B,E}/{C,D} と一致）
 derivation:
   intro: 階層クラスタリングは「いま一番近い2つのかたまりをくっつける」をくり返すだけ。近さは距離で測り、その距離を木の高さとして記録していく。
   symbols:

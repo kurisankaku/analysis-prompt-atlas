@@ -54,6 +54,18 @@ related:
     type: 比較対象
     note: 全データを使う標準偏差に対し、四分位数は外れ値に強い散らばりの指標。
 aiPromptExample: このデータの第1・第2・第3四分位数と四分位範囲を求め、真ん中50％がどの範囲に収まるかを説明してください。
+codeExample:
+  lang: python
+  note: statistics.median を下半分・上半分に適用するTukey流（numpy.percentileの既定とは値が異なる）。
+  code: |
+    import statistics
+
+    data = sorted([10, 12, 15, 18, 20, 22, 25, 28, 30, 35, 60])    # 11人の所要時間・分（このページの例データ）
+    q2 = statistics.median(data)            # 第2四分位数=中央値（6番目の22）
+    lower, upper = data[:5], data[6:]       # 中央値を除いて前半・後半に分割（Tukey流）
+    q1 = statistics.median(lower)           # 下半分の中央値
+    q3 = statistics.median(upper)           # 上半分の中央値
+    print(q1, q2, q3, q3 - q1)              # 15 22 30 15 → 答えカードのQ1=15・中央22・Q3=30・IQR=15と一致
 derivation:
   intro: 四分位数は「小さい順に並べて4等分する区切りの値」。下から25%・50%・75%の位置を読み取る。ここでは11人の所要時間（分）で計算する。
   symbols:

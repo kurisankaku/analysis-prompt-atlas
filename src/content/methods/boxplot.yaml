@@ -61,6 +61,16 @@ related:
     type: 補完
     note: 箱の中の線は中央値。代表値として併せて読むと理解が深まる。
 aiPromptExample: このデータをグループ別の箱ひげ図にまとめ、中央値・ばらつき・外れ値の違いを一言で比較してください。
+codeExample:
+  lang: python
+  note: numpy で5数要約を計算し、matplotlib で描画。
+  code: |
+    import numpy as np                                   # 5数要約の計算用
+    import matplotlib.pyplot as plt                      # 描画用
+    data = [40, 62, 75, 85, 98]                          # このページの例（5数要約に対応する点数）
+    mn, q1, med, q3, mx = np.percentile(data, [0, 25, 50, 75, 100])  # 最小・Q1・中央値・Q3・最大
+    plt.boxplot(data)                                    # 箱ひげ図を描画
+    print(f"中央値={med:.0f} IQR={q3 - q1:.0f}")          # 中央値=75 IQR=23 → 答えカードと一致
 derivation:
   intro: 箱ひげ図は5つの数（最小・Q1・中央値・Q3・最大）で描く。箱の高さ（四分位範囲IQR）と、その1.5倍を使って外れ値の境目を決める。
   symbols:

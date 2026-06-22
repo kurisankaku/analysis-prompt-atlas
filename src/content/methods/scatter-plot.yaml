@@ -61,6 +61,17 @@ related:
     type: 補完
     note: 2変数が一緒に動く度合いを数値で表す。散布図の向きと対応する。
 aiPromptExample: この2列の数値を散布図にして、関係の向き（正・負）と強さ、外れ値の有無を一言で説明してください。
+codeExample:
+  lang: python
+  note: matplotlib で散布図を描き、numpy で関係の符号を確認。
+  code: |
+    import numpy as np                                   # 符号の確認用
+    import matplotlib.pyplot as plt                      # 描画用
+    study = [1, 2, 3, 4, 5, 6]                           # このページの例（勉強時間）
+    score = [55, 60, 70, 75, 85, 90]                     # このページの例（点数）
+    plt.scatter(study, score)                            # 散布図を描画
+    r = np.corrcoef(study, score)[0, 1]                  # 関係の向きを符号で確認
+    print("正（右上がり）" if r > 0 else "負（右下がり）")  # 正（右上がり）→ 答えカードと一致
 derivation:
   intro: 散布図の中身は計算ではなく「対応づけ」。1件ごとに横軸の値xと縦軸の値yを組にして、平面上の1点として打つだけ。
   symbols:

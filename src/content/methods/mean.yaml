@@ -53,6 +53,15 @@ related:
     type: 比較対象
     note: 外れ値に強い代表値。平均と併せて見ると分布の偏りが分かる。
 aiPromptExample: このデータの平均を計算し、全体の水準を一言でまとめてください。外れ値の影響があれば指摘してください。
+codeExample:
+  lang: python
+  note: 標準ライブラリ statistics を使用（numpy なら np.mean(scores)）。
+  code: |
+    import statistics
+
+    scores = [60, 70, 80, 90, 100]    # 5人の点数（このページの例データ）
+    mean = statistics.mean(scores)    # 平均 = 合計 ÷ 個数
+    print(mean)                       # 80 → 答えカードの「平均80点」と一致
 derivation:
   intro: 平均は「全部を合計して、個数で割る」だけ。記号に置きかえても、やっていることは同じ。
   symbols:

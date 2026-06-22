@@ -1,0 +1,59 @@
+---
+// src/components/MethodCode.astro
+// 「プログラムで計算する」セクション。各行の解説をコード内コメント（# …）で書いた
+// そのまま実行できるコードを、Shiki でビルド時ハイライトして表示する。
+// コピーボタンで全文をコピーできる（最小のバニラJSのみ・無効でもコードは読める）。
+import type { CodeExample } from '../content/schema';
+import { getHighlighter } from '../lib/highlighter';
+
+interface Props {
+  code: CodeExample;
+}
+const { code } = Astro.props;
+
+const hl = await getHighlighter();
+const highlighted = hl.codeToHtml(code.code, { lang: code.lang, theme: 'github-light' });
+const langLabel = code.lang === 'python' ? 'Python' : 'JavaScript';
+---
+<section class="border-b border-line py-7">
+  <h2 class="flex items-center gap-3 text-[1.28rem] font-bold">
+    <span class="h-5 w-[7px] flex-none rounded-[1px] bg-signal" aria-hidden="true"></span>
+    プログラムで計算する（{langLabel}）
+  </h2>
+
+  {code.note && <p class="mt-3 font-mono text-xs text-water">{code.note}</p>}
+
+  <div class="relative mt-3.5">
+    <button
+      type="button"
+      class="copy-code absolute right-2.5 top-2.5 z-10 rounded border border-line bg-paper px-2.5 py-1 font-mono text-[0.7rem] text-ink-soft transition-colors hover:border-line-strong hover:text-ink"
+      data-code={code.code}
+      aria-label="コードをコピー"
+    >
+      コピー
+    </button>
+    <div
+      class="code-block overflow-x-auto rounded-lg border border-line text-[0.86rem] leading-relaxed [&_pre]:m-0 [&_pre]:px-4 [&_pre]:py-3.5"
+      set:html={highlighted}
+    />
+  </div>
+</section>
+
+<script>
+  // コピーボタン（プログレッシブエンハンスメント）。
+  document.querySelectorAll<HTMLButtonElement>('button.copy-code').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const text = btn.dataset.code ?? '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = 'コピーしました';
+        window.setTimeout(() => {
+          btn.textContent = original;
+        }, 1500);
+      } catch {
+        /* クリップボード不可の環境では何もしない */
+      }
+    });
+  });
+</script>

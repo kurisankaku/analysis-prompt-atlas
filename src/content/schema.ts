@@ -282,6 +282,18 @@ const derivationSchema = z.object({
 export type Derivation = z.infer<typeof derivationSchema>;
 
 // ---------------------------------------------------------------------------
+// コード例（codeExample）— 各手法を実際にプログラムで計算する例
+// ---------------------------------------------------------------------------
+// code は「# コメント込みの、そのまま実行できる有効なコード」。各行の解説は
+// プログラムのコメントとして書く。コピーボタンで全文をコピーできる。
+const codeExampleSchema = z.object({
+  lang: z.enum(['python', 'javascript']).default('python'),
+  note: z.string().optional(),     // 使用ライブラリ等の一言
+  code: z.string(),                // 全文（コメント込み）
+});
+export type CodeExample = z.infer<typeof codeExampleSchema>;
+
+// ---------------------------------------------------------------------------
 // 答え（keyResults）— このページの例データで「実際に求まった値」
 // ---------------------------------------------------------------------------
 // データ表の直下に大きく出す。value は "80" / "M" / "+0.99" / "15〜30" など柔軟に文字列。
@@ -331,6 +343,8 @@ export const methodSchema = z.object({
   // つながり・補助
   related: z.array(relationSchema),
   aiPromptExample: z.string(),
+  // プログラムで計算する例（Python）。AIへの頼み方の下に表示する。
+  codeExample: codeExampleSchema.optional(),
   // メタ
   difficulty: z.enum(DIFFICULTIES),
   tags: z.array(z.string()),

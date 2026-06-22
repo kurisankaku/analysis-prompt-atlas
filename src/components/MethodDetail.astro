@@ -6,6 +6,7 @@ import SampleTable from './SampleTable.astro';
 import SampleChart from './charts/SampleChart.tsx';
 import MethodDiagram from './diagrams/MethodDiagram.astro';
 import DerivationSteps from './DerivationSteps.astro';
+import MethodCode from './MethodCode.astro';
 import { difficultyBadgeClass } from '../lib/badges';
 
 interface Props {
@@ -290,6 +291,9 @@ const relationClass: Record<Method['related'][number]['type'], string> = {
         </p>
       </div>
     </section>
+
+    {/* ---------- プログラムで計算する（Python） ---------- */}
+    {method.codeExample && <MethodCode code={method.codeExample} />}
 
   </article>
 
